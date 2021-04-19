@@ -8,7 +8,7 @@ const Categoria = require("./Databases/admin/Categoria")
 const Grade = require("./Databases/admin/Grade")
 const G_coluna = require("./DataBases/admin/G_coluna")
 const G_linha = require("./DataBases/admin/G_linha")
-const Produto =  require("./DataBases/admin/Produto")
+const Produto = require("./DataBases/admin/Produto")
 const Estoque = require("./DataBases/admin/Estoque")
 const Preco = require("./DataBases/admin/Preco")
 
@@ -26,11 +26,11 @@ app.use(express.static(path.join(__dirname, 'public')))
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 
-app.get("/", (req, res) => { 
-    
+app.get("/", (req, res) => {
+
 })
 
 
-app.listen(3000,()=>{
+app.listen(3000, () => {
     console.log("Conexão ok")
 })

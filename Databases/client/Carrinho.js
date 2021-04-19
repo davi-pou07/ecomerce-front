@@ -1,6 +1,7 @@
 const Sequelize = require('sequelize')
 const connectionCL = require('./databasesCL')
 const Cliente = require('./Cliente')
+const CodItens = require('./CodItens')
 
 const Carrinho = connectionCL.define('carrinho',{
     quantidade:{
