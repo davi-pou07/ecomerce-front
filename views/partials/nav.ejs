@@ -1,0 +1,145 @@
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+
+        <div class="container">
+
+            <a class="navbar-brand" href="/">
+                <img src="/img/icon.png" id="logo" width="50" height="44" class="d-inline-block align-top">
+            </a>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle text-white" href="#" role="button"
+                            id="navbarDropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+                            <span id="empreza" class="text-uppercase fw-bold text-white"></span></a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+
+                            <li><a href="/admin/empresa" class="dropdown-item">Editar</a></li>
+
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle text-white" href="#" role="button"
+                            id="navbarDropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">Produtos</a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                            <li>
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <input type="search" class="form-control me-2" name="pesquisa" id="pesquisa"
+                                            placeholder="Buscar">
+                                        <span class="input-group-text" onclick="busca()">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                                fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                                                <path
+                                                    d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
+                                            </svg>
+                                        </span>
+                                    </div>
+                                </div>
+
+                            </li>
+                            <li><a href="/admin/produtos" class="dropdown-item">Listar</a></li>
+                            <li><a href="/admin/produto/novo" class="dropdown-item">Criar</a></li>
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+                            <li><a href="/admin/categorias" class="dropdown-item">Categoria</a></li>
+                            <li><a href="/admin/grades" class="dropdown-item">Grade</a></li>
+                        </ul>
+                    </li>
+
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle text-white" href="#" role="button"
+                            id="navbarDropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">Estoque</a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                            <li><a href="/admin/estoques/0" class="dropdown-item">Adicionar</a></li>
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+                            <li><a href="/admin/estoque/estgrade/0" class="dropdown-item">Listar</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+
+
+            <div class="personal-imageNav">
+                <label class="label">
+                    <figure class="personal-figureNav">
+                        <div class="collapse navbar-collapse">
+                            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle text-white" href="#" role="button"
+                                        id="navbarDropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false"><img
+                                            src="/img/avatar.jpg" class="personal-avatarNav" id="img" alt="avatar"></a>
+                                    <ul class="dropdown-menu dropdown-menu-dark"
+                                        aria-labelledby="navbarDropdownMenuLink">
+                                        <li><a class="dropdown-item text-center" id="user">Usuario</a></li>
+                                        <li>
+                                            <hr class="dropdown-divider">
+                                        </li>
+                                        <li><a class="dropdown-item" id="edit">Editar</a></li>
+                                        <li>
+                                            <hr class="dropdown-divider">
+                                        </li>
+                                        <li><a class="dropdown-item" id="aUsuarios" href="/admin/usuarios">Usuarios</a>
+                                        </li>
+                                        <li>
+                                            <hr class="dropdown-divider">
+                                        </li>
+                                        <li><a class="dropdown-item" id="aUsuarios" href="/logout">Sair</a></li>
+
+                                    </ul>
+                                </li>
+                        </div>
+                    </figure>
+                </label>
+            </div>
+        </div>
+
+        </div>
+
+        </div>
+    </nav>
+
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+        axios.get('http://localhost:8080/user').then(user => {
+            if (user.data != undefined) {
+                aUser = document.getElementById('user');
+                aUser.innerHTML = user.data.login;
+                edit = document.getElementById('edit');
+                edit.href = "/admin/usuario/editar/" + user.data.id
+                img = document.getElementById("img");
+                img.src = user.data.foto
+            }
+        })
+        axios.get('http://localhost:8080/empresa').then(empresa => {
+            if (empresa.data != undefined) {
+                var logo = document.getElementById("logo")
+                logo.src = empresa.data.logo
+                var span = document.getElementById("empreza")
+                span.innerHTML = empresa.data.nome
+            }
+        })
+        function busca() {
+            var buscar = document.getElementById("pesquisa")
+            if (buscar.value == '' || buscar.value == undefined) {
+                alert("Digite o que deseja pesquisar!")
+            } else {
+                console.log(buscar.value)
+                axios.post("http://localhost:8080/find", { busca: buscar.value }).then(busca => {
+                    console.log(busca.data)
+                    window.location.href = "/admin/produto/busca/" + busca.data;
+                }).catch(err => {
+                    console.log(err)
+                })
+            }
+        }
+
+    </script>

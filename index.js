@@ -12,6 +12,8 @@ const knex = require('./DataBases/admin/databases')
 // const Estoque = require("./DataBases/admin/Estoque")
 // const Preco = require("./DataBases/admin/Preco")
 
+const empresaController = require("./controller/empresaController")
+
 const connectionCL = require('./DataBases/client/databasesCL')
 const Cliente = require("./DataBases/client/Cliente")
 
@@ -24,6 +26,8 @@ app.use(express.static(path.join(__dirname, 'public')))
 //Carregamento do bodyPerser
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
+
+app.use("/",empresaController)
 
 app.get("/dados", (req, res) => {
     knex("empresas").select().then(empresa =>{

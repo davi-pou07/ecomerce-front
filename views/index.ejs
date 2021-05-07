@@ -1,11 +1,7 @@
-<h1>oi</h1>
-<div id="teste"></div>
+<%- include("./partials/head.ejs")%>
 
-<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-<script>
-    axios.get("http://localhost:3000/dados").then(resp =>{
-        console.log(resp.data)
-        div = document.getElementById("teste")
-        div.innerHTML = resp.data
-    })
-</script>
+
+    <%- include("./partials/nav.ejs")%>
+
+    
+        <%- include("./partials/footer.ejs")%>
