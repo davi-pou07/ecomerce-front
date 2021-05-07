@@ -1,0 +1,44 @@
+.personal-imageNav {
+    text-align: center;
+  }
+  .personal-imageNav input[type="file"] {
+    display: none;
+  }
+  .personal-figureNav {
+    position: relative;
+    width: 60px;
+    height: 60px;
+  }
+  .personal-avatarNav {
+    cursor: pointer;
+    width: 60px;
+    height: 60px;
+    box-sizing: border-box;
+    border-radius: 100%;
+    border: 2px solid transparent;
+    box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.2);
+    transition: all ease-in-out .3s;
+  }
+  .personal-avatarNav:hover {
+    box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.5);
+  }
+  .personal-figcaptionNav {
+    cursor: pointer;
+    position: absolute;
+    top: 0px;
+    width: inherit;
+    height: inherit;
+    border-radius: 100%;
+    opacity: 0;
+    background-color: rgba(0, 0, 0, 0);
+    transition: all ease-in-out .3s;
+  }
+  .personal-figcaptionNav:hover {
+    opacity: 1;
+    background-color: rgba(0, 0, 0, .5);
+  }
+  .personal-figcaptionNav > img {
+    margin-top: 32.5px;
+    width: 50px;
+    height: 50px;
+  }

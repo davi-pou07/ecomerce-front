@@ -1,5 +1,5 @@
 <body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark bg-gradient">
 
         <div class="container">
 
@@ -14,59 +14,32 @@
                             <span id="empreza" class="text-uppercase fw-bold text-white"></span></a>
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
 
-                            <li><a href="/admin/empresa" class="dropdown-item">Editar</a></li>
+                            <li><a href="/admin/empresa" class="dropdown-item">Quem Somos!</a></li>
 
                         </ul>
                     </li>
                 </ul>
+                
             </div>
 
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle text-white" href="#" role="button"
-                            id="navbarDropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">Produtos</a>
-                        <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                            <li>
-                                <div class="form-group">
-                                    <div class="input-group">
-                                        <input type="search" class="form-control me-2" name="pesquisa" id="pesquisa"
-                                            placeholder="Buscar">
-                                        <span class="input-group-text" onclick="busca()">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                                fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
-                                                <path
-                                                    d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
-                                            </svg>
-                                        </span>
-                                    </div>
-                                </div>
-
-                            </li>
-                            <li><a href="/admin/produtos" class="dropdown-item">Listar</a></li>
-                            <li><a href="/admin/produto/novo" class="dropdown-item">Criar</a></li>
-                            <li>
-                                <hr class="dropdown-divider">
-                            </li>
-                            <li><a href="/admin/categorias" class="dropdown-item">Categoria</a></li>
-                            <li><a href="/admin/grades" class="dropdown-item">Grade</a></li>
-                        </ul>
-                    </li>
-
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle text-white" href="#" role="button"
-                            id="navbarDropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">Estoque</a>
-                        <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                            <li><a href="/admin/estoques/0" class="dropdown-item">Adicionar</a></li>
-                            <li>
-                                <hr class="dropdown-divider">
-                            </li>
-                            <li><a href="/admin/estoque/estgrade/0" class="dropdown-item">Listar</a></li>
-                        </ul>
-                    </li>
+                    <form class="input-group">
+                        <input class="form-control me-3" type="search" placeholder="Search" aria-label="Search">
+                        <button class="btn btn-outline-success" type="submit">Pesquisar</button>
+                      </form>
                 </ul>
             </div>
+            
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="me-auto mb-2 mb-lg-0 text-white position-relative">
 
+                    <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-cart" viewBox="0 0 16 16">
+                        <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5zM3.102 4l1.313 7h8.17l1.313-7H3.102zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
+                      </svg>
+                      <span id="spanCarrin" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-secondary">0</span>
+                </ul>
+            </div>
 
             <div class="personal-imageNav">
                 <label class="label">
@@ -109,7 +82,7 @@
 
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script>
-        axios.get('http://localhost:8080/user').then(user => {
+        axios.get('http://localhost:3000/user').then(user => {
             if (user.data != undefined) {
                 aUser = document.getElementById('user');
                 aUser.innerHTML = user.data.login;
@@ -119,12 +92,16 @@
                 img.src = user.data.foto
             }
         })
-        axios.get('http://localhost:8080/empresa').then(empresa => {
+        axios.get('http://localhost:3000/empresa').then(empresa => {
             if (empresa.data != undefined) {
-                var logo = document.getElementById("logo")
-                logo.src = empresa.data.logo
-                var span = document.getElementById("empreza")
-                span.innerHTML = empresa.data.nome
+                empresa.data.forEach(empresa => {
+                    console.log(empresa.nome)
+                    var logo = document.getElementById("logo")
+                    logo.src = empresa.logo
+                    console.log(empresa.logo)
+                    var span = document.getElementById("empreza")
+                    span.innerHTML = empresa.nome
+                })
             }
         })
         function busca() {

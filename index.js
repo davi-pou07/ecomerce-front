@@ -38,6 +38,7 @@ app.get("/dados", (req, res) => {
 
 })
 app.get("/",(req,res)=>{
+  knex("produtos").select().then
     res.render("index")
 })
 
