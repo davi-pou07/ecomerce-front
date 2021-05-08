@@ -39,8 +39,20 @@
                         </div>
                     </div>
                 </div>
-
-                
+                <br>
+                <br>
+                <div class="row mt-4 pt-5">
+                    <%produtos.forEach(produto =>{%>
+                    <div class="col-md-4">
+                        <div class="card">
+                            <div class="card-body">
+                                <img src="<%=produto.nome%>" alt="">
+                                <input type="text" value="<%=produto.nome%>" disabled>
+                            </div>
+                        </div>
+                    </div>
+                    <%})%>
+                </div>
             </div>
         </div>
 
