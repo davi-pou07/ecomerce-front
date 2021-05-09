@@ -5,16 +5,17 @@
         <div class="container">
             <br>
             <div class="row">
-                <div class="col-md-4">
+                <div class="col-md-4 pt-2">
                     <ul class="list-group">
-                        <li class="list-group-item  bg-primary text-white disabled" aria-disabled="true">A disabled item</li>
-                        <li class="list-group-item bg-primary  text-white">A second item</li>
-                        <li class="list-group-item  bg-primary  text-white">A third item</li>
-                        <li class="list-group-item  bg-primary  text-white">A fourth item</li>
-                        <li class="list-group-item  bg-primary  text-white">And a fifth one</li>
-                        <li class="list-group-item  bg-primary  text-white">And a fifth one</li>
-                        <li class="list-group-item  bg-primary  text-white">And a fifth one</li>
-                      </ul>
+                        <li class="list-group-item bg-dark bg-gradient text-white text-uppercase fw-bold text-center">
+                            Categorias</li>
+                        <%categorias.forEach(categoria=>{%>
+                            <%if(categoria.destaque==true){%>
+                                <li class="list-group-item bg-primary  text-white">><%=categoria.titulo%>
+                                </li>
+                                <%}%>
+                                    <%})%>
+                    </ul>
                 </div>
                 <div class="col-md-8">
                     <div id="carouselExampleSlidesOnly" class="carousel slide d-block" data-bs-ride="carousel">
@@ -42,16 +43,26 @@
                 <br>
                 <br>
                 <div class="row mt-4 pt-5">
-                    <%produtos.forEach(produto =>{%>
-                    <div class="col-md-4">
-                        <div class="card">
-                            <div class="card-body">
-                                <img src="<%=produto.nome%>" alt="">
-                                <input type="text" value="<%=produto.nome%>" disabled>
-                            </div>
+                    <%produtos.forEach(produto=>{%>
+                        <div class="col-md-3">
+                            <figure class="card card-product-grid">
+                                <div class="img-wrap">
+                                    <img class="rounded mx-auto d-block" src="/img/uploads/fw.png"
+                                        width="300" height="220">
+                                </div>
+                                <figcaption class="info-wrap border-top">
+                                    <a href="#" class="title">
+                                        <span class="form-control text-center fw-bold text-dark bg-gradient bg-white">
+                                            <%=produto.nome%>
+                                            <span class="form-control text-white fw-bold bg-primary bg-gradient">R$<s>20,00</s>
+                                                R$15,90</span>
+                                        </span>
+                                    </a>
+                                        
+                                </figcaption>
+                            </figure>
                         </div>
-                    </div>
-                    <%})%>
+                        <%})%>
                 </div>
             </div>
         </div>

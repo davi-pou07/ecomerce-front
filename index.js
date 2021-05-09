@@ -29,7 +29,7 @@ app.use(bodyParser.json())
 
 app.use("/", empresaController)
 
-app.get("/dados", (req, res) => {
+app.get("/dadosEmpres", (req, res) => {
     knex("empresas").select().then(empresa => {
         knex("produtos").select().then(produtos => {
             res.json({ empresa: empresa, produtos: produtos })
@@ -38,11 +38,13 @@ app.get("/dados", (req, res) => {
 
 })
 app.get("/", (req, res) => {
-    knex("produtos").select().innerJoin('imagens',"produtos.id","=","imagens.produtoId").then(produtos => {
-            console.log(produtos)
-            res.render("index", { produtos: produtos })
+    knex("produtos").select().where('status',true).then(produtos => {
+        knex("categorias").select().where('status',true).limit(6).then(categorias => {
+            res.render("index", { produtos: produtos, categorias: categorias })
+        })
     })
 })
+
 
 
 app.listen(3000, () => {
