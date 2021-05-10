@@ -40,7 +40,9 @@ app.get("/dadosEmpres", (req, res) => {
 app.get("/", (req, res) => {
     knex("produtos").select().where('status',true).then(produtos => {
         knex("categorias").select().where('status',true).limit(6).then(categorias => {
-            res.render("index", { produtos: produtos, categorias: categorias })
+            knex("precos").select().then(precos =>{
+                res.render("index", { produtos: produtos, categorias: categorias, precos:precos })
+            })
         })
     })
 })
