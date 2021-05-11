@@ -11,7 +11,7 @@
                             Categorias</li>
                         <%categorias.forEach(categoria=>{%>
                             <%if(categoria.destaque==true){%>
-                                <li class="list-group-item bg-primary  text-white">><%=categoria.titulo%>
+                                <li class="list-group-item bg-primary  text-white">> <%=categoria.titulo%>
                                 </li>
                                 <%}%>
                                     <%})%>
@@ -305,8 +305,14 @@
                         <div class="col-md-3">
                             <figure class="card card-product-grid">
                                 <div class="img-wrap">
-                                    <img class="rounded mx-auto d-block" src="/img/uploads/fw.png" width="300"
+                                    <%var imagem = imagens.find(imagem => imagem.produtoId == produto.id)%>
+                                    <%if(imagem != undefined){%>
+                                    <img class="rounded mx-auto d-block" src="<%=imagem.imagem%>" width="220"
                                         height="220">
+                                    <%}else{%>
+                                        <img class="rounded mx-auto d-block" src="/img/null.png" width="220"
+                                        height="220">
+                                        <%}%>
                                 </div>
                                 <figcaption class="info-wrap border-top">
                                     <a href="#" class="title">
@@ -318,13 +324,10 @@
                                                             class="form-control text-white fw-bold bg-primary bg-gradient">
 
                                                             <%if(preco.desconto> 0){%>
-                                                                <s id="s" class="fs-6 text-danger">R$<%=preco.venda%>
-                                                                        ,00</s>
-                                                                <strong id="strong" class="fs-4">R$<%=preco.desconto%>
-                                                                        ,00</strong>
+                                                                <s id="s" class="fs-6 text-danger">R$<%=preco.venda%>,00</s>
+                                                                <strong id="strong" class="fs-4">R$<%=preco.desconto%>,00</strong>
                                                                 <%}else{%>
-                                                                    <strong id="strong" class="fs-4">R$<%=preco.venda%>
-                                                                            ,00</strong>
+                                                                    <strong id="strong" class="fs-4">R$<%=preco.venda%>,00</strong>
                                                                     <%}%>
 
                                                         </span>
