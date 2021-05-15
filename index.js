@@ -13,6 +13,7 @@ const knex = require('./DataBases/admin/databases')
 // const Preco = require("./DataBases/admin/Preco")
 
 const empresaController = require("./controller/empresaController")
+const produtoController = require("./controller/produtoControler")
 
 const connectionCL = require('./DataBases/client/databasesCL')
 const Cliente = require("./DataBases/client/Cliente")
@@ -28,6 +29,7 @@ app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 
 app.use("/", empresaController)
+app.use("/", produtoController)
 
 app.get("/dadosEmpres", (req, res) => {
     knex("empresas").select().then(empresa => {

@@ -294,7 +294,9 @@
                             </div>
                             <figcaption class="info">
                                 <h5 class="title">Rapida Entrega</h5>
-                                <p class="text-muted">Nossa equipe trabalha de maneira eficaz para que a entrega seja feita o mais rapido possivel. Nosso foco é a satisfação do cliente em obter o produto em mãos.</p>
+                                <p class="text-muted">Nossa equipe trabalha de maneira eficaz para que a entrega seja
+                                    feita o mais rapido possivel. Nosso foco é a satisfação do cliente em obter o
+                                    produto em mãos.</p>
                             </figcaption>
                         </figure> <!-- iconbox // -->
                     </div><!-- col // -->
@@ -304,18 +306,19 @@
                     <%produtos.forEach(produto=>{%>
                         <div class="col-md-3">
                             <figure class="card card-product-grid">
-                                <div class="img-wrap">
-                                    <%var imagem = imagens.find(imagem => imagem.produtoId == produto.id)%>
-                                    <%if(imagem != undefined){%>
-                                    <img class="rounded mx-auto d-block" src="<%=imagem.imagem%>" width="220"
-                                        height="220">
-                                    <%}else{%>
-                                        <img class="rounded mx-auto d-block" src="/img/null.png" width="220"
-                                        height="220">
-                                        <%}%>
-                                </div>
-                                <figcaption class="info-wrap border-top">
-                                    <a href="#" class="title">
+                                <a class="btn btn-outline-primary" href="/produto/<%=produto.id%>">
+                                    <input type="hidden" id="produtoId" value="<%=produto.id%>">
+                                    <div class="img-wrap">
+                                        <%var imagem=imagens.find(imagem=> imagem.produtoId == produto.id)%>
+                                            <%if(imagem !=undefined){%>
+                                                <img class="rounded mx-auto d-block" src="<%=imagem.imagem%>"
+                                                    width="220" height="220">
+                                                <%}else{%>
+                                                    <img class="rounded mx-auto d-block" src="/img/null.png" width="220"
+                                                        height="220">
+                                                    <%}%>
+                                    </div>
+                                    <figcaption class="info-wrap border-top">
                                         <span class="form-control text-center fw-bold text-dark bg-gradient bg-white">
                                             <%=produto.nome%>
                                                 <%precos.forEach(preco=> {%>
@@ -324,19 +327,21 @@
                                                             class="form-control text-white fw-bold bg-primary bg-gradient">
 
                                                             <%if(preco.desconto> 0){%>
-                                                                <s id="s" class="fs-6 text-danger">R$<%=preco.venda%>,00</s>
-                                                                <strong id="strong" class="fs-4">R$<%=preco.desconto%>,00</strong>
+                                                                <s id="s" class="fs-6 text-danger">R$<%=preco.venda%>
+                                                                        ,00</s>
+                                                                <strong id="strong" class="fs-4">R$<%=preco.desconto%>
+                                                                        ,00</strong>
                                                                 <%}else{%>
-                                                                    <strong id="strong" class="fs-4">R$<%=preco.venda%>,00</strong>
+                                                                    <strong id="strong" class="fs-4">R$<%=preco.venda%>
+                                                                            ,00</strong>
                                                                     <%}%>
 
                                                         </span>
                                                         <%}%>
                                                             <%})%>
                                         </span>
-                                    </a>
-
-                                </figcaption>
+                                    </figcaption>
+                                </a>
                             </figure>
                         </div>
                         <%})%>

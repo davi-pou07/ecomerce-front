@@ -1,28 +1,37 @@
-<%- include("./partials/head.ejs")%>
+<%- include("./../partials/head.ejs")%>
 
 
-    <%- include("./partials/nav.ejs")%>
-    <div class="container">
-        <article class="card">
-            <div class="card-body">
+    <%- include("./../partials/nav.ejs")%>
+        <div class="container">
+            <article class="card">
+                <div class="card-body">
+                    <br>
                     <div class="row">
                         <aside class="col-md-6">
-                                <article class="gallery-wrap">
-                                    <div class="card img-big-wrap">
-                                        <a href="#"> <img src="bootstrap-ecommerce-html/images/items/12.jpg"></a>
-                                    </div> <!-- card img-big-wrap.// -->
-                                    <div class="thumbs-wrap">
-                                        <a href="#" class="item-thumb"> <img src="bootstrap-ecommerce-html/images/items/12-1.jpg"></a>
-                                        <a href="#" class="item-thumb"> <img src="bootstrap-ecommerce-html/images/items/12-2.jpg"></a>
-                                        <a href="#" class="item-thumb"> <img src="bootstrap-ecommerce-html/images/items/1.jpg"></a>
-                                        <a href="#" class="item-thumb"> <img src="bootstrap-ecommerce-html/images/items/5.jpg"></a>
-                                    </div> <!-- thumbs-wrap .// -->
-                                </article> <!-- gallery-wrap .end// -->
+                                <div class="card">
+                                    <%imagens.forEach(imagem =>{%>
+                                    <a href="#"> <img src="<%=imagem.imagem%>" height="300px" width="300px"></a>
+                                </div> <!-- card img-big-wrap.// -->
+                                <div class="thumbs-wrap">
+                                    <a href="#" class="item-thumb"> <img
+                                            src="bootstrap-ecommerce-html/images/items/12-1.jpg"></a>
+                                    <a href="#" class="item-thumb"> <img
+                                            src="bootstrap-ecommerce-html/images/items/12-2.jpg"></a>
+                                    <a href="#" class="item-thumb"> <img
+                                            src="bootstrap-ecommerce-html/images/items/1.jpg"></a>
+                                    <a href="#" class="item-thumb"> <img
+                                            src="bootstrap-ecommerce-html/images/items/5.jpg"></a>
+                                </div> <!-- thumbs-wrap .// -->
+                                <%})%>
                         </aside>
                         <main class="col-md-6">
                             <article>
-                                <a href="#" class="text-primary btn-link">Clothes</a>
-                                <h3 class="title">Winter Boots Leather for Men</h3>
+                                <a href="#" class="text-primary btn-link">
+                                    <%=categoria.titulo%>
+                                </a>
+                                <h3 class="title">
+                                    <%=produto.nome%>
+                                </h3>
                                 <div>
                                     <ul class="rating-stars">
                                         <li style="width:60%" class="stars-active">
@@ -33,12 +42,14 @@
                                         </li>
                                     </ul>
                                     <span class="label-rating mr-3 text-muted">7/10</span>
-                                    <a href="#" class="btn-link  mr-3 text-muted"> <i class="fa fa-heart"></i> Save for later </a>
-                                    <a href="#" class="btn-link text-muted"> <i class="fa fa-book-open"></i> Compare </a>
-                                </div> 
-        
+                                    <a href="#" class="btn-link  mr-3 text-muted"> <i class="fa fa-heart"></i> Save for
+                                        later </a>
+                                    <a href="#" class="btn-link text-muted"> <i class="fa fa-book-open"></i> Compare
+                                    </a>
+                                </div>
+
                                 <hr>
-                    
+
                                 <div class="mb-3">
                                     <h6>Short description</h6>
                                     <ul class="list-dots mb-0">
@@ -48,7 +59,7 @@
                                         <li>Dark blue color</li>
                                     </ul>
                                 </div>
-                                
+
                                 <div class="form-group">
                                     <label class="text-muted">Available sizes</label>
                                     <div>
@@ -67,25 +78,26 @@
                                         <label class="js-check btn btn-check disabled">
                                             <input type="radio" name="option_size" disabled="" value="option1">
                                             <span>Babies</span>
-                                        </label>	
-                                    </div>						
+                                        </label>
+                                    </div>
                                 </div>
-        
+
                                 <div class="mb-3">
                                     <var class="price h4">$230.00</var> <br>
-                                    <span class="monthly">$32.00 / monthly <a href="#" class="btn-link">installment </a></span>
+                                    <span class="monthly">$32.00 / monthly <a href="#" class="btn-link">installment
+                                        </a></span>
                                 </div> <!-- price-detail-wrap .// -->
-        
+
                                 <div class="mb-4">
-                                    <a href="#" class="btn btn-primary">Buy now</a>
-                                    <a href="#" class="btn btn-light">Add to card</a>
+                                    <a href="#" class="btn btn-primary">Compre agora!</a>
+                                    <a href="#" class="btn btn-light">Adicionar ao Carrinho</a>
                                 </div>
-                                
+
                             </article> <!-- product-info-aside .// -->
                         </main> <!-- col.// -->
                     </div> <!-- row.// -->
-            </div> <!-- card-body.// -->
-        </article>
-    </div>
+                </div> <!-- card-body.// -->
+            </article>
+        </div>
 
-        <%- include("./partials/footer.ejs")%>
+        <%- include("./../partials/footer.ejs")%>
