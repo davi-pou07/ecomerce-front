@@ -99,9 +99,19 @@
                                             <div class="modal-body">
                                                 <div class="row">
                                                     <div class="col-md-4">
-                                                        <input type="image" src="/img/avatar.jpg" alt="" height="300">
+                                                        <%imagems.forEach((imagem,index)=>{%>
+                                                            <%if(index == 0){%>
+                                                        <input type="image" src="<%=imagem.imagem%>" alt="" height="120">
+                                                        <%}%>
+                                                        <%})%>
                                                     </div>
-                                                    <div class="col-md-8"><h1>Nome do produto</h1></div>
+                                                    <div class="col-md-8">
+                                                        <h5><%=produto.nome%></h5>
+                                                        <select name="" id="" class="form-select">
+                                                            <option value="1">1</option>
+                                                        </select>
+                                                    </div>
+
                                                 </div>
                                             </div>
                                             <div class="modal-footer">
