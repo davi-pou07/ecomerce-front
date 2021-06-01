@@ -17,7 +17,7 @@ const knex = require("../Databases/admin/databases")
 //                                         // res.render("produto/pedido", { produto: produto[0], categoria: categoria[0], imagems: imagems, preco: preco[0], produtos: produtos, precos: precos, imagens:imagens, estoques:estoques, grades:grades })
 //                                     })
 
-//                                 })
+//                                 }).cath(err=>{})
 //                             })
 //                         })
 //                     })

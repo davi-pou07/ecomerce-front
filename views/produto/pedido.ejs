@@ -110,9 +110,9 @@
                                                         <div class="row">
                                                         <label for="" class="form-label text-center btn-light">Quantidade:</label>
                                                             <div class="col-md-12 text-center">
-                                                                <button class="btn btn-danger">-</button>
-                                                                <button class="btn btn-light" value="1">1</button>
-                                                                <button class="btn btn-success">+</button>
+                                                                <button class="btn btn-danger" id="btnMenos" onclick="diminuir()">-</button>
+                                                                <input type="text" class="btn btn-ligth" id="btnValor" disabled value="1">
+                                                                <button class="btn btn-success" id="btnMais" onclick="adicionar()">+</button>
                                                             </div>
                                                             <label class="form-label text-center btn-light mt-2">Grades:</label>
                                                             <div class="col-md-6">
@@ -184,7 +184,6 @@
                                                                 <strong id="strong" class="fs-4">R$<%=preco.venda%>
                                                                         ,00</strong>
                                                                 <%}%>
-
                                                     </span>
                                                     <%}%>
                                                         <%})%>
@@ -199,3 +198,23 @@
         </div>
 
         <%- include("./../partials/footer.ejs")%>
+        <script>
+            function diminuir(){
+                var valor = document.getElementById("btnValor").value
+                if(valor > 1){
+                    var botãoMenos = document.getElementById("btnMenos").disabled = false
+                    document.getElementById("btnValor").value = valor - 1
+                }else{
+                    var botãoMenos = document.getElementById("btnMenos").disabled = true
+                }
+            }
+            function adicionar(){
+                var valor = document.getElementById("btnValor").value
+                if(valor > 1){
+                    var botaoMais = document.getElementById("btnMais").disabled = false
+                    document.getElementById("btnValor").value = valor + 1
+                }else{
+                    var botaoMais = document.getElementById("btnMais").disabled = true
+                }
+            }
+        </script>
