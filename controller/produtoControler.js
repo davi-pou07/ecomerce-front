@@ -40,7 +40,7 @@ router.get("/produto/:id", async (req, res) => {
     var grades = await knex.from("estoques").innerJoin("g_linhas","estoques.reflinha","g_linhas.id").innerJoin("g_colunas","estoques.refcoluna","g_colunas.id").where({"estoques.produtoId":produtoId,"estoques.status":true})
     console.log(grades)
     res.render("produto/pedido", { produto: produto[0], categoria: categoria[0], imagems: imagems, preco: preco[0], produtos: produtos, precos: precos, imagens:imagens,grades:grades})
-    } catch (error) {
+    }catch (error) {
         console.log(error)
     }
 })

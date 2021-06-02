@@ -115,11 +115,12 @@
                                             <div class="modal-body">
                                                 <div class="row">
                                                     <div class="col-md-4">
-                                                        <input type="hidden" id="codItem" name="codItem" value="<%=produto.id%>">
+                                                        <input type="hidden" id="codItem" name="codItem"
+                                                            value="<%=produto.id%>">
                                                         <%imagems.forEach((imagem,index)=>{%>
                                                             <%if(index==0){%>
-                                                                <input type="image" class="mt-3" src="<%=imagem.imagem%>" alt=""
-                                                                    height="120">
+                                                                <input type="image" class="mt-3"
+                                                                    src="<%=imagem.imagem%>" alt="" height="120">
                                                                 <%}%>
                                                                     <%})%>
                                                     </div>
@@ -138,50 +139,60 @@
                                                                 <button class="btn btn-success" id="btnMais"
                                                                     onclick="adicionar()">+</button>
                                                             </div>
+                                                            <%if(grades != []){%>
                                                             <label
                                                                 class="form-label text-center btn-light mt-2">Grades:</label>
                                                             <div class="col-md-6">
                                                                 <!-- 🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨 -->
                                                                 <!-- Validar a linha de acordo com a coluna -->
-                                                                <select name="reflinha" id= "reflinha" class="form-select" onchange="gradeColuna(this.value)">
+                                                                <select name="reflinha" id="reflinha"
+                                                                    class="form-select"
+                                                                    onchange="gradeColuna(this.value)">
                                                                     <%var linhas=[];%>
-                                                                    <%grades.forEach((grade,index)=>{%>
-                                                                        <%var contem = 1%>
-                                                                        <%for(x=0;x < index;x++){%>
-                                                                            <%if(linhas[x] == grade.reflinha){%>
-                                                                                <%var contem = 0%>
-                                                                            <%}%>
-                                                                        <%}%>
+                                                                        <%grades.forEach((grade,index)=>{%>
+                                                                            <%var contem=1%>
+                                                                                <%for(x=0;x < index;x++){%>
+                                                                                    <%if(linhas[x]==grade.reflinha){%>
+                                                                                        <%var contem=0%>
+                                                                                            <%}%>
+                                                                                                <%}%>
 
-                                                                        <%if(contem != 0){%>
-                                                                            <option value="<%=grade.reflinha%>">
-                                                                                <%=grade.linha%>
-                                                                            </option>
-                                                                        <%}%>
-                                                                        <%linhas.push(grade.reflinha)%>
-                                                                    <%})%>
+                                                                                                    <%if(contem !=0){%>
+                                                                                                        <option
+                                                                                                            value="<%=grade.reflinha%>">
+                                                                                                            <%=grade.linha%>
+                                                                                                        </option>
+                                                                                                        <%}%>
+                                                                                                            <%linhas.push(grade.reflinha)%>
+                                                                                                                <%})%>
                                                                 </select>
                                                             </div>
                                                             <div class="col-md-6">
-                                                                <select name="refcoluna" class="form-select" id="refcoluna">
+                                                                <select name="refcoluna" class="form-select"
+                                                                    id="refcoluna">
                                                                     <%var colunas=[];%>
-                                                                    <%grades.forEach((grade,index)=>{%>
-                                                                        <%var contemc = 1%>
-                                                                        <%for(y=0;y < index;y++){%>
-                                                                            <%if(colunas[y] == grade.refcoluna){%>
-                                                                                <%var contemc = 0%>
-                                                                            <%}%>
-                                                                        <%}%>
+                                                                        <%grades.forEach((grade,index)=>{%>
+                                                                            <%var contemc=1%>
+                                                                                <%for(y=0;y < index;y++){%>
+                                                                                    <%if(colunas[y]==grade.refcoluna){%>
+                                                                                        <%var contemc=0%>
+                                                                                            <%}%>
+                                                                                                <%}%>
 
-                                                                        <%if(contemc != 0){%>
-                                                                            <option value="<%=grade.refcoluna%>">
-                                                                                <%=grade.coluna%>
-                                                                            </option>
-                                                                        <%}%>
-                                                                        <%colunas.push(grade.refcoluna)%>
-                                                                    <%})%>
+                                                                                                    <%if(contemc !=0){%>
+                                                                                                        <option
+                                                                                                            value="<%=grade.refcoluna%>">
+                                                                                                            <%=grade.coluna%>
+                                                                                                        </option>
+                                                                                                        <%}%>
+                                                                                                            <%colunas.push(grade.refcoluna)%>
+                                                                                                                <%})%>
                                                                 </select>
                                                             </div>
+                                                            <%}else{%>
+                                                                <input type="hidden" name="reflinha" value="0">
+                                                                <input type="hidden" name="refcoluna" value="0">
+                                                            <%}%>
                                                         </div>
 
                                                     </div>
@@ -191,7 +202,8 @@
                                             <div class="modal-footer">
                                                 <button type="button" class="btn btn-secondary"
                                                     data-bs-dismiss="modal">Cancelar</button>
-                                                <button type="button" class="btn btn-primary" onclick="AdicionarCarrinho()">Salvar</button>
+                                                <button type="button" data-bs-dismiss="modal" class="btn btn-primary"
+                                                    onclick="AdicionarCarrinho()">Salvar</button>
                                             </div>
                                         </div>
                                     </div>
@@ -269,17 +281,15 @@
             </script>
             <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
             <script>
-                function AdicionarCarrinho(){
+                function AdicionarCarrinho() {
                     var codItem = document.getElementById("codItem").value
                     var quantidadeItem = document.getElementById("btnValor").value
                     var reflinha = document.getElementById("reflinha").value
                     var refcoluna = document.getElementById("refcoluna").value
+                    var myModal = document.getElementById('exampleModal')
 
-                    axios.post("http://localhost:3000/carrinho/adicionar",{codItem:codItem,quantidadeItem:quantidadeItem,refcoluna:refcoluna,reflinha:reflinha}).then(resp =>{
-                        if(resp.data != undefined){
-                            console.log(resp.data)
-                        }
+                    axios.post("http://localhost:3000/carrinho/adicionar", { codItem: codItem, quantidadeItem: quantidadeItem, refcoluna: refcoluna, reflinha: reflinha }).then(resp => {
+                        alert(resp.data.resp)
                     })
                 }
             </script>
-            
