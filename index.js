@@ -4,19 +4,19 @@ const bodyParser = require("body-parser")
 const path = require('path')
 
 const knex = require('./DataBases/admin/databases')
-// const Categoria = require("./Databases/admin/Categoria")
-// const Grade = require("./Databases/admin/Grade")
-// const G_coluna = require("./DataBases/admin/G_coluna")
-// const G_linha = require("./DataBases/admin/G_linha")
-// const Produto = require("./DataBases/admin/Produto")
-// const Estoque = require("./DataBases/admin/Estoque")
-// const Preco = require("./DataBases/admin/Preco")
 
+const Carrinho = require("./Databases/client/Carrinho")
+const CodItens = require("./Databases/client/CodItens")
+
+const carrinhoController = require("./controller/carrinhoController")
 const empresaController = require("./controller/empresaController")
 const produtoController = require("./controller/produtoControler")
 
 const connectionCL = require('./DataBases/client/databasesCL')
 const Cliente = require("./DataBases/client/Cliente")
+
+
+
 
 
 //usar o EJS como view engine | renderizador de html
@@ -30,6 +30,7 @@ app.use(bodyParser.json())
 
 app.use("/", empresaController)
 app.use("/", produtoController)
+app.use("/", carrinhoController)
 
 app.get("/dadosEmpres", (req, res) => {
     knex("empresas").select().then(empresa => {
