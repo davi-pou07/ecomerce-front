@@ -1,0 +1,102 @@
+<%- include('../partials/head.ejs')%>
+
+    <%- include('../partials/nav.ejs')%>
+        <div class="container">
+            <hr>
+            <div class="card mt-5">
+                <div class="card-header">
+                    <h2>Criação de Usuário</h2>
+                </div>
+                <div class="card-body">
+
+                    <form action="/user/novo" method="POST" class="row g-3 needs-validation" onsubmit="sub(event,this)"
+                        novalidate id="form1" enctype="multipart/form-data">
+
+
+                        <div class="col-md-2">
+                            <div class="personal-image">
+                                <label class="label">
+                                    <input type="file" name="avatar" />
+                                    <figure class="personal-figure">
+                                        <img src="/img/avatar.jpg" class="personal-avatar" alt="avatar">
+                                        <figcaption class="personal-figcaption">
+                                            <img
+                                                src="https://raw.githubusercontent.com/ThiagoLuizNunes/angular-boilerplate/master/src/assets/imgs/camera-white.png">
+                                        </figcaption>
+                                    </figure>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="col-md-5">
+                            <label for="nome" class="form-label">Nome</label>
+                            <input class="form-control" type="text" id="nome" name="nome" placeholder="Davi"
+                                autocomplete="x" required>
+                        </div>
+                        <div class="col-md-5">
+                            <label for="sobrenome" class="form-label">Sobrenome</label>
+                            <input class="form-control" type="text" id="sobrenome" name="sobrenome"
+                                placeholder="Henrique" autocomplete="x" required>
+                        </div>
+
+
+
+                        <div class="col-md-6">
+                            <label for="email" class="form-label">Email</label>
+                            <input class="form-control" id="email" type="email" name="email"
+                                placeholder="seuemail@seuemail.com" autocomplete="off" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="celular" class="form-label">Celular</label>
+                            <input class="form-control" type="tel" id="phone" name="celular"
+                                placeholder="(99)9 9999-9999" autocomplete="x" required onkeypress="mask(this, mphone);"
+                                onblur="mask(this, mphone);" maxlength="15">
+                        </div>
+
+                        <div class="col-md-6">
+                            <label for="telefone" class="form-label">Senha</label>
+                            <input class="form-control" type="password" id="senha" name="senha" placeholder="********"
+                                required autocomplete="x">
+
+                        </div>
+                        <div class="col-md-6">
+                            <label for="telefone" class="form-label">Confirma Senha</label>
+                            <input class="form-control" type="password" id="confirm" name="confirm_pass"
+                                placeholder="********" required>
+                        </div>
+                        <br>
+                        <hr>
+                        
+                        <!-- Modal -->
+                        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                            aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        ...
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary"
+                                            data-bs-dismiss="modal">Close</button>
+                                        <button type="button" class="btn btn-primary">Save changes</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <button type="button" class="btn btn-primary form-control" data-bs-toggle="modal"
+                        data-bs-target="#exampleModal" onclick="validar()">Criar</button>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+        </body>
+        <%- include('../partials/footer.ejs')%>
+            <script src="/js/validar.js"></script>
+            <script src="/js/telefone.js"></script>
+            <script src="/js/sub.js"></script>

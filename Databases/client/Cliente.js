@@ -28,10 +28,14 @@ const Cliente = connectionCL.define('clientes',{
     },
     validado:{
         type:Sequelize.BOOLEAN,
-        allowNull:false
+        allowNull:true
     },
     senha:{
         type:Sequelize.STRING,
+        allowNull:false
+    },
+    dataNasc:{
+        type:Sequelize.DATE,
         allowNull:false
     }
 })

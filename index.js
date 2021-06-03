@@ -1,6 +1,7 @@
 const express = require("express")
 const app = express()
 const bodyParser = require("body-parser")
+const session = require("express-session")
 const path = require('path')
 
 const knex = require('./DataBases/admin/databases')
@@ -11,12 +12,15 @@ const CodItens = require("./Databases/client/CodItens")
 const carrinhoController = require("./controller/carrinhoController")
 const empresaController = require("./controller/empresaController")
 const produtoController = require("./controller/produtoControler")
+const clienteController = require("./controller/userController")
 
 const connectionCL = require('./DataBases/client/databasesCL')
 const Cliente = require("./DataBases/client/Cliente")
 
-
-
+app.use(session({
+    secret: "sdfsdfsdfgdfgfgh",
+    cookie: { maxAge: 3600000 }
+}))
 
 
 //usar o EJS como view engine | renderizador de html
@@ -31,6 +35,7 @@ app.use(bodyParser.json())
 app.use("/", empresaController)
 app.use("/", produtoController)
 app.use("/", carrinhoController)
+app.use("/", clienteController)
 
 app.get("/dadosEmpres", (req, res) => {
     knex("empresas").select().then(empresa => {

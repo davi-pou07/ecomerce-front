@@ -139,7 +139,7 @@
                                                                 <button class="btn btn-success" id="btnMais"
                                                                     onclick="adicionar()">+</button>
                                                             </div>
-                                                            <%if(grades != []){%>
+                                                            <%if(grades[0] != undefined){%>
                                                             <label
                                                                 class="form-label text-center btn-light mt-2">Grades:</label>
                                                             <div class="col-md-6">
@@ -190,8 +190,8 @@
                                                                 </select>
                                                             </div>
                                                             <%}else{%>
-                                                                <input type="hidden" name="reflinha" value="0">
-                                                                <input type="hidden" name="refcoluna" value="0">
+                                                                <input type="hidden" id="reflinha" name="reflinha" value="0">
+                                                                <input type="hidden" id="refcoluna" name="refcoluna" value="0">
                                                             <%}%>
                                                         </div>
 
@@ -290,6 +290,7 @@
 
                     axios.post("http://localhost:3000/carrinho/adicionar", { codItem: codItem, quantidadeItem: quantidadeItem, refcoluna: refcoluna, reflinha: reflinha }).then(resp => {
                         alert(resp.data.resp)
+                        console.log(resp.data)
                     })
                 }
             </script>
