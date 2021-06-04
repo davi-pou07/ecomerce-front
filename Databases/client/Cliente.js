@@ -35,14 +35,18 @@ const Cliente = connectionCL.define('clientes',{
         allowNull:false
     },
     dataNasc:{
-        type:Sequelize.DATE,
+        type:Sequelize.STRING,
         allowNull:false
+    },
+    foto:{
+        type:Sequelize.TEXT,
+        allowNull:true 
     }
 })
 
 
 // Cliente.sync({force:true}).then(()=>{
-//     console.log("Tabela Cliennte criada")        
+//     console.log("Tabela Cliente criada")        
 // })
 
 module.exports = Cliente

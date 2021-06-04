@@ -9,14 +9,14 @@
                 </div>
                 <div class="card-body">
 
-                    <form action="/user/novo" method="POST" class="row g-3 needs-validation" onsubmit="sub(event,this)"
+                    <form action="/criar/usuario" method="POST" class="row g-3 needs-validation" onsubmit="sub(event,this)"
                         novalidate id="form1" enctype="multipart/form-data">
 
 
                         <div class="col-md-2">
                             <div class="personal-image">
                                 <label class="label">
-                                    <input type="file" name="avatar" />
+                                    <input type="file" id="foto" name="foto" />
                                     <figure class="personal-figure">
                                         <img src="/img/avatar.jpg" class="personal-avatar" alt="avatar">
                                         <figcaption class="personal-figcaption">
@@ -61,7 +61,7 @@
                         </div>
                         <div class="col-md-6">
                             <label for="telefone" class="form-label">Confirma Senha</label>
-                            <input class="form-control" type="password" id="confirm" name="confirm_pass"
+                            <input class="form-control" type="password" id="confirm" name="confirm"
                                 placeholder="********" required>
                         </div>
                         <br>
@@ -73,23 +73,36 @@
                             <div class="modal-dialog">
                                 <div class="modal-content">
                                     <div class="modal-header">
-                                        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                                        <h5 class="modal-title" id="exampleModalLabel">Confirme seus dados pessoais</h5>
                                         <button type="button" class="btn-close" data-bs-dismiss="modal"
                                             aria-label="Close"></button>
                                     </div>
                                     <div class="modal-body">
-                                        ...
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <label for="cpf" class="form-label">CPF</label>
+                                                <input class="form-control" type="text" id="cpf" name="cpf"
+                                                    placeholder="000.000.000-00" autocomplete="x" required
+                                                   >
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label for="dataNasc" class="form-label">Data de Nascimento</label>
+                                                <input class="form-control" type="date" id="dataNasc" name="dataNasc"
+                                                    autocomplete="x" required
+                                                   >
+                                            </div>
+                                        </div>
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary"
-                                            data-bs-dismiss="modal">Close</button>
-                                        <button type="button" class="btn btn-primary">Save changes</button>
+                                            data-bs-dismiss="modal">Fechar</button>
+                                        <button type="submit" id="buttom" class="btn btn-primary" onclick="validar()">Salvar dados</button>
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <button type="button" class="btn btn-primary form-control" data-bs-toggle="modal"
-                        data-bs-target="#exampleModal" onclick="validar()">Criar</button>
+                        data-bs-target="#exampleModal">Criar</button>
                     </form>
                 </div>
             </div>
@@ -100,3 +113,25 @@
             <script src="/js/validar.js"></script>
             <script src="/js/telefone.js"></script>
             <script src="/js/sub.js"></script>
+            <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+            <script>
+                function validar(){
+                    var nome = document.getElementById("nome").value
+                    var sobrenome = document.getElementById("sobrenome").value
+                    var email = document.getElementById("email").value
+                    var celular = document.getElementById("phone").value
+                    var senha = document.getElementById("senha").value
+                    var confirm = document.getElementById("confirm").value
+                    var cpf = document.getElementById("cpf").value
+                    var dataNasc= document.getElementById("dataNasc").value
+                    event.preventDefault()
+                        axios.post("http://localhost:3000/criar/usuario",{nome:nome,sobrenome:sobrenome,email:email,celular:celular,senha:senha,confirm:confirm,cpf:cpf,dataNasc:dataNasc}).then(resp =>{
+                            console.log(resp)
+                            if(resp.data.erro != undefined){
+                                alert(resp.data.erro)
+                            }
+                        }).catch(err =>{
+                            console.log(err)
+                        })
+                }
+            </script>
