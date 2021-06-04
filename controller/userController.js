@@ -1,13 +1,16 @@
 const express = require('express')
 const router = express.Router()
+
 const knex = require("../Databases/admin/databases")
 const Cliente = require("../Databases/client/Cliente")
+const Carrinho = require("../Databases/client/Carrinho")
+
+
 const { Op } = require("sequelize");
 const validator = require('validator')
 const validCpf = require("cpf")
 const moment = require("moment")
 const bcrypt = require("bcryptjs")
-
 
 router.get("/user", (req, res) => {
     user = req.session.usu
@@ -53,8 +56,13 @@ router.post("/criar/usuario", (req, res) => {
                                         senha: hash,
                                         dataNasc: dataNasc,
                                         foto: foto
-                                    }).then(() => {
-                                        res.redirect("/login")
+                                    }).then(cliente => {
+                                        Carrinho.create({
+                                            status:true,
+                                            clienteId:cliente.id
+                                        }).then(carrinho =>{
+                                            res.json({resp: "Cliente cadastrado com sucesso"})
+                                        })
                                     })
                                 } else {
                                     res.json({ erro: "Cliente ja cadastrado, por favor faça o login" })
