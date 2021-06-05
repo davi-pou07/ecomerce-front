@@ -88,4 +88,9 @@ router.post("/criar/usuario", (req, res) => {
     }
 })
 
+
+router.get("/user/login",(req,res)=>{
+    res.render("usuario/login")
+})
+
 module.exports = router
