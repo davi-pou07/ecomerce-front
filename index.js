@@ -19,7 +19,7 @@ const Cliente = require("./DataBases/client/Cliente")
 
 app.use(session({
     secret: "sdfsdfsdfgdfgfgh",
-    cookie: { maxAge: 3600000 }
+    cookie: { maxAge: 260000000000 }
 }))
 
 

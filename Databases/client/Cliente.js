@@ -6,21 +6,17 @@ const Cliente = connectionCL.define('clientes',{
         type:Sequelize.STRING,
         allowNull:false
     },
-    sobrenome:{
-        type:Sequelize.STRING,
-        allowNull:false
-    },
     status:{
         type:Sequelize.BOOLEAN,
         allowNull:false
     },
     cpf:{
         type:Sequelize.STRING,
-        allowNull:false
+        allowNull:true
     },
-    celular:{
+    numero:{
         type:Sequelize.STRING,
-        allowNull:false
+        allowNull:true
     },
     email:{
         type:Sequelize.STRING,
@@ -36,7 +32,7 @@ const Cliente = connectionCL.define('clientes',{
     },
     dataNasc:{
         type:Sequelize.STRING,
-        allowNull:false
+        allowNull:true
     },
     foto:{
         type:Sequelize.TEXT,

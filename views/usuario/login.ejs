@@ -1,4 +1,5 @@
 <%- include('../partials/head.ejs')%>
+    <link rel="stylesheet" href="/css/login.css">
     <div class="container">
         <div class="backbox">
             <div class="loginMsg">
@@ -12,39 +13,68 @@
                 <div class="textcontent">
                     <p class="title">Tem conta?</p>
                     <p>Faça o login e veja todas tuas informações.</p>
-                    <button id="switch2">LOG IN</button>
+                    <button id="switch2">ENTRAR</button>
                 </div>
             </div>
         </div>
         <!-- backbox -->
 
-        <link rel="stylesheet" href="/css/login.css">
         <div class="frontbox">
             <div class="login">
-                <h2>LOG IN</h2>
+                <h2>ENTRAR</h2>
                 <div class="inputbox">
-                    <input type="text" name="email" placeholder="  EMAIL">
-                    <input type="password" name="password" placeholder="  PASSWORD">
+                    <input type="text" class="form-control" id="emailLogin" name="email" placeholder="EMAIL">
+                    <input type="password" class="form-control" id="senhaLogin" name="password" placeholder="SENHA">
                 </div>
-                <p>FORGET PASSWORD?</p>
-                <button>LOG IN</button>
+                <p><a href="">Esqueceu a senha?</a></p>
+                <button onclick="logar()">Entrar</button>
             </div>
 
             <div class="signup hide">
-                <h2>SIGN UP</h2>
+                <h2>CRIAR</h2>
                 <div class="inputbox">
-                    <input type="text" name="fullname" placeholder="  FULLNAME">
-                    <input type="text" name="email" placeholder="  EMAIL">
-                    <input type="password" name="password" placeholder="  PASSWORD">
+                    <input type="text" class="form-control" id="nome" name="fullname" placeholder="NOME COMPLETO">
+                    <input type="email" class="form-control" name="email" id="email" placeholder="EMAIL">
+                    <input type="tel" class="form-control" id="numero" onkeypress="mask(this, mphone);"
+                        onblur="mask(this, mphone);" maxlength="15" name="numero" placeholder="Nº CELULAR">
                 </div>
-                <button>SIGN UP</button>
+                <button data-bs-toggle="modal" data-bs-target="#staticBackdrop" onclick="valid()">CRIAR</button>
             </div>
 
         </div>
         <!-- frontbox -->
     </div>
+    <!-- Modal -->
+    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="staticBackdropLabel">Confirme sua senha!</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label for="" class="form-label">Senha</label>
+                            <input type="password" class="form-control" name="senha" id="senha" placeholder="Senha">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="" class="form-label">Confirmar senha</label>
+                            <input type="password" class="form-control" name="confirm" id="confirm"
+                                placeholder="Confirma Senha">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                    <button type="button" id="salvar" class="btn btn-success" onclick="criar()">Salvar</button>
+                </div>
+            </div>
+        </div>
+    </div>
     <%- include('../partials/footer.ejs')%>
-
+        <script src="/js/telefone.js"></script>
         <script>
             var $loginMsg = $('.loginMsg'),
                 $login = $('.login'),
@@ -70,11 +100,107 @@
                 $login.toggleClass('hide');
             })
 
-            setTimeout(function () {
-                $('#switch1').click()
-            }, 1000)
+            // setTimeout(function () {
+            //     $('#switch1').click()
+            // }, 1000)
 
-            setTimeout(function () {
-                $('#switch2').click()
-            }, 3000)
+            // setTimeout(function () {
+            //     $('#switch2').click()
+            // }, 3000)
+        </script>
+        <script>
+            function valid() {
+                var nome = document.getElementById("nome").value
+                var email = document.getElementById("email").value
+                var numero = document.getElementById("numero").value
+                var senha = document.getElementById("senha").value
+                var confirm = document.getElementById("confirm").value
+                if (nome != '') {
+                    let n = document.getElementById("nome")
+                    n.classList.remove("is-invalid")
+                    n.classList.add("is-valid")
+                } else {
+                    let n = document.getElementById("nome")
+                    n.classList.remove("is-valid")
+                    n.classList.add("is-invalid")
+                }
+                if (email != '') {
+                    let e = document.getElementById("email")
+                    e.classList.remove("is-invalid")
+                    e.classList.add("is-valid")
+                } else {
+                    let e = document.getElementById("email")
+                    e.classList.remove("is-valid")
+                    e.classList.add("is-invalid")
+                } if (numero != '' && numero.length > 14) {
+                    let t = document.getElementById("numero")
+                    t.classList.remove("is-invalid")
+                    t.classList.add("is-valid")
+                } else {
+                    let t = document.getElementById("numero")
+                    t.classList.remove("is-valid")
+                    t.classList.add("is-invalid")
+                }
+            }
+        </script>
+        <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+        <script>
+            function criar() {
+                var nome = document.getElementById("nome").value
+                var email = document.getElementById("email").value
+                var numero = document.getElementById("numero").value
+                var senha = document.getElementById("senha").value
+                var confirm = document.getElementById("confirm").value
+                if (nome != '' && email != '' && numero != '' && senha != '' && confirm != '') {
+                    if (senha == confirm) {
+                        axios.post("http://localhost:3000/usuario/criar", { nome: nome, email: email, numero: numero, senha: senha, confirm: confirm }).then(resp => {
+                            if (resp.data.erro != undefined) {
+                                alert("Ocorreu um erro ao cadastrar um novo usuario!\n" + "Erro: " + resp.data.erro)
+                            } else {
+                                window.location.href = "http://localhost:3000/"
+                            }
+                        })
+                    } else {
+                        alert("Credencias de senha inválida")
+                    }
+                } else {
+                    alert("Dados vazios")
+                }
+            }
+
+            function logar() {
+                var emailLogin = document.getElementById("emailLogin").value
+                var senhaLogin = document.getElementById("senhaLogin").value
+                if (emailLogin != '' && senhaLogin != '') {
+                    axios.post("http://localhost:3000/usuario/login",{emailLogin:emailLogin,senhaLogin:senhaLogin}).then(resp =>{
+                        console.log(resp.data)
+                        if (resp.data.erro != undefined) {
+                            alert("Ocorreu um erro ao logar!\n" + "Erro: " + resp.data.erro)
+                        } else {
+                            window.location.href = "http://localhost:3000/"
+                        }
+                    })
+                } else {
+                    alert("Dados do login estão vazios")
+                    if (emailLogin != '') {
+                        let e = document.getElementById("emailLogin")
+                        e.classList.remove("is-invalid")
+                        e.classList.add("is-valid")
+                    } else {
+                        let e = document.getElementById("emailLogin")
+                        e.classList.remove("is-valid")
+                        e.classList.add("is-invalid")
+                    }
+
+                    if (senhaLogin != '') {
+                        let s = document.getElementById("senhaLogin")
+                        s.classList.remove("is-invalid")
+                        s.classList.add("is-valid")
+                    } else {
+                        let s = document.getElementById("senhaLogin")
+                        s.classList.remove("is-valid")
+                        s.classList.add("is-invalid")
+                    }
+                }
+            }
         </script>

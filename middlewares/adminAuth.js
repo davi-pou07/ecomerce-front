@@ -1,5 +1,5 @@
 function adminAuth(req,res,next){
-    if(req.session.usu != undefined){
+    if(req.session.cli != undefined){
         // console.log(req.session)
         next()
     }else{
