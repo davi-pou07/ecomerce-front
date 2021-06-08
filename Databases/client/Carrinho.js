@@ -5,7 +5,7 @@ const Cliente = require('./Cliente')
 const Carrinho = connectionCL.define('carrinhos',{
     quantidade:{
         type:Sequelize.INTEGER,
-        allowNull:false
+        allowNull:true
     },
     status:{
         type:Sequelize.BOOLEAN,
@@ -13,7 +13,7 @@ const Carrinho = connectionCL.define('carrinhos',{
     }
 })
 
-// Carrinho.belongsTo(Cliente)
+Carrinho.belongsTo(Cliente)
 
 
 // Carrinho.sync({force:true}).then(()=>{
