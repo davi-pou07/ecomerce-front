@@ -31,7 +31,6 @@ router.post("/criar/usuario", (req, res) => {
     var cpf = req.body.cpf
     var nas = req.body.dataNasc
     var dataNasc = moment(nas).format("YYYYMMDD")
-    console.log(cpf)
     if (nome != "" && sobrenome != "" && email != "" && celular != "" && senha != "" && confirm != "" && cpf != "" && dataNasc != "") {
         if (validator.isEmail(email) == true) {
             if (validator.isMobilePhone(celular, 'pt-BR', false) == true) {
@@ -78,6 +77,10 @@ router.post("/criar/usuario", (req, res) => {
     } else {
         res.json({ erro: "Dados não definidos" })
     }
+})
+
+router.get("/login",(req,res)=>{
+    res.render("usuario/login")
 })
 
 module.exports = router
