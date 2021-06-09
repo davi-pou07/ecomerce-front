@@ -37,14 +37,7 @@ app.use("/", produtoController)
 app.use("/", carrinhoController)
 app.use("/", clienteController)
 
-app.get("/dadosEmpres", (req, res) => {
-    knex("empresas").select().then(empresa => {
-        knex("produtos").select().then(produtos => {
-            res.json({ empresa: empresa, produtos: produtos })
-        })
-    })
 
-})
 app.get("/", (req, res) => {
     knex("produtos").select().where('status',true).then(produtos => {
         knex("categorias").select().where('status',true).limit(6).then(categorias => {

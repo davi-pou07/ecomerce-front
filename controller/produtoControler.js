@@ -1,6 +1,7 @@
 const express = require('express')
 const router = express.Router()
 const knex = require("../Databases/admin/databases")
+const auth = require("../middlewares/adminAuth")
 
 // router.get("/produto/:id", (req, res) => {
 //     produtoId = req.params.id
@@ -27,7 +28,7 @@ const knex = require("../Databases/admin/databases")
 //     })
 // })
 
-router.get("/produto/:id", async (req, res) => {
+router.get("/produto/:id",auth,async (req, res) => {
     produtoId = req.params.id
     try {
     var produto = await knex("produtos").select().where({ id: produtoId })
@@ -45,21 +46,5 @@ router.get("/produto/:id", async (req, res) => {
     }
 })
 
-// router.get("/test/:id", async (req,res)=>{
-//     produtoId = req.params.id
-//     try {
-//     var produto = await knex.from("produtos").innerJoin("imagens","produtos.id","imagens.produtoId").innerJoin("precos","produtos.id","precos.produtoId").innerJoin("categorias","produtos.categoriaId","categorias.id").where({ "produtos.id": produtoId })
-//     res.json(produto[0])
-//     console.log(produto[0].coluna)
-//     // var produtos = await knex("produtos").select()
-//     // var categoria = await knex("categorias").select().where({ id: produto[0].categoriaId })
-
-//     // var imagens = await knex("imagens").select()
-//     // var precos = await knex("precos").select()
-//     // res.render("produto/pedido", { produto: produto[0], categoria: categoria[0], imagems: imagems, preco: preco[0], produtos: produtos, precos: precos, imagens:imagens })
-//     } catch (error) {
-//         console.log(error)
-//     }
-// })
 
 module.exports = router
