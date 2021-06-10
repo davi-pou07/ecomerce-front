@@ -3,6 +3,7 @@ const router = express.Router()
 const knex = require("../Databases/admin/databases")
 const Carrinho = require("../Databases/client/Carrinho")
 const CodItens = require("../Databases/client/CodItens")
+const auth = require("../middlewares/adminAuth")
 
 router.get("/carrinho/:idCli", (req, res) => {
     var idCli = req.params.idCli
@@ -19,22 +20,20 @@ router.get("/carrinho/:idCli", (req, res) => {
     }
 })
 
-router.post("/carrinho/adicionar", (req, res) => {
-    //if sessao
-    //cadastro/login
+router.post("/carrinho/adicionar",auth,async(req, res) => {
+    var usuario = req.session.cli
     var codItem = req.body.codItem
     var quantidadeItem = req.body.quantidadeItem
     var refcoluna = req.body.refcoluna
     var reflinha = req.body.reflinha
-    
+    var carrinho = await Carrinho.findOne({where:{clienteId:usuario.id}})
     CodItens.create({
         produtoId: codItem,
         quantidade: quantidadeItem,
         refcoluna: refcoluna,
         reflinha: reflinha,
-        carrinhoId: 1
+        carrinhoId: carrinho.id
     }).then(codItems => {
-        Carrinho.findByPk(codItems.carrinhoId).then(carrinho => {
             var qtd = parseInt(carrinho.quantidade) + parseInt(quantidadeItem)
             Carrinho.update({
                 quantidade: qtd
@@ -43,7 +42,6 @@ router.post("/carrinho/adicionar", (req, res) => {
             }).catch(()=>{
             res.json({ resp: "Erro: Não poi possvivl adicionar os itens ao carrinho, Tente novamente" })
             })
-        })
     })
 })
 

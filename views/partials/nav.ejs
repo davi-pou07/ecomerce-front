@@ -46,7 +46,7 @@
                     </form>
                 </ul>
             </div>
-
+<input type="hidden" name="clienteId" id="clienteId">
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="me-auto mb-2 mb-lg-0 text-white position-relative">
                     <a href="/">
@@ -61,14 +61,14 @@
                 </ul>
             </div>
 
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <div class="collapse navbar-collapse" id="reglog">
                 <ul class="me-auto mb-2 mb-lg-0 text-white position-relative">
                     <a href="/user/novo" class="btn btn-success">Registra-se</a>
                     <a href="/login" class="btn btn-outline-success">Login</a>
                 </ul>
             </div>
 
-            <div class="personal-imageNav">
+            <div class="personal-imageNav" id="divPerfil">
                 <label class="label">
                     <figure class="personal-figureNav">
                         <div class="collapse navbar-collapse">
@@ -76,17 +76,15 @@
                                 <li class="nav-item dropdown">
                                     <a class="nav-link dropdown-toggle text-white" href="#" role="button"
                                         id="navbarDropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
-                                        <img src="/img/avatar.jpg" class="personal-avatarNav" id="img" alt="avatar"></a>
+                                        <img src="/img/avatar.jpg" class="personal-avatarNav" id="imgCli"
+                                            alt="avatar"></a>
                                     <ul class="dropdown-menu dropdown-menu-dark"
                                         aria-labelledby="navbarDropdownMenuLink">
-                                        <li><a class="dropdown-item text-center" id="user">Usuario</a></li>
+                                        <li><a class="dropdown-item text-center" id="userNome">Usuario</a></li>
                                         <li>
                                             <hr class="dropdown-divider">
                                         </li>
                                         <li><a class="dropdown-item" id="edit">Editar</a></li>
-                                        <li>
-                                            <hr class="dropdown-divider">
-                                        </li>
                                         <li>
                                             <hr class="dropdown-divider">
                                         </li>
@@ -107,14 +105,30 @@
 
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script>
-        axios.get('http://localhost:3000/user').then(user => {
-            if (user.data != undefined) {
-                aUser = document.getElementById('user');
-                aUser.innerHTML = user.data.login;
-                edit = document.getElementById('edit');
-                edit.href = "/admin/usuario/editar/" + user.data.id
-                img = document.getElementById("img");
-                img.src = user.data.foto
+
+        axios.get('http://localhost:3000/usuario/logado').then(resp => {
+            var dados = resp.data
+            if (dados.clienteId != undefined) {
+                var reglog = document.getElementById("reglog")
+                reglog.parentNode.removeChild(reglog);
+
+                var userNome = document.getElementById("userNome").innerHTML = dados.clienteNome.split(" ")[0]
+                console.log(userNome)
+
+                if (dados.clienteFoto != undefined) {
+                    var imgCli = document.getElementById("imgCli")
+                    imgCli.src = dados.clienteFoto
+                }
+
+                var spanCarrin = document.getElementById("spanCarrin").innerHTML = dados.carrinho.quantidade
+                console.log(spanCarrin)
+
+                var clienteId = document.getElementById("clienteId").value = dados.clienteId
+
+            } else {
+                var divPerfil = document.getElementById("divPerfil")
+                divPerfil.parentNode.removeChild(divPerfil);
+                
             }
         })
         axios.get('http://localhost:3000/empresa').then(empresa => {

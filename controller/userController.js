@@ -11,17 +11,6 @@ const validCpf = require("cpf")
 const moment = require("moment")
 const bcrypt = require("bcryptjs")
 
-router.get("/user", (req, res) => {
-   var cli = req.session.cli
-    if (cli != undefined) {
-        knex("clientes").select().where({ id: cli.id })
-    }
-})
-
-router.get("/user/novo", (req, res) => {
-    res.render("usuario/novo")
-})
-
 // router.post("/criar/usuario", (req, res) => {
 //     var foto = req.body.foto
 //     var nome = req.body.nome
@@ -90,33 +79,33 @@ router.get("/login", (req, res) => {
     res.render("usuario/login")
 })
 
-router.post("/usuario/login",(req,res)=>{
+router.post("/usuario/login", (req, res) => {
     var emailLogin = req.body.emailLogin
     var senhaLogin = req.body.senhaLogin
 
     if (emailLogin != '' && senhaLogin != '') {
 
-        Cliente.findOne({where:{email:emailLogin}}).then(cli =>{
+        Cliente.findOne({ where: { email: emailLogin } }).then(cli => {
             if (cli != undefined) {
-                var correct = bcrypt.compareSync(senhaLogin,cli.senha)
+                var correct = bcrypt.compareSync(senhaLogin, cli.senha)
                 var nomeCli = cli.nome.split(" ")[0]
                 if (correct) {
                     req.session.cli = {
                         id: cli.id,
-                        nome:nomeCli
+                        nome: nomeCli
                     }
                     console.log(`Usuario ${req.session.cli.nome} logado`)
                     console.log("USUARIO LOGADO")
-                    res.json({resp:`Usuario ${req.session.cli.nome} logado`})
+                    res.json({ resp: `Usuario ${req.session.cli.nome} logado` })
                 } else {
-                   res.json({erro:"Credenciais inválidas"}) 
+                    res.json({ erro: "Credenciais inválidas" })
                 }
             } else {
-               res.json({erro:"Usuario não cadastrado, REGISTRA-SE JÁ!"}) 
+                res.json({ erro: "Usuario não cadastrado, REGISTRA-SE JÁ!" })
             }
         })
     } else {
-        res.json({erro:"Dados vazios"})
+        res.json({ erro: "Dados vazios" })
     }
 })
 
@@ -145,6 +134,11 @@ router.post("/usuario/criar", (req, res) => {
                                     status: true,
                                     clienteId: cliente.id
                                 }).then(carrinho => {
+                                    var nomeCli = cliente.nome.split(" ")[0]
+                                    req.session.cli = {
+                                        id: cliente.id,
+                                        nome: nomeCli
+                                    }
                                     res.json({ resp: "Cliente cadastrado com sucesso" })
                                 })
                             })
@@ -163,6 +157,47 @@ router.post("/usuario/criar", (req, res) => {
         }
     } else {
         res.json({ erro: "Dados vazios" })
+    }
+})
+
+router.get("/usuario/logado", async (req, res) => {
+    var usuario = req.session.cli
+    console.log(usuario)
+    if (usuario != undefined) {
+        try {
+            
+            var cliente = await Cliente.findByPk(usuario.id)
+            if (cliente != undefined) {
+                var carrinho = await Carrinho.findOne({ where: { clienteId: cliente.id } })
+                console.log(carrinho)
+                if (carrinho != undefined) {
+
+                    var nome = cliente.nome.split(" ")[0]
+                    var sobrenome = cliente.nome.split(" ")[1]
+
+                    if (sobrenome != undefined) {
+                    var nomeCli = `${nome} ${sobrenome}`
+                    } else {
+                    var nomeCli = `${nome}`
+                    }
+                    res.json({ carrinho: carrinho, clienteId:cliente.id,clienteNome:nomeCli,clienteFoto:cliente.foto })
+                } else {
+                    Carrinho.create({
+                        quantidade: 0,
+                        status: true,
+                        clienteId: cliente.id
+                    }).then(()=>{
+                        res.send("Carrinho criado")
+                    })
+                }
+            } else {
+                res.redirect("/erro")
+            }
+        } catch {
+            res.redirect("/erroBanco")
+        }
+    } else {
+        res.json({ clienteId: null })
     }
 })
 
