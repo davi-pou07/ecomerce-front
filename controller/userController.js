@@ -180,7 +180,7 @@ router.get("/usuario/logado", async (req, res) => {
                     } else {
                     var nomeCli = `${nome}`
                     }
-                    res.json({ carrinho: carrinho, clienteId:cliente.id,clienteNome:nomeCli,clienteFoto:cliente.foto })
+                    res.json({ carrinho: carrinho, clienteId:cliente.id,clienteNome:nomeCli,clienteFoto:cliente.foto, clienteValidado:cliente.validado })
                 } else {
                     Carrinho.create({
                         quantidade: 0,

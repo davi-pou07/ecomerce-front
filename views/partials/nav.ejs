@@ -46,7 +46,7 @@
                     </form>
                 </ul>
             </div>
-<input type="hidden" name="clienteId" id="clienteId">
+            <input type="hidden" name="clienteId" id="clienteId">
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="me-auto mb-2 mb-lg-0 text-white position-relative">
                     <a href="/">
@@ -84,7 +84,9 @@
                                         <li>
                                             <hr class="dropdown-divider">
                                         </li>
-                                        <li><a class="dropdown-item" id="edit">Editar</a></li>
+                                        <li>
+                                            <a class="dropdown-item">Editar</a>
+                                        </li>
                                         <li>
                                             <hr class="dropdown-divider">
                                         </li>
@@ -105,19 +107,24 @@
 
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script>
-
+        //VERIFICA USUARIO LOGADO E COLOCA INFORMAÇÕES NA DIV
         axios.get('http://localhost:3000/usuario/logado').then(resp => {
             var dados = resp.data
             if (dados.clienteId != undefined) {
+                //Remover botãoes de login
                 var reglog = document.getElementById("reglog")
                 reglog.parentNode.removeChild(reglog);
-
+                //Colocar nome do cliente
                 var userNome = document.getElementById("userNome").innerHTML = dados.clienteNome.split(" ")[0]
                 console.log(userNome)
-
+                //Coloca foto do cliente
                 if (dados.clienteFoto != undefined) {
                     var imgCli = document.getElementById("imgCli")
                     imgCli.src = dados.clienteFoto
+                }
+                //Verifica se o cliente ja foi validado pelo e-mail
+                if (dados.clienteValidado != true) {
+                    //ainda faltaaaaaaaaaaaaaaaaaaaaaa
                 }
 
                 var spanCarrin = document.getElementById("spanCarrin").innerHTML = dados.carrinho.quantidade
@@ -128,7 +135,7 @@
             } else {
                 var divPerfil = document.getElementById("divPerfil")
                 divPerfil.parentNode.removeChild(divPerfil);
-                
+
             }
         })
         axios.get('http://localhost:3000/empresa').then(empresa => {

@@ -171,24 +171,7 @@
                                                                 <div class="col-md-6">
                                                                     <select name="refcoluna" class="form-select"
                                                                         id="refcoluna">
-                                                                        <%var colunas=[];%>
-                                                                            <%grades.forEach((grade,index)=>{%>
-                                                                                <%var contemc=1%>
-                                                                                    <%for(y=0;y < index;y++){%>
-                                                                                        <%if(colunas[y]==grade.refcoluna){%>
-                                                                                            <%var contemc=0%>
-                                                                                                <%}%>
-                                                                                                    <%}%>
-
-                                                                                                        <%if(contemc
-                                                                                                            !=0){%>
-                                                                                                            <option
-                                                                                                                value="<%=grade.refcoluna%>">
-                                                                                                                <%=grade.coluna%>
-                                                                                                            </option>
-                                                                                                            <%}%>
-                                                                                                                <%colunas.push(grade.refcoluna)%>
-                                                                                                                    <%})%>
+                                                                        
                                                                     </select>
                                                                 </div>
                                                                 <%}else{%>
@@ -285,6 +268,7 @@
             </script>
             <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
             <script>
+                
                 function AdicionarCarrinho() {
                     var codItem = document.getElementById("codItem").value
                     var quantidadeItem = document.getElementById("btnValor").value
@@ -297,21 +281,23 @@
                         console.log(resp.data)
                     })
                 }
-// FALLLLLLLLLLLTAAAAAAAAAAAAA ISSSSSSSSSSSOOOOOOOOOOOO
+
                 function gradeColuna(linha) {
                     var codItem = document.getElementById("codItem").value
-                    axios.get(`http://localhost:3000/produto/${parseInt(codItem)}/${parseInt(linha)}/refcoluna`).then(resp => {
+                    axios.get(`http://localhost:3000/produto/${parseInt(codItem)}/${parseInt(linha)}/refcoluna`).then( resp => {
                         var colunas = resp.data.colunas
                         if (colunas != undefined) {
-                            console.log(colunas)
                             var refcoluna = document.getElementById("refcoluna")
-                            colunas.forEach(coluna => {
-                                refcoluna.innerHTML = `<option value="${coluna.refcoluna}">${coluna.coluna}</option>`
-                            })
-                        } else {
-
+                            refcoluna.innerHTML = ''
+                            for (x = 0; x < colunas.length; x++) {
+                                var option = document.createElement("option")
+                                if (colunas[x] != undefined) {
+                                    option.value = `${colunas[x].refcoluna}`
+                                    option.innerHTML = `${colunas[x].coluna}`
+                                    refcoluna.insertBefore(option, null);
+                                }
+                            }
                         }
-
                     })
 
                 }
