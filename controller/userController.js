@@ -5,11 +5,12 @@ const knex = require("../Databases/admin/databases")
 const Cliente = require("../Databases/client/Cliente")
 const Carrinho = require("../Databases/client/Carrinho")
 
-const { Op } = require("sequelize");
+const { Op, useInflection } = require("sequelize");
 const validator = require('validator')
 const validCpf = require("cpf")
 const moment = require("moment")
 const bcrypt = require("bcryptjs")
+const auth = require("../middlewares/adminAuth")
 
 // router.post("/criar/usuario", (req, res) => {
 //     var foto = req.body.foto
@@ -199,6 +200,24 @@ router.get("/usuario/logado", async (req, res) => {
     } else {
         res.json({ clienteId: null })
     }
+})
+
+router.get("/usuario/edit/",auth,async(req,res)=>{
+    var usuario = req.session.cli.id
+    if (usuario != undefined) {
+        var cliente = await Cliente.findByPk(usuario)
+        if (cliente != undefined) {
+            res.render("usuario/edit",{cliente:{nome:cliente.nome,cpf:cliente.cpf,numero:cliente.numero,email:cliente.email,validado:cliente.validado,dataNasc:cliente.dataNasc,foto:cliente.foto}})
+        } else {
+            res.redirect("/login")
+        }
+    } else {
+        res.redirect("erro")
+    }
+})
+
+router.post("/usuario/editar",auth,(req,res)=>{
+    
 })
 
 module.exports = router

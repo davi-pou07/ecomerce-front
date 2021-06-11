@@ -1,0 +1,122 @@
+<%- include('../partials/head.ejs')%>
+
+    <%- include('../partials/nav.ejs')%>
+        <div class="container">
+            <hr>
+            <div class="card mt-5">
+                <div class="card-header">
+                    <h2>Edição de Usuário</h2>
+                </div>
+                <div class="card-body">
+
+                    <form method="POST" action="/usuario/editar" name="form1" class="row g-3 needs-validation"
+                        novalidate id="form1" enctype="multipart/form-data">
+
+
+
+                        <div class="col-md-2">
+                            <div class="personal-image">
+                                <label class="label">
+                                    <input type="file" name="file" id="file" />
+                                    <figure class="personal-figure">
+                                        <%if(cliente.foto !=undefined){%>
+                                            <img src="<%=cliente.foto%>" class="personal-avatar" alt="avatar">
+                                            <%}else{%>
+                                                <img src="/img/avatar.jpg" class="personal-avatar" alt="avatar">
+                                                <%}%>
+                                                    <figcaption class="personal-figcaption">
+                                                        <img
+                                                            src="https://raw.githubusercontent.com/ThiagoLuizNunes/angular-boilerplate/master/src/assets/imgs/camera-white.png">
+                                                    </figcaption>
+                                    </figure>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="col-md-10">
+                            <label for="nome" class="form-label">Nome*</label>
+                            <input class="form-control" type="text" id="nome" name="nome" autocomplete="x" required
+                                value="<%=cliente.nome%>">
+                        </div>
+
+                        <div class="col-md-6">
+                            
+                            <label for="email" class="form-label">Email*</label>
+                                <input class="form-control" id="email" type="email" name="email"
+                                    placeholder="davi@davi.com" autocomplete="off" required value="<%=cliente.email%>">
+                        </div>
+
+                        <div class="col-md-6">
+                            <label for="telefone" class="form-label">Telefone*</label>
+                            <input class="form-control" type="tel" id="phone" name="telefone"
+                                placeholder="(86)9 9472-6085" autocomplete="x" required onkeypress="mask(this, mphone);"
+                                onblur="mask(this, mphone);" maxlength="15" value="<%=cliente.numero%>">
+                        </div>
+                        
+                        <div class="col-md-4">
+                            <label for="senhaAtual" class="form-label">Senha Atual</label>
+                            <input class="form-control" type="password" id="senhaAtual" name="senhaAtual"
+                                placeholder="********" required autocomplete="x">
+                        </div>
+                        <div class="col-md-4">
+                            <label for="senha" class="form-label">Nova Senha</label>
+                            <input class="form-control" type="password" id="senha" name="senha" placeholder="********"
+                                required autocomplete="x">
+                        </div>
+
+                        <div class="col-md-4">
+                            <label for="confirm" class="form-label">Confirma Senha</label>
+                            <input class="form-control" type="password" id="confirm" name="confirm"
+                                placeholder="********" required>
+                        </div>
+                        <br>
+
+                        <hr>
+
+                        <button type="button" id="buttom" class="btn btn-success form-control"
+                            onclick="validar()">Atualizar</button>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+        </body>
+        <%- include('../partials/footer.ejs')%>
+            <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+            <script>
+                function limpo() {
+                    limpar = document.getElementById('login').value
+                    var l = limpar.replace(/\s/g, '')
+                    limpar2 = document.getElementById('login').value = l
+                }
+            </script>
+
+            <script>
+                function validar() {
+
+                    var senha = document.getElementById("senha").value
+                    var confirm = document.getElementById('confirm').value
+                    var login = document.getElementById("login").value
+                    var nome = document.getElementById("nome").value
+                    var email = document.getElementById("email").value
+                    var telefone = document.getElementById("phone").value
+                    var senhaAtual = document.getElementById("senhaAtual").value
+                    var senha = document.getElementById("senha").value
+                    var confirm = document.getElementById("confirm").value
+                    var userId = document.getElementById("userId").value
+                    event.preventDefault();
+                    axios.post("http://localhost:8080/usuario/editar", { login: login, nome: nome, email: email, telefone: telefone, senha: senha, senhaAtual: senhaAtual, confirm: confirm, userId: userId, file: file }).then(res => {
+                        console.log(res)
+                        if (res.data.resp != undefined) {
+                            alert(res.data.resp)
+                        } else {
+                            // document.location.reload(true);
+                            document.form1.submit()
+                        }
+                    }).catch(err => {
+                        console.log(err)
+                    })
+
+                }
+            </script>
+            <script src="/js/telefone.js"></script>
