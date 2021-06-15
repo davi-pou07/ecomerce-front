@@ -116,6 +116,7 @@ router.post("/usuario/criar", (req, res) => {
     var numero = req.body.numero
     var senha = req.body.senha
     var confirm = req.body.confirm
+    var foto = '/img/avatar.jpg'
     if (nome != '' && email != '' && senha != '' && confirm != '') {
         if (senha == confirm) {
             var salt = bcrypt.genSaltSync(10)
@@ -129,7 +130,8 @@ router.post("/usuario/criar", (req, res) => {
                                 email: email,
                                 numero: numero,
                                 senha: hash,
-                                status: true
+                                status: true,
+                                foto: foto
                             }).then(cliente => {
                                 Carrinho.create({
                                     status: true,
@@ -166,7 +168,7 @@ router.get("/usuario/logado", async (req, res) => {
     console.log(usuario)
     if (usuario != undefined) {
         try {
-            
+
             var cliente = await Cliente.findByPk(usuario.id)
             if (cliente != undefined) {
                 var carrinho = await Carrinho.findOne({ where: { clienteId: cliente.id } })
@@ -177,17 +179,17 @@ router.get("/usuario/logado", async (req, res) => {
                     var sobrenome = cliente.nome.split(" ")[1]
 
                     if (sobrenome != undefined) {
-                    var nomeCli = `${nome} ${sobrenome}`
+                        var nomeCli = `${nome} ${sobrenome}`
                     } else {
-                    var nomeCli = `${nome}`
+                        var nomeCli = `${nome}`
                     }
-                    res.json({ carrinho: carrinho, clienteId:cliente.id,clienteNome:nomeCli,clienteFoto:cliente.foto, clienteValidado:cliente.validado })
+                    res.json({ carrinho: carrinho, clienteId: cliente.id, clienteNome: nomeCli, clienteFoto: cliente.foto, clienteValidado: cliente.validado })
                 } else {
                     Carrinho.create({
                         quantidade: 0,
                         status: true,
                         clienteId: cliente.id
-                    }).then(()=>{
+                    }).then(() => {
                         res.send("Carrinho criado")
                     })
                 }
@@ -202,12 +204,12 @@ router.get("/usuario/logado", async (req, res) => {
     }
 })
 
-router.get("/usuario/edit/",auth,async(req,res)=>{
+router.get("/usuario/edit/", auth, async (req, res) => {
     var usuario = req.session.cli.id
     if (usuario != undefined) {
         var cliente = await Cliente.findByPk(usuario)
         if (cliente != undefined) {
-            res.render("usuario/edit",{cliente:{nome:cliente.nome,cpf:cliente.cpf,numero:cliente.numero,email:cliente.email,validado:cliente.validado,dataNasc:cliente.dataNasc,foto:cliente.foto}})
+            res.render("usuario/edit", { cliente: { nome: cliente.nome, cpf: cliente.cpf, numero: cliente.numero, email: cliente.email, validado: cliente.validado, dataNasc: cliente.dataNasc, foto: cliente.foto } })
         } else {
             res.redirect("/login")
         }
@@ -216,8 +218,83 @@ router.get("/usuario/edit/",auth,async(req,res)=>{
     }
 })
 
-router.post("/usuario/editar",auth,(req,res)=>{
-    
+router.post("/usuario/editar", auth, async (req, res) => {
+    var usuario = req.session.cli.id
+    var nome = req.body.nome
+    var numero = req.body.numero
+    var email = req.body.email
+    var foto = req.body.foto
+
+    var senhaAtual = req.body.senhaAtual
+    var senha = req.body.senha
+    var confirm = req.body.confirm
+    var cliente = await Cliente.findByPk(usuario)
+    if (usuario != undefined) {
+        if (senha == '' || confirm == '' || senhaAtual == '') {
+            senhaAtual = undefined
+            confirm = 0
+            senha = confirm
+            var correct = true
+        } else {
+            var correct = bcrypt.compareSync(senhaAtual, cliente.senha)
+        }
+        if (correct) {
+            if (senha == confirm && senha != senhaAtual) {
+                if (senhaAtual != undefined) {
+                    var salt = bcrypt.genSaltSync(10)
+                    var hash = bcrypt.hashSync(senha, salt)
+                } else {
+                    var hash = cliente.senha
+                }
+                if (nome != '' && numero != '' && email != '') {
+
+                    if (validator.isEmail(email) == true) {
+
+                        if (validator.isMobilePhone(numero, 'pt-BR', false) == true) {
+
+                            var cli = await Cliente.findOne({ where: { [Op.or]: [{ numero: numero }, { email: email }] } })
+                            if (cli == undefined || (cli.email == cliente.email && cli.numero == cliente.numero)) {
+                                if (foto == '' || foto == undefined) {
+                                    foto = cliente.foto
+                                }
+                                Cliente.update({
+                                    nome: nome,
+                                    numero: numero,
+                                    email: email,
+                                    foto: foto,
+                                    senha:hash
+                                },{where:{id:usuario}}).then(cliente =>{
+                                    res.json({resp : "Informações atualizadas"})
+                                    console.log("Atualização feita")
+                                })
+                            } else {
+                                res.json({ erro: "Ja existe um cliente cadastrado com esses dados" })
+                            }
+
+                        } else {
+                            res.json({ erro: "Numero de telefone inváldo" })
+                        }
+                    } else {
+                        res.json({ erro: "Email inváldo" })
+                    }
+                } else {
+                    res.json({ erro: "Dados vazios" })
+                }
+            } else {
+                res.json({ resp: "Senhas não são iguais" })
+            }
+        } else {
+            res.json({ resp: "Senhas incorreta" })
+        }
+    } else {
+        res.redirect("/login")
+    }
+})
+
+router.get("/logout", (req, res) => {
+    req.session.cli = undefined
+    // console.log(req.session)
+    res.redirect("/")
 })
 
 module.exports = router

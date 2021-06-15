@@ -2,32 +2,30 @@
 
     <%- include('../partials/nav.ejs')%>
         <div class="container">
-            <hr>
             <div class="card mt-5">
                 <div class="card-header">
-                    <h2>Edição de Usuário</h2>
+                    <h2>Edite o seu cadastro</h2>
                 </div>
                 <div class="card-body">
 
                     <form method="POST" action="/usuario/editar" name="form1" class="row g-3 needs-validation"
-                        novalidate id="form1" enctype="multipart/form-data">
+                        novalidate id="form1">
 
 
 
                         <div class="col-md-2">
                             <div class="personal-image">
                                 <label class="label">
-                                    <input type="file" name="file" id="file" />
+                                    <input type="file" onchange="fotoPerfil()" name="file" id="fileFoto" />
+                                    <input type="hidden" name="foto" id="foto64" value="<%=cliente.foto%>">
                                     <figure class="personal-figure">
-                                        <%if(cliente.foto !=undefined){%>
-                                            <img src="<%=cliente.foto%>" class="personal-avatar" alt="avatar">
-                                            <%}else{%>
-                                                <img src="/img/avatar.jpg" class="personal-avatar" alt="avatar">
-                                                <%}%>
-                                                    <figcaption class="personal-figcaption">
-                                                        <img
-                                                            src="https://raw.githubusercontent.com/ThiagoLuizNunes/angular-boilerplate/master/src/assets/imgs/camera-white.png">
-                                                    </figcaption>
+
+                                        <img src="<%=cliente.foto%>" id="imagem" class="personal-avatar" alt="avatar">
+
+                                        <figcaption class="personal-figcaption">
+                                            <img
+                                                src="https://raw.githubusercontent.com/ThiagoLuizNunes/angular-boilerplate/master/src/assets/imgs/camera-white.png">
+                                        </figcaption>
                                     </figure>
                                 </label>
                             </div>
@@ -40,10 +38,10 @@
                         </div>
 
                         <div class="col-md-6">
-                            
+
                             <label for="email" class="form-label">Email*</label>
-                                <input class="form-control" id="email" type="email" name="email"
-                                    placeholder="davi@davi.com" autocomplete="off" required value="<%=cliente.email%>">
+                            <input class="form-control" id="email" type="email" name="email" placeholder="davi@davi.com"
+                                autocomplete="off" required value="<%=cliente.email%>">
                         </div>
 
                         <div class="col-md-6">
@@ -52,7 +50,8 @@
                                 placeholder="(86)9 9472-6085" autocomplete="x" required onkeypress="mask(this, mphone);"
                                 onblur="mask(this, mphone);" maxlength="15" value="<%=cliente.numero%>">
                         </div>
-                        
+                        <hr class="mt-5">
+
                         <div class="col-md-4">
                             <label for="senhaAtual" class="form-label">Senha Atual</label>
                             <input class="form-control" type="password" id="senhaAtual" name="senhaAtual"
@@ -65,7 +64,7 @@
                         </div>
 
                         <div class="col-md-4">
-                            <label for="confirm" class="form-label">Confirma Senha</label>
+                            <label for="confirm" class="form-label">Confirma Nova Senha</label>
                             <input class="form-control" type="password" id="confirm" name="confirm"
                                 placeholder="********" required>
                         </div>
@@ -84,39 +83,80 @@
         <%- include('../partials/footer.ejs')%>
             <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
             <script>
-                function limpo() {
-                    limpar = document.getElementById('login').value
-                    var l = limpar.replace(/\s/g, '')
-                    limpar2 = document.getElementById('login').value = l
+                function fotoPerfil() {
+                    var filesSelected = document.getElementById("fileFoto").files;
+                    if (filesSelected.length > 0) {
+                        var fileToLoad = filesSelected[0];
+                        var fileReader = new FileReader();
+                        fileReader.onload = function (fileLoadedEvent) {
+                            var srcData = fileLoadedEvent.target.result; // <--- data: base64
+                            document.getElementById("foto64").value = srcData;
+                            var img = document.getElementById("imagem").src = srcData
+                            console.log(img.src)
+                        }
+                        fileReader.readAsDataURL(fileToLoad);
+                    }
                 }
             </script>
 
             <script>
                 function validar() {
-
+                    var foto = document.getElementById("foto64").value
                     var senha = document.getElementById("senha").value
                     var confirm = document.getElementById('confirm').value
-                    var login = document.getElementById("login").value
                     var nome = document.getElementById("nome").value
                     var email = document.getElementById("email").value
-                    var telefone = document.getElementById("phone").value
+                    var numero = document.getElementById("phone").value
                     var senhaAtual = document.getElementById("senhaAtual").value
                     var senha = document.getElementById("senha").value
                     var confirm = document.getElementById("confirm").value
-                    var userId = document.getElementById("userId").value
-                    event.preventDefault();
-                    axios.post("http://localhost:8080/usuario/editar", { login: login, nome: nome, email: email, telefone: telefone, senha: senha, senhaAtual: senhaAtual, confirm: confirm, userId: userId, file: file }).then(res => {
-                        console.log(res)
-                        if (res.data.resp != undefined) {
-                            alert(res.data.resp)
+
+                    if (nome != '') {
+                        let n = document.getElementById("nome")
+                        n.classList.remove("is-invalid")
+                        n.classList.add("is-valid")
+
+                        if (email != '') {
+                            let e = document.getElementById("email")
+                            e.classList.remove("is-invalid")
+                            e.classList.add("is-valid")
+                            if (numero != '' && numero.length > 14) {
+                                let t = document.getElementById("phone")
+                                t.classList.remove("is-invalid")
+                                t.classList.add("is-valid")
+
+
+                                event.preventDefault();
+                                axios.post("http://localhost:3000/usuario/editar", { nome: nome, email: email, numero: numero, senha: senha, senhaAtual: senhaAtual, confirm: confirm, foto: foto }).then(res => {
+                                    console.log(res)
+                                    if (res.data.erro != undefined) {
+                                        alert(res.data.erro)
+                                    } else {
+                                        alert(res.data.resp)
+                                        window.location.reload()
+                                    }
+                                }).catch(err => {
+                                    console.log(err)
+                                })
+
+
+                            } else {
+                                let t = document.getElementById("phone")
+                                t.classList.remove("is-valid")
+                                t.classList.add("is-invalid")
+                            }
                         } else {
-                            // document.location.reload(true);
-                            document.form1.submit()
+                            let e = document.getElementById("email")
+                            e.classList.remove("is-valid")
+                            e.classList.add("is-invalid")
                         }
-                    }).catch(err => {
-                        console.log(err)
-                    })
+                    } else {
+                        let n = document.getElementById("nome")
+                        n.classList.remove("is-valid")
+                        n.classList.add("is-invalid")
+                    }
 
                 }
             </script>
+
             <script src="/js/telefone.js"></script>
