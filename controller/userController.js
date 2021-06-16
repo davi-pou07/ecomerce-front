@@ -95,8 +95,6 @@ router.post("/usuario/login", (req, res) => {
                         id: cli.id,
                         nome: nomeCli
                     }
-                    console.log(`Usuario ${req.session.cli.nome} logado`)
-                    console.log("USUARIO LOGADO")
                     res.json({ resp: `Usuario ${req.session.cli.nome} logado` })
                 } else {
                     res.json({ erro: "Credenciais inválidas" })
@@ -165,14 +163,12 @@ router.post("/usuario/criar", (req, res) => {
 
 router.get("/usuario/logado", async (req, res) => {
     var usuario = req.session.cli
-    console.log(usuario)
     if (usuario != undefined) {
         try {
 
             var cliente = await Cliente.findByPk(usuario.id)
             if (cliente != undefined) {
                 var carrinho = await Carrinho.findOne({ where: { clienteId: cliente.id } })
-                console.log(carrinho)
                 if (carrinho != undefined) {
 
                     var nome = cliente.nome.split(" ")[0]
@@ -265,7 +261,6 @@ router.post("/usuario/editar", auth, async (req, res) => {
                                     senha:hash
                                 },{where:{id:usuario}}).then(cliente =>{
                                     res.json({resp : "Informações atualizadas"})
-                                    console.log("Atualização feita")
                                 })
                             } else {
                                 res.json({ erro: "Ja existe um cliente cadastrado com esses dados" })
@@ -293,7 +288,6 @@ router.post("/usuario/editar", auth, async (req, res) => {
 
 router.get("/logout", (req, res) => {
     req.session.cli = undefined
-    // console.log(req.session)
     res.redirect("/")
 })
 

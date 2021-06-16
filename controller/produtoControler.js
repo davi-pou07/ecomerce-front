@@ -14,10 +14,9 @@ router.get("/produto/:id",auth,async (req, res) => {
     var preco = await knex("precos").select().where({ produtoId: produto[0].id })
     var precos = await knex("precos").select()
     var grades = await knex.from("estoques").innerJoin("g_linhas","estoques.reflinha","g_linhas.id").innerJoin("g_colunas","estoques.refcoluna","g_colunas.id").where({"estoques.produtoId":produtoId,"estoques.status":true})
-    console.log(grades)
     res.render("produto/pedido", { produto: produto[0], categoria: categoria[0], imagems: imagems, preco: preco[0], produtos: produtos, precos: precos, imagens:imagens,grades:grades})
     }catch (error) {
-        console.log(error)
+        res.json(error)
     }
 })
 
@@ -28,7 +27,7 @@ router.get("/produto/:produtoId/:reflinha/refcoluna",async(req,res)=>{
     var colunas = await knex.from("estoques").innerJoin("g_colunas","estoques.refcoluna","g_colunas.id").where({"estoques.produtoId":produtoId,"estoques.reflinha":reflinha})
     res.json({colunas:colunas})
     }catch{
-        console.log("Erro")
+        res.json({erro:"Ocorreu um erro ao identificar as colunas"})
     }
 })
 

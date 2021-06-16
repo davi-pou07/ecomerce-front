@@ -13,6 +13,7 @@ const carrinhoController = require("./controller/carrinhoController")
 const empresaController = require("./controller/empresaController")
 const produtoController = require("./controller/produtoControler")
 const clienteController = require("./controller/userController")
+const categoriaControler = require("./controller/categoriaController")
 
 const connectionCL = require('./DataBases/client/databasesCL')
 const Cliente = require("./DataBases/client/Cliente")
@@ -36,6 +37,7 @@ app.use("/", empresaController)
 app.use("/", produtoController)
 app.use("/", carrinhoController)
 app.use("/", clienteController)
+app.use("/", categoriaControler)
 
 
 app.get("/", (req, res) => {

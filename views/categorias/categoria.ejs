@@ -1,8 +1,63 @@
-<%- include("./partials/head.ejs")%>
+<%- include("./../partials/head.ejs")%>
 
 
-    <%- include("./partials/nav.ejs")%>
+    <%- include("./../partials/nav.ejs")%>
 
-    
+        <div class="container">
+            <br>
+            <h1 class="text-uppercase">
+                <%=categoria.titulo%>
+            </h1>
+            <hr>
+            <div class="row mt-4 pt-5">
+                <%produtos.forEach(produto=>{%>
+                    <div class="col-md-3">
+                        <figure class="card card-product-grid">
+                            <a class="btn btn-outline-primary" href="/produto/<%=produto.id%>">
+                                <input type="hidden" id="produtoId" value="<%=produto.id%>">
+                                <div class="img-wrap">
+                                    <%var imagem=imagens.find(imagem=> imagem.produtoId == produto.id)%>
+                                        <%if(imagem !=undefined){%>
+                                            <img class="rounded mx-auto d-block" src="<%=imagem.imagem%>" width="220"
+                                                height="220">
+                                            <%}else{%>
+                                                <img class="rounded mx-auto d-block" src="/img/null.png" width="220"
+                                                    height="220">
+                                                <%}%>
+                                </div>
+                                <figcaption class="info-wrap border-top">
+                                    <span class="form-control text-center fw-bold text-dark bg-gradient bg-white">
+                                        <%=produto.nome%>
+                                            <%precos.forEach(preco=> {%>
+                                                <%if(preco.produtoId==produto.id){%>
+                                                    <span
+                                                        class="form-control text-white fw-bold bg-primary bg-gradient">
 
-        <%- include("./partials/footer.ejs")%>
+                                                        <%if(preco.desconto> 0){%>
+                                                            <s id="s" class="fs-6 text-danger">R$<%=preco.venda%>
+                                                                    ,00</s>
+                                                            <strong id="strong" class="fs-4">R$<%=preco.desconto%>
+                                                                    ,00</strong>
+                                                            <%}else{%>
+                                                                <strong id="strong" class="fs-4">R$<%=preco.venda%>
+                                                                        ,00</strong>
+                                                                <%}%>
+
+                                                    </span>
+                                                    <%}%>
+                                                        <%})%>
+                                    </span>
+                                </figcaption>
+                            </a>
+                        </figure>
+                    </div>
+                    <%})%>
+            </div>
+        </div>
+        <div class="text-center">
+            <a class="btn btn-primary">Ver Todos</a>
+        </div>
+        </div>
+
+
+        <%- include("./../partials/footer.ejs")%>

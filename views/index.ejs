@@ -11,8 +11,8 @@
                             Categorias</li>
                         <%categorias.forEach(categoria=>{%>
                             <%if(categoria.destaque==true){%>
-                                <li class="list-group-item bg-primary  text-white">> <%=categoria.titulo%>
-                                </li>
+                                <a href="/categoria/<%=categoria.id%>" class="list-group-item bg-primary text-white">> <%=categoria.titulo%>
+                                </a>
                                 <%}%>
                                     <%})%>
                     </ul>
