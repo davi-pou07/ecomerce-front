@@ -170,7 +170,7 @@
                                                                 </div>
                                                                 <div class="col-md-6">
                                                                     <select name="refcoluna" class="form-select"
-                                                                        id="refcolunas">
+                                                                        id="refcoluna">
                                                                         
                                                                     </select>
                                                                 </div>
@@ -287,7 +287,7 @@
                     axios.get(`http://localhost:3000/produto/${parseInt(codItem)}/${parseInt(linha)}/refcoluna`).then( resp => {
                         var colunas = resp.data.colunas
                         if (colunas != undefined) {
-                            var refcoluna = document.getElementById("refcolunas")
+                            var refcoluna = document.getElementById("refcoluna")
                             refcoluna.innerHTML = ''
                             for (x = 0; x < colunas.length; x++) {
                                 var option = document.createElement("option")

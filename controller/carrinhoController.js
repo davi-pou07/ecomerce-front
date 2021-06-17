@@ -26,7 +26,17 @@ router.post("/carrinho/adicionar",auth,async(req, res) => {
     var quantidadeItem = req.body.quantidadeItem
     var refcoluna = req.body.refcoluna
     var reflinha = req.body.reflinha
+    if(refcoluna == ''){
+        refcoluna = 0
+    }
+    if(reflinha == ''){
+        reflinha = 0
+    }
+    console.log({'usuario':usuario,'codItem':codItem,'quantidadeItem':quantidadeItem,'rfcoluna':refcoluna,'reflinha':reflinha})
     var carrinho = await Carrinho.findOne({where:{clienteId:usuario.id}})
+    if(carrinho.quantidade == undefined){
+        carrinho.quantidade = 0
+    }
     CodItens.create({
         produtoId: codItem,
         quantidade: quantidadeItem,
@@ -34,15 +44,22 @@ router.post("/carrinho/adicionar",auth,async(req, res) => {
         reflinha: reflinha,
         carrinhoId: carrinho.id
     }).then(codItems => {
-            var qtd = parseInt(carrinho.quantidade) + parseInt(quantidadeItem)
+        console.log({"Coditems":codItem})
+        console.log("carrinho.quantidade = "+ carrinho.quantidade)
+        console.log("quantidadeItem = "+ quantidadeItem)
+            var qtd = carrinho.quantidade + quantidadeItem
+            console.log(qtd)
             Carrinho.update({
                 quantidade: qtd
             }, { where: { id: carrinho.id } }).then(()=>{
             res.json({ resp: "Foi adicionado " + quantidadeItem + " Itens ao seu Carrinho" })
-            }).catch(()=>{
-            res.json({ resp: "Erro: Não poi possvivl adicionar os itens ao carrinho, Tente novamente" })
+             }).catch(()=>{
+            res.json({ resp: "Erro: Não poi possivel adicionar os itens ao carrinho, Tente novamente" })
             })
     })
+})
+router.get("/teste",(req,res)=>{
+    res.render("carrinho/carrinho")
 })
 
 module.exports = router
