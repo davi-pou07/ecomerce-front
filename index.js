@@ -3,6 +3,7 @@ const app = express()
 const bodyParser = require("body-parser")
 const session = require("express-session")
 const path = require('path')
+const MercadoPago = require("mercadopago")
 
 const knex = require('./DataBases/admin/databases')
 
@@ -17,6 +18,12 @@ const categoriaControler = require("./controller/categoriaController")
 
 const connectionCL = require('./DataBases/client/databasesCL')
 const Cliente = require("./DataBases/client/Cliente")
+
+
+MercadoPago.configure({
+    sandbox:true,
+    access_token: "TEST-1254504299447071-061611-ac2150294a43f6a4d65d10f6f66512f8-257758072"
+})
 
 app.use(session({
     secret: "sdfsdfsdfgdfgfgh",
