@@ -68,11 +68,12 @@ router.get("/carrinho/caixa", auth, async (req, res) => {
             var codItens = await CodItens.findAll({ where: { carrinhoId: carrinho.id } })
             var idsProdutos = []
             codItens.forEach(codItem =>{
-                idsProdutos.push(codItem.id)
+                idsProdutos.push(codItem.produtoId)
             })
             var produtos = await knex("produtos").select().whereIn('id',idsProdutos).andWhere({status:true})
-            // res.json(produtos)
-            res.render("carrinho/carrinho",{cliente:cliente,carrinho:carrinho,codItens:codItens,produtos:produtos})
+            var imagens = await knex("imagens").select().whereIn("produtoId",idsProdutos)
+            // var grades = await knex("grades").select().whereIn('id',).innerJoin()
+            res.render("carrinho/carrinho",{cliente:cliente,carrinho:carrinho,codItens:codItens,produtos:produtos,imagens:imagens})
         
     } else {
         res.redirect("/logar")
