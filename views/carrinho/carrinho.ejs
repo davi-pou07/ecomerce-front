@@ -14,13 +14,13 @@
                                 <thead class="text-muted">
                                     <tr class="small text-uppercase">
                                         <th scope="col">Produtos</th>
-                                        <th scope="col" width="120">Quantidade</th>
+                                        <th scope="col" width="200">Quantidade</th>
                                         <th scope="col" width="120">Preço</th>
                                         <th scope="col" class="text-right" width="200"> </th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <%codItens.forEach(codIten=>{%>
+                                    <%codItens.forEach((codIten,index)=>{%>
                                         <%produtos.forEach(produto=>{%>
                                             <%if(produto.id==codIten.produtoId){%>
                                                 <tr>
@@ -57,12 +57,16 @@
                                                     </td>
                                                     <td>
 
-                                                        <select class="form-control">
-                                                            <option>1</option>
-                                                            <option>2</option>
-                                                            <option>3</option>
-                                                            <option>4</option>
-                                                        </select>
+                                                        <div class="col-md-12">
+                                                            <button class="btn btn-danger" data-index ="<%=index%>" id="btnMenos"
+                                                                onclick="diminuir(this.dataset.index)">-</button>
+                                                            <button class="btn btn-ligth" name="quantidade" value="1"
+                                                                id="btnValor<%=index%>">
+                                                                <%=codIten.quantidade%>
+                                                            </button>
+                                                            <button class="btn btn-success" data-index ="<%=index%>" id="btnMais"
+                                                                onclick="adicionar(this.dataset.index)">+</button>
+                                                        </div>
                                                     </td>
                                                     <td>
                                                         <div class="price-wrap">
@@ -142,3 +146,21 @@
         </section>
 
         <%- include("./../partials/footer.ejs")%>
+            <script>
+                function diminuir(x) {
+                    var id = `btnValor${x}`
+                    var valor = document.getElementById(id).innerHTML
+                    if (valor > 1) {
+                        document.getElementById(id).innerHTML = parseInt(valor) - 1
+                        document.getElementById(id).value = parseInt(valor) - 1
+                    }
+                }
+                function adicionar(x) {
+                    var id = `btnValor${x}`
+                    var valor = document.getElementById(id).innerHTML
+                    if (valor >= 1) {
+                        document.getElementById(id).innerHTML = parseInt(valor) + 1
+                        document.getElementById(id).value = parseInt(valor) + 1
+                    }
+                }
+            </script>
