@@ -66,8 +66,9 @@ router.get("/carrinho/caixa", auth, async (req, res) => {
         })
         var produtos = await knex("produtos").select().whereIn('id', idsProdutos).andWhere({ status: true })
         var imagens = await knex("imagens").select().whereIn("produtoId", idsProdutos)
+        var precos = await knex("precos").select().whereIn("produtoId",idsProdutos)
         // var grades = await knex("grades").select().whereIn('id',).innerJoin()
-        res.render("carrinho/carrinho", { cliente: cliente, carrinho: carrinho, codItens: codItens, produtos: produtos, imagens: imagens })
+        res.render("carrinho/carrinho", { cliente: cliente, carrinho: carrinho, codItens: codItens, produtos: produtos, imagens: imagens, precos:precos })
 
     } else {
         res.redirect("/logar")

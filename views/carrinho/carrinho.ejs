@@ -57,10 +57,10 @@
                                                     </td>
                                                     <td>
 
-                                                        <div class="col-md-12">
+                                                        <div class="col-md-12 mt-3">
                                                             <button class="btn btn-danger" data-index ="<%=index%>" id="btnMenos"
                                                                 onclick="diminuir(this.dataset.index)">-</button>
-                                                            <button class="btn btn-ligth" name="quantidade" value="1"
+                                                            <button class="btn btn-ligth" name="quantidade" value="<%=codIten.quantidade%>"
                                                                 id="btnValor<%=index%>">
                                                                 <%=codIten.quantidade%>
                                                             </button>
@@ -69,16 +69,16 @@
                                                         </div>
                                                     </td>
                                                     <td>
-                                                        <div class="price-wrap">
-                                                            <var class="price">$1156.00</var>
-                                                            <small class="text-muted"> $315.20 each </small>
+                                                        <div class="price-wrap mt-3">
+                                                            <%var preco=precos.find(preco=> preco.produtoId ==
+                                                                    produto.id)%>
+                                                            <%var valor = preco.venda * codIten.quantidade%>
+                                                            <var class="price" id="price<%=index%>">R$<%=valor%>.00</var><br>
+                                                            <small class="text-muted" id="precoVenda<%=index%>" data-valor="<%=preco.venda%>">R$<%=preco.venda%>.00 cada </small>
                                                         </div> <!-- price-wrap .// -->
                                                     </td>
                                                     <td class="text-right">
-                                                        <a data-original-title="Save to Wishlist" title="" href=""
-                                                            class="btn btn-light" data-toggle="tooltip"> <i
-                                                                class="fa fa-heart"></i></a>
-                                                        <a href="" class="btn btn-light"> Remove</a>
+                                                        <a href="" class="btn btn-warning mt-3"> Remove</a>
                                                     </td>
                                                     <%}%>
                                                         <%})%>
@@ -89,9 +89,9 @@
                             </table>
 
                             <div class="card-body border-top">
-                                <a href="#" class="btn btn-primary float-md-right"> Make Purchase <i
+                                <a href="#" class="btn btn-primary float-md-right"> Realizar Compra <i
                                         class="fa fa-chevron-right"></i> </a>
-                                <a href="#" class="btn btn-light"> <i class="fa fa-chevron-left"></i> Continue shopping
+                                <a href="#" class="btn btn-light"> <i class="fa fa-chevron-left"></i> Escolher mais Itens
                                 </a>
                             </div>
                         </div> <!-- card.// -->
@@ -149,18 +149,26 @@
             <script>
                 function diminuir(x) {
                     var id = `btnValor${x}`
-                    var valor = document.getElementById(id).innerHTML
-                    if (valor > 1) {
-                        document.getElementById(id).innerHTML = parseInt(valor) - 1
-                        document.getElementById(id).value = parseInt(valor) - 1
+                    var quantidade = document.getElementById(id).innerHTML
+                    var valor = document.getElementById(`precoVenda${x}`).dataset.valor
+                    if (quantidade > 1) {
+                        document.getElementById(id).innerHTML = parseInt(quantidade) - 1
+                        document.getElementById(id).value = parseInt(quantidade) - 1
+                        var qtd = document.getElementById(id).value
+                        var preco = qtd * valor
+                        document.getElementById(`price${x}`).innerHTML = `R$${preco}`
                     }
                 }
                 function adicionar(x) {
                     var id = `btnValor${x}`
-                    var valor = document.getElementById(id).innerHTML
-                    if (valor >= 1) {
-                        document.getElementById(id).innerHTML = parseInt(valor) + 1
-                        document.getElementById(id).value = parseInt(valor) + 1
+                    var quantidade = document.getElementById(id).innerHTML
+                    var valor = document.getElementById(`precoVenda${x}`).dataset.valor
+                    if (quantidade >= 1) {
+                        document.getElementById(id).innerHTML = parseInt(quantidade) + 1
+                        document.getElementById(id).value = parseInt(quantidade) + 1
+                        var qtd = document.getElementById(id).value
+                        var preco = qtd * valor
+                        document.getElementById(`price${x}`).innerHTML = `R$${preco}`
                     }
                 }
             </script>
