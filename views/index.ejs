@@ -327,13 +327,10 @@
                                                             class="form-control text-white fw-bold bg-primary bg-gradient">
 
                                                             <%if(preco.desconto> 0){%>
-                                                                <s id="s" class="fs-6 text-danger">R$<%=preco.venda%>
-                                                                        ,00</s>
-                                                                <strong id="strong" class="fs-4">R$<%=preco.desconto%>
-                                                                        ,00</strong>
+                                                                <s id="s" class="fs-6 text-danger"><%=preco.venda.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})%></s>
+                                                                <strong id="strong" class="fs-4"><%=preco.desconto.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})%></strong>
                                                                 <%}else{%>
-                                                                    <strong id="strong" class="fs-4">R$<%=preco.venda%>
-                                                                            ,00</strong>
+                                                                    <strong id="strong" class="fs-4"><%=preco.venda.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})%></strong>
                                                                     <%}%>
 
                                                         </span>

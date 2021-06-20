@@ -57,7 +57,8 @@
                                                         </figure>
                                                     </td>
                                                     <td>
-
+                                                        <input type="hidden" name="codIten" id="codIten<%=index%>"
+                                                            value="<%=codIten.id%>">
                                                         <div class="col-md-12 mt-3">
                                                             <button class="btn btn-danger" data-index="<%=index%>"
                                                                 id="btnMenos"
@@ -74,17 +75,23 @@
                                                     <td>
                                                         <div class="price-wrap mt-3">
                                                             <var class="fs-5" id="price<%=index%>"
-                                                                data-total="<%=codIten.precoTotalItem%>">R$
-                                                                <%=codIten.precoTotalItem%>
-                                                                    ,00</var><br>
+                                                                data-total="<%=codIten.precoTotalItem%>">
+                                                                <%=codIten.precoTotalItem.toLocaleString('pt-br',{style: 'currency'
+                                                                    , currency: 'BRL' })%>
+                                                            </var><br>
                                                             <small class="text-muted fs-6" id="precoVenda<%=index%>"
-                                                                data-valor="<%=codIten.precoUnit%>">R$
-                                                                <%=codIten.precoUnit%>
-                                                                    ,00 cada </small>
+                                                                data-valor="<%=codIten.precoUnit%>">
+                                                                <%=codIten.precoUnit.toLocaleString('pt-br',{style: 'currency'
+                                                                    , currency: 'BRL' })%> cada
+                                                            </small>
                                                         </div> <!-- price-wrap .// -->
                                                     </td>
                                                     <td class="text-right">
-                                                        <a href="" class="btn btn-warning mt-4 ms-4"> Remove</a>
+                                                        <form action="/carrinho/remover/<%=codIten.id%>" id="deleteItem"
+                                                            method="POST">
+                                                            <button type="submit" class="btn btn-warning mt-4 ms-4"
+                                                                onclick='return deleteItem();'> Remove</button>
+                                                        </form>
                                                     </td>
                                                     <%}%>
                                                         <%})%>
@@ -95,9 +102,7 @@
                             </table>
 
                             <div class="card-body border-top">
-                                <a href="#" class="btn btn-light"> <i class="fa fa-chevron-left"></i> Escolher mais
-                                    Itens
-                                </a>
+                                <a href="/" class="btn btn-light">Escolher mais Itens</a>
                             </div>
                         </div> <!-- card.// -->
 
@@ -127,7 +132,9 @@
                             <div class="card-body">
                                 <dl class="dlist-align">
                                     <dt>Preço Total:</dt>
-                                    <dd class="text-right" data-valor="<%=carrinho.precoTotal%>" id="precoTotal">R$ <%=carrinho.precoTotal%>,00
+                                    <dd class="text-right" data-valor="<%=carrinho.precoTotal%>" id="precoTotal">
+                                        <%=carrinho.precoTotal.toLocaleString('pt-br',{style: 'currency' ,
+                                            currency: 'BRL' })%>
                                     </dd>
                                 </dl>
                                 <dl class="dlist-align">
@@ -136,7 +143,12 @@
                                 </dl>
                                 <dl class="dlist-align">
                                     <dt>Valor Total:</dt>
-                                    <dd class="text-right  h5" data-valor="<%=carrinho.precoTotal%>" id="valorTotal"><strong>R$<%=carrinho.precoTotal%>,00</strong></dd>
+                                    <dd class="text-right  h5" data-valor="<%=carrinho.precoTotal%>" id="valorTotal">
+                                        <strong>
+                                            <%=carrinho.precoTotal.toLocaleString('pt-br',{style: 'currency' ,
+                                                currency: 'BRL' })%>
+                                        </strong>
+                                    </dd>
                                 </dl>
                                 <hr>
                                 <a href="#" class="btn btn-primary form-control">Realizar Compra</a>
@@ -144,7 +156,7 @@
                                 <p class="text-center mb-3">
                                     <img src="/img/payments.png" height="26">
                                 </p>
-                                
+
                             </div> <!-- card-body.// -->
                         </div> <!-- card .// -->
                     </aside> <!-- col.// -->
@@ -155,6 +167,27 @@
 
         <%- include("./../partials/footer.ejs")%>
             <script>
+                function deleteItem() {
+                    return confirm("Tem certeza que deseja remover item da compra?")
+                }
+            </script>
+            <script>
+
+                function somarTotais() {
+                    var quantidadeTotal = document.getElementById("quantidadeTotal").value
+                    var precoTot = 0
+                    for (var y = 0; y < quantidadeTotal; y++) {
+                        var precoTotalItem = document.getElementById(`price${y}`).dataset.total
+
+                        var precoTotAtual = document.getElementById("precoTotal").dataset.valor
+
+                        precoTot = parseInt(precoTot) + parseInt(precoTotalItem)
+                        document.getElementById("precoTotal").innerHTML = precoTot.toLocaleString('pt-br', { style: 'currency', currency: 'BRL' })
+                        document.getElementById("precoTotal").dataset.valor = precoTot
+                        document.getElementById("valorTotal").innerHTML = precoTot.toLocaleString('pt-br', { style: 'currency', currency: 'BRL' })
+                        document.getElementById("valorTotal").dataset.valor = precoTot
+                    }
+                }
                 function diminuir(x) {
                     var id = `btnValor${x}`
                     var quantidade = document.getElementById(id).innerHTML
@@ -169,20 +202,10 @@
                         var qtd = document.getElementById(id).value
                         var preco = qtd * valor
 
-                        document.getElementById(`price${x}`).innerHTML = `R$${preco}`
+                        document.getElementById(`price${x}`).innerHTML = preco.toLocaleString('pt-br', { style: 'currency', currency: 'BRL' })
                         document.getElementById(`price${x}`).dataset.total = parseFloat(preco)
                     }
-                    var quantidadeTotal = document.getElementById("quantidadeTotal").value
-                    var precoTot = 0
-                    for (var y = 0; y < quantidadeTotal; y++) {
-                        var precoTotalItem = document.getElementById(`price${y}`).dataset.total
-
-                        var precoTotAtual = document.getElementById("precoTotal").dataset.valor
-
-                        precoTot = parseInt(precoTot) + parseInt(precoTotalItem)
-                        document.getElementById("precoTotal").innerHTML = `R$${precoTot}`
-                        document.getElementById("precoTotal").dataset.valor = precoTot
-                    }
+                    somarTotais()
                 }
                 function adicionar(x) {
                     var id = `btnValor${x}`
@@ -197,17 +220,9 @@
                         var qtd = document.getElementById(id).value
                         var preco = qtd * valor
 
-                        document.getElementById(`price${x}`).innerHTML = `R$${preco}`
+                        document.getElementById(`price${x}`).innerHTML = preco.toLocaleString('pt-br', { style: 'currency', currency: 'BRL' })
                         document.getElementById(`price${x}`).dataset.total = preco
                     }
-                    var quantidadeTotal = document.getElementById("quantidadeTotal").value
-                    var precoTots = 0
-                    for (var y = 0; y < quantidadeTotal; y++) {
-                        var precoTotalItem = document.getElementById(`price${y}`).dataset.total
-                        precoTots = parseInt(precoTots) + parseInt(precoTotalItem)
-                        document.getElementById("precoTotal").innerHTML = `R$${precoTots}`
-                        document.getElementById("precoTotal").dataset.valor = precoTots
-                    }
-
+                    somarTotais()
                 }
             </script>

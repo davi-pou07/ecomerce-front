@@ -38,9 +38,9 @@ router.post("/carrinho/adicionar", auth, async (req, res) => {
         quantidadeItem = parseInt(quantidadeItem) + parseInt(codItems.quantidade)
         quantidadeTotalCarrinho = parseInt(quantidadeTotalCarrinho) + parseInt(quantidadeItem)
 
-        var precoTotalItem  = produto[0].venda * parseInt(quantidadeItem)
+        var precoTotalItem = produto[0].venda * parseInt(quantidadeItem)
 
-        var precoTotalCarrinho = (parseFloat(carrinho.precoTotal)-parseInt(codItems.precoTotalItem)) + parseFloat(precoTotalItem)
+        var precoTotalCarrinho = (parseFloat(carrinho.precoTotal) - parseInt(codItems.precoTotalItem)) + parseFloat(precoTotalItem)
         CodItens.update({
             quantidade: quantidadeItem,
             precoTotalItem: precoTotalItem
@@ -65,7 +65,7 @@ router.post("/carrinho/adicionar", auth, async (req, res) => {
         var quantidadeTotalCarrinho = parseInt(carrinho.quantidade) + parseInt(quantidadeItem)
         var precoTotalCarrinho = parseFloat(carrinho.precoTotal) + parseFloat(precoTotalItem)
     }
-    
+
     Carrinho.update({
         quantidade: quantidadeTotalCarrinho,
         precoTotal: precoTotalCarrinho
@@ -84,12 +84,12 @@ router.get("/carrinho/caixa", auth, async (req, res) => {
         var carrinho = await Carrinho.findOne({ where: { clienteId: cliente.id } })
         var codItens = await CodItens.findAll({ where: { carrinhoId: carrinho.id } })
         var idsProdutos = []
-        codItens.forEach((codItem) => {
+        codItens.forEach(codItem => {
             idsProdutos.push(codItem.produtoId)
         })
         var produtos = await knex("produtos").select().whereIn('id', idsProdutos).andWhere({ status: true })
         var imagens = await knex("imagens").select().whereIn("produtoId", idsProdutos)
-        var precos = await knex("precos").select().whereIn("produtoId", idsProdutos)
+        var precos = await knex("precos").select("desconto", "venda", "id", "produtoId").whereIn("produtoId", idsProdutos)
         // var grades = await knex("grades").select().whereIn('id',).innerJoin()
         res.render("carrinho/carrinho", { cliente: cliente, carrinho: carrinho, codItens: codItens, produtos: produtos, imagens: imagens, precos: precos })
 
@@ -97,5 +97,77 @@ router.get("/carrinho/caixa", auth, async (req, res) => {
         res.redirect("/logar")
     }
 })
+
+// router.post("/carrinho/alterarValores",auth,async(req,res)=>{
+//     var usuario = req.session.cli
+//     var novaQuantidade = req.body.novaQuantidade
+//     var codItem = req.body.codItem
+//     console.log(codItem)
+
+//     if (usuario != undefined) {
+//         try{
+
+//         var cliente = await Cliente.findByPk(usuario.id)
+//         var carrinho = await Carrinho.findOne({ where: { clienteId: cliente.id } })
+//         var codIten = await CodItens.findOne({ where: { carrinhoId: carrinho.id, id:codItem } })
+
+//         var precoTotalItem = parseFloat(codItem.valorUnit) * novaQuantidade
+
+//         var quantidadeTotalCarrinho = (parseInt(carrinho.quantidade) - parseInt(codIten.quantidade)) + novaQuantidade
+//         var precoTotalCarrinho = (parseFloat(carrinho.precoTotal) - parseFloat(codIten.precoTotalItem)) + precoTotalItem
+
+//         CodItens.update({
+//             quantidade:novaQuantidade,
+//             precoTotalItem:precoTotalItem
+//         },{where:{id:codIten.id}}).then(()=>{
+//             Carrinho.update({
+//                 quantidade:quantidadeTotalCarrinho,
+//                 precoTotal:precoTotalCarrinho
+//             },{where:{id:carrinho.id}}).then(()=>{
+//                 res.json({resp:"Atualização de valores realizada"})
+//             })
+//         })
+//     }catch(err){
+//         console.log(err)
+//     }
+//     } else {
+//         res.redirect("/logar")
+//     }
+// })
+
+router.post("/carrinho/remover/:codIten", auth, async (req, res) => {
+    var usuario = req.session.cli
+    var codItem = req.params.codIten
+    if (usuario != undefined) {
+        try {
+            var cliente = await Cliente.findByPk(usuario.id)
+            var carrinho = await Carrinho.findOne({ where: { clienteId: cliente.id } })
+            var codIten = await CodItens.findOne({ where: { carrinhoId: carrinho.id, id: codItem } })
+            if (codIten != undefined) {
+                CodItens.destroy({ where: { id: codIten.id } }).then(() => {
+                    var quantidadeTotalCarrinho = parseInt(carrinho.quantidade) - parseInt(codIten.quantidade)
+                    var precoTotalCarrinho = parseFloat(carrinho.precoTotal) - parseFloat(codIten.precoTotalItem)
+                    Carrinho.update({
+                        quantidade: quantidadeTotalCarrinho,
+                        precoTotal: precoTotalCarrinho
+                    }, { where: { id: carrinho.id } }).then(
+                        res.redirect("/carrinho/caixa")
+                    ).catch(err => {
+                        console.log(err)
+                    })
+                }).catch(err => {
+                    console.log(err)
+                })
+            } else {
+                console.log("erro" + "Erro item inexistente")
+            }
+        } catch (err) {
+            console.log(err)
+        }
+    } else {
+        res.redirect("/login")
+    }
+})
+
 
 module.exports = router
