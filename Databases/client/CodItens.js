@@ -18,6 +18,14 @@ const Coditens = connectionCL.define('coditens',{
     reflinha:{
         type:Sequelize.INTEGER,
         allowNull:true
+    },
+    precoUnit:{
+        type:Sequelize.FLOAT,
+        allowNull:false
+    },
+    precoTotalItem:{
+        type:Sequelize.FLOAT,
+        allowNull:false
     }
 })
 

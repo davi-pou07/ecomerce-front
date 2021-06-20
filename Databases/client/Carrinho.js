@@ -10,6 +10,10 @@ const Carrinho = connectionCL.define('carrinhos',{
     status:{
         type:Sequelize.BOOLEAN,
         allowNull:false
+    },
+    precoTotal:{
+        type:Sequelize.FLOAT,
+        allowNull:false
     }
 })
 

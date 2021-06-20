@@ -133,7 +133,8 @@ router.post("/usuario/criar", (req, res) => {
                             }).then(cliente => {
                                 Carrinho.create({
                                     status: true,
-                                    clienteId: cliente.id
+                                    clienteId: cliente.id,
+                                    precoTotal: 0
                                 }).then(carrinho => {
                                     var nomeCli = cliente.nome.split(" ")[0]
                                     req.session.cli = {
@@ -184,7 +185,8 @@ router.get("/usuario/logado", async (req, res) => {
                     Carrinho.create({
                         quantidade: 0,
                         status: true,
-                        clienteId: cliente.id
+                        clienteId: cliente.id,
+                        precoTotal:0
                     }).then(() => {
                         res.send("Carrinho criado")
                     })
