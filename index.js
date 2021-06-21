@@ -4,7 +4,7 @@ const bodyParser = require("body-parser")
 const session = require("express-session")
 const path = require('path')
 const MercadoPago = require("mercadopago")
-
+var nodemailer = require("nodemailer");
 const knex = require('./DataBases/admin/databases')
 
 const Carrinho = require("./Databases/client/Carrinho")
@@ -24,6 +24,16 @@ MercadoPago.configure({
     sandbox:true,
     access_token: "TEST-1254504299447071-061611-ac2150294a43f6a4d65d10f6f66512f8-257758072"
 })
+
+var remetente = nodemailer.createTransport({
+    host: "smtp.office365.com",
+    service: "Outlook365",
+    port: 587,
+    secure: true,
+    auth:{
+    user: "poudeyvis007@gmail.com",
+    pass: "davi6259" }
+    });
 
 app.use(session({
     secret: "sdfsdfsdfgdfgfgh",
@@ -59,7 +69,22 @@ app.get("/", (req, res) => {
     })
 })
 
+app.get("/enviarEmail",(req,res)=>{
+    var emailASerEnviado = {
+        from: 'poudeyvis007@gmail.com',
+        to: 'daihareis@gmail.com',
+        subject: 'Enviando Email com Node.js',
+        text: 'SERA?',
+        };
 
+        remetente.sendMail(emailASerEnviado, function(error){
+            if (error) {
+            console.log(error);
+            } else {
+            res.send('Email enviado com sucesso.');
+            }
+            });
+})
 
 app.listen(3000, () => {
     console.log("Conexão ok")

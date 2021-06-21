@@ -19,13 +19,12 @@ router.get("/carrinho/finalizarCompra", auth, async (req, res) => {
                 var carrinho = await Carrinho.findOne({ where: { clienteId: cliente.id } })
                 var codItens = await CodItens.findAll({ where: { carrinhoId: carrinho.id } })
                 var descricao = []
-                var desc = ''
                 codItens.forEach(async codIten => {
                     var nomeProduto = await knex("produtos").select("nome").where({ id: codIten.produtoId })
                     descricao.push(nomeProduto[0].nome)
                     var desc = desc + `${codIten.quantidade}x${nomeProduto[0].nome}`
                 })
-
+                
                 var idUnica = uniqid()
 
 
