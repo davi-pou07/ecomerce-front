@@ -72,9 +72,9 @@ app.get("/", (req, res) => {
 app.get("/enviarEmail",(req,res)=>{
     var emailASerEnviado = {
         from: 'poudeyvis007@gmail.com',
-        to: 'daihareis@gmail.com',
+        to: 'davihareis@gmail.com',
         subject: 'Enviando Email com Node.js',
-        text: 'SERA?',
+        text: 'Tinha errado o e-mail',
         };
 
         remetente.sendMail(emailASerEnviado, function(error){
