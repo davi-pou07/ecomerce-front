@@ -15,13 +15,14 @@ const empresaController = require("./controller/empresaController")
 const produtoController = require("./controller/produtoControler")
 const clienteController = require("./controller/userController")
 const categoriaControler = require("./controller/categoriaController")
+const compraControler = require("./controller/compraController")
 
 const connectionCL = require('./DataBases/client/databasesCL')
 const Cliente = require("./DataBases/client/Cliente")
 
 
 MercadoPago.configure({
-    sandbox:true,
+    sandbox: true,
     access_token: "TEST-1254504299447071-061611-ac2150294a43f6a4d65d10f6f66512f8-257758072"
 })
 
@@ -30,10 +31,11 @@ var remetente = nodemailer.createTransport({
     service: "Outlook365",
     port: 587,
     secure: true,
-    auth:{
-    user: "poudeyvis007@gmail.com",
-    pass: "davi6259" }
-    });
+    auth: {
+        user: "poudeyvis007@gmail.com",
+        pass: "davi6259"
+    }
+});
 
 app.use(session({
     secret: "sdfsdfsdfgdfgfgh",
@@ -47,43 +49,44 @@ app.set('view engine', 'ejs')
 //Carregamento de arquivos estaticos no express
 app.use(express.static(path.join(__dirname, 'public')))
 //Carregamento do bodyPerser
-app.use(bodyParser.urlencoded({ extended: false, limit:"50mb" }))
-app.use(bodyParser.json({limit: '50mb'}))
+app.use(bodyParser.urlencoded({ extended: false, limit: "50mb" }))
+app.use(bodyParser.json({ limit: '50mb' }))
 
 app.use("/", empresaController)
 app.use("/", produtoController)
 app.use("/", carrinhoController)
 app.use("/", clienteController)
 app.use("/", categoriaControler)
+app.use("/", compraControler)
 
 
 app.get("/", (req, res) => {
-    knex("produtos").select().where('status',true).then(produtos => {
-        knex("categorias").select().where('status',true).limit(6).then(categorias => {
-            knex("precos").select().then(precos =>{
-                knex("imagens").select().then(imagens =>{
-                    res.render("index", { produtos: produtos, categorias: categorias, precos:precos, imagens:imagens })
+    knex("produtos").select().where('status', true).then(produtos => {
+        knex("categorias").select().where('status', true).limit(6).then(categorias => {
+            knex("precos").select().then(precos => {
+                knex("imagens").select().then(imagens => {
+                    res.render("index", { produtos: produtos, categorias: categorias, precos: precos, imagens: imagens })
                 })
             })
         })
     })
 })
 
-app.get("/enviarEmail",(req,res)=>{
+app.get("/enviarEmail", (req, res) => {
     var emailASerEnviado = {
         from: 'poudeyvis007@gmail.com',
         to: 'davihareis@gmail.com',
         subject: 'Enviando Email com Node.js',
         text: 'Tinha errado o e-mail',
-        };
+    };
 
-        remetente.sendMail(emailASerEnviado, function(error){
-            if (error) {
+    remetente.sendMail(emailASerEnviado, function (error) {
+        if (error) {
             console.log(error);
-            } else {
+        } else {
             res.send('Email enviado com sucesso.');
-            }
-            });
+        }
+    });
 })
 
 app.listen(3000, () => {
