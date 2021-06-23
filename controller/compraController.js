@@ -48,17 +48,8 @@ router.get("/carrinho/finalizarCompra", auth, async (req, res) => {
             }
             console.log(dados)
 
-            var preference = {
-                
-                back_urls: {
-                    success: "https://www.seu-site/success",
-                    failure: "http://www.seu-site/failure",
-                    pending: "http://www.seu-site/pending"
-                }
-                
-            }
             try {
-                var pagamento = await MercadoPago.preferences.create(dados,preference)
+                var pagamento = await MercadoPago.preferences.create(dados)
                 console.log(pagamento)
                 return res.redirect(pagamento.body.init_point)
             }
