@@ -20,7 +20,6 @@ const compraControler = require("./controller/compraController")
 const connectionCL = require('./DataBases/client/databasesCL')
 const Cliente = require("./Databases/client/Cliente")
 
-
 MercadoPago.configure({
     sandbox: true,
     access_token: "TEST-1254504299447071-061611-ac2150294a43f6a4d65d10f6f66512f8-257758072"
