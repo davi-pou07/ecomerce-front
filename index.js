@@ -18,7 +18,7 @@ const categoriaControler = require("./controller/categoriaController")
 const compraControler = require("./controller/compraController")
 
 const connectionCL = require('./DataBases/client/databasesCL')
-const Cliente = require("./DataBases/client/Cliente")
+const Cliente = require("./Databases/client/Cliente")
 
 
 MercadoPago.configure({
