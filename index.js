@@ -5,7 +5,7 @@ const session = require("express-session")
 const path = require('path')
 const MercadoPago = require("mercadopago")
 var nodemailer = require("nodemailer");
-const knex = require('./DataBases/admin/databases')
+const knex = require('./Databases/admin/databases')
 
 const Carrinho = require("./Databases/client/Carrinho")
 const CodItens = require("./Databases/client/CodItens")
