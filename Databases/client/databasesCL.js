@@ -1,14 +1,14 @@
 const Sequelize = require("sequelize");
 
 // const connection = new Sequelize('postgres://postgres:davi6259@localhost:5432/ecomerce')
-const connectionCL = new Sequelize('ecomerceCli','postgres','davi6259',{
-    host:'localhost',
+const connectionCL = new Sequelize('naeoolvlzfexcm','d6orq1epqv96kp','0097bce388efc76f8d1603d8cd930982f031093997366dc856a3a6aff4b625cc',{
+    host:'ec2-35-169-188-58.compute-1.amazonaws.com',
     dialect: 'postgres',
     //configurando timezone
     timezone: "-03:00"
 })
-// mysql://b4be845f37ea68:295062e4@us-cdbr-east-03.cleardb.com/heroku_9b63551fa2f9a8f?reconnect=true
 module.exports = connectionCL;
+  //postgres://naeoolvlzfexcm:0097bce388efc76f8d1603d8cd930982f031093997366dc856a3a6aff4b625cc@ec2-35-169-188-58.compute-1.amazonaws.com:5432/d6orq1epqv96kp
 
 //https://help.heroku.com/DR0TTWWD/seeing-fatal-no-pg_hba-conf-entry-errors-in-postgres
 //https://devcenter.heroku.com/articles/heroku-postgresql#connecting-in-node-js
