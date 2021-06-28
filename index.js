@@ -36,14 +36,6 @@ var remetente = nodemailer.createTransport({
     }
 });
 
-connection
-    .authenticate()
-    .then(() => {
-        console.log("Conexão feita com sucesso")
-    })
-    .catch((msgErro) => {
-        console.log(msgErro)
-    })
 
 const { Pool } = require('pg');
 const pool = new Pool({
