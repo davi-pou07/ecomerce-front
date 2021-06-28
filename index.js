@@ -36,6 +36,23 @@ var remetente = nodemailer.createTransport({
     }
 });
 
+connection
+    .authenticate()
+    .then(() => {
+        console.log("Conexão feita com sucesso")
+    })
+    .catch((msgErro) => {
+        console.log(msgErro)
+    })
+
+const { Pool } = require('pg');
+const pool = new Pool({
+    connectionString: process.env.DATABASE_URL,
+    ssl: {
+        rejectUnauthorized: false
+    }
+});
+
 app.use(session({
     secret: "sdfsdfsdfgdfgfgh",
     cookie: { maxAge: 260000000000 }
