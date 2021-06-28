@@ -7,7 +7,7 @@ const knex = require('knex')({
       user : 'xzohavpuwebfje',
       password : 'cce7fe39b756ba090b9a03883dca985ce43bf137b608cb4cfbc1fcd6ee921e15',
       database : 'd9f1ts6ismirrp',
-      ssl:off
+      ssl:false
     }
   });
 
