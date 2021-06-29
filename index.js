@@ -43,13 +43,13 @@ const pool = new Pool({
     ssl: process.env.DATABASE_URL ? true : false
 });
 
-// const pool2 = new Pool({
-//     connectionString: process.env.HEROKU_POSTGRESQL_PUCE_URL,
-//     ssl: process.env.HEROKU_POSTGRESQL_PUCE_URL ? true : false
-// });
+const pool2 = new Pool({
+    connectionString: process.env.HEROKU_POSTGRESQL_PUCE_URL,
+    ssl: process.env.HEROKU_POSTGRESQL_PUCE_URL ? true : false
+});
 
 pool.connect();
-// pool2.connect();
+pool2.connect();
 
 app.use(session({
     secret: "sdfsdfsdfgdfgfgh",
