@@ -45,6 +45,16 @@ const pool = new Pool({
     }
 });
 
+const pool2 = new Pool({
+    connectionString: process.env.HEROKU_POSTGRESQL_PUCE_URL,
+    ssl: {
+        rejectUnauthorized: false
+    }
+});
+
+pool.connect();
+pool2.connect();
+
 app.use(session({
     secret: "sdfsdfsdfgdfgfgh",
     cookie: { maxAge: 260000000000 }
