@@ -125,7 +125,7 @@
                     var cpf = document.getElementById("cpf").value
                     var dataNasc = document.getElementById("dataNasc").value
                     event.preventDefault()
-                    axios.post("http://localhost:3000/criar/usuario", { nome: nome, sobrenome: sobrenome, email: email, celular: celular, senha: senha, confirm: confirm, cpf: cpf, dataNasc: dataNasc }).then(resp => {
+                    axios.post("https://ecomerce-front.herokuapp.com/criar/usuario", { nome: nome, sobrenome: sobrenome, email: email, celular: celular, senha: senha, confirm: confirm, cpf: cpf, dataNasc: dataNasc }).then(resp => {
                         if (resp.data.erro != undefined) {
                             alert(resp.data.erro)
                         } else if (resp.data.resp != undefined) {

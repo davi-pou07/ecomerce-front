@@ -273,7 +273,7 @@
                     var refcoluna = document.getElementById("refcoluna").value
                     var myModal = document.getElementById('exampleModal')
 
-                    axios.post("http://localhost:3000/carrinho/adicionar", { codItem: codItem, quantidadeItem: quantidadeItem, refcoluna: refcoluna, reflinha: reflinha }).then(resp => {
+                    axios.post("https://ecomerce-front.herokuapp.com/carrinho/adicionar", { codItem: codItem, quantidadeItem: quantidadeItem, refcoluna: refcoluna, reflinha: reflinha }).then(resp => {
                         alert(resp.data.resp)
                         console.log(resp.data)
                     })
@@ -281,7 +281,7 @@
 
                 function gradeColuna(linha) {
                     var codItem = document.getElementById("codItem").value
-                    axios.get(`http://localhost:3000/produto/${parseInt(codItem)}/${parseInt(linha)}/refcoluna`).then( resp => {
+                    axios.get(`https://ecomerce-front.herokuapp.com/produto/${parseInt(codItem)}/${parseInt(linha)}/refcoluna`).then( resp => {
                         var colunas = resp.data.colunas
                         if (colunas != undefined) {
                             var refcoluna = document.getElementById("refcoluna")

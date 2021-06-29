@@ -127,7 +127,7 @@
 
 
                                 event.preventDefault();
-                                axios.post("http://localhost:3000/usuario/editar", { nome: nome, email: email, numero: numero, senha: senha, senhaAtual: senhaAtual, confirm: confirm, foto: foto }).then(res => {
+                                axios.post("https://ecomerce-front.herokuapp.com/usuario/editar", { nome: nome, email: email, numero: numero, senha: senha, senhaAtual: senhaAtual, confirm: confirm, foto: foto }).then(res => {
                                     console.log(res)
                                     if (res.data.erro != undefined) {
                                         alert(res.data.erro)

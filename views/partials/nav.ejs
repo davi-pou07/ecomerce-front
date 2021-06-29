@@ -109,7 +109,7 @@
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script>
         //VERIFICA USUARIO LOGADO E COLOCA INFORMAÇÕES NA DIV
-        axios.get('http://localhost:3000/usuario/logado').then(resp => {
+        axios.get('https://ecomerce-front.herokuapp.com/usuario/logado').then(resp => {
             var dados = resp.data
             if (dados.clienteId != undefined) {
                 //Remover botãoes de login
@@ -139,7 +139,7 @@
 
             }
         })
-        axios.get('http://localhost:3000/empresa').then(empresa => {
+        axios.get('https://ecomerce-front.herokuapp.com/empresa').then(empresa => {
             if (empresa.data != undefined) {
                 empresa.data.forEach(empresa => {
                     console.log(empresa.nome)

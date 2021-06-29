@@ -153,11 +153,11 @@
                 var confirm = document.getElementById("confirm").value
                 if (nome != '' && email != '' && numero != '' && senha != '' && confirm != '') {
                     if (senha == confirm) {
-                        axios.post("http://localhost:3000/usuario/criar", { nome: nome, email: email, numero: numero, senha: senha, confirm: confirm }).then(resp => {
+                        axios.post("https://ecomerce-front.herokuapp.com/usuario/criar", { nome: nome, email: email, numero: numero, senha: senha, confirm: confirm }).then(resp => {
                             if (resp.data.erro != undefined) {
                                 alert("Ocorreu um erro ao cadastrar um novo usuario!\n" + "Erro: " + resp.data.erro)
                             } else {
-                                window.location.href = "http://localhost:3000/"
+                                window.location.href = "https://ecomerce-front.herokuapp.com/"
                             }
                         })
                     } else {
@@ -172,12 +172,12 @@
                 var emailLogin = document.getElementById("emailLogin").value
                 var senhaLogin = document.getElementById("senhaLogin").value
                 if (emailLogin != '' && senhaLogin != '') {
-                    axios.post("http://localhost:3000/usuario/login",{emailLogin:emailLogin,senhaLogin:senhaLogin}).then(resp =>{
+                    axios.post("https://ecomerce-front.herokuapp.com/usuario/login",{emailLogin:emailLogin,senhaLogin:senhaLogin}).then(resp =>{
                         console.log(resp.data)
                         if (resp.data.erro != undefined) {
                             alert("Ocorreu um erro ao logar!\n" + "Erro: " + resp.data.erro)
                         } else {
-                            window.location.href = "http://localhost:3000/"
+                            window.location.href = "https://ecomerce-front.herokuapp.com/"
                         }
                     })
                 } else {
