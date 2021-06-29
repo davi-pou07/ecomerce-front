@@ -41,8 +41,8 @@ const Cliente = connectionCL.define('clientes',{
 })
 
 
-Cliente.sync({force:true}).then(()=>{
-    console.log("Tabela Cliente criada")        
-})
+// Cliente.sync({force:true}).then(()=>{
+//     console.log("Tabela Cliente criada")        
+// })
 
 module.exports = Cliente
