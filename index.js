@@ -40,16 +40,12 @@ var remetente = nodemailer.createTransport({
 const { Pool } = require('pg');
 const pool = new Pool({
     connectionString: process.env.DATABASE_URL,
-    ssl: {
-        rejectUnauthorized: false
-    }
+    ssl: process.env.DATABASE_URL ? true : false
 });
 
 const pool2 = new Pool({
     connectionString: process.env.HEROKU_POSTGRESQL_PUCE_URL,
-    ssl: {
-        rejectUnauthorized: false
-    }
+    ssl: process.env.HEROKU_POSTGRESQL_PUCE_URL ? true : false
 });
 
 pool.connect();
