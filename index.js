@@ -49,7 +49,7 @@ const pool = new Pool({
 // });
 
 pool.connect();
-pool2.connect();
+// pool2.connect();
 
 app.use(session({
     secret: "sdfsdfsdfgdfgfgh",
