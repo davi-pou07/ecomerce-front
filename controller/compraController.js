@@ -7,6 +7,7 @@ const Cliente = require('../Databases/client/Cliente');
 const CodItens = require("../Databases/client/CodItens")
 const Carrinho = require("../Databases/client/Carrinho");
 const MercadoPago = require("mercadopago");
+const { compareSync } = require('bcryptjs');
 
 MercadoPago.configure({
     sandbox: true,
@@ -67,6 +68,7 @@ router.get("/carrinho/finalizarCompra", auth, async (req, res) => {
 })
 
 router.post("/statusPagamento",(req,res)=>{
+    console.log("RUN QUER")
     console.log(req.query)
     var id = req.query.id
 
@@ -77,8 +79,10 @@ router.post("/statusPagamento",(req,res)=>{
         MercadoPago.payment.search({
             qs:filtro
         }).then(data =>{
+            console.log("-----------------")
+            console.log("RETORNO MERCADO PAGO")
             console.log(data)
-            
+            console.log("FIM RETORNO MERCADO PAGO")
         }).catch(err =>{
             console.log(err)
         })
