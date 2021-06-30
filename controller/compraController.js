@@ -78,6 +78,7 @@ router.post("/statusPagamento",(req,res)=>{
             qs:filtro
         }).then(data =>{
             console.log(data)
+            
         }).catch(err =>{
             console.log(err)
         })
