@@ -6,9 +6,11 @@ const connectionCL = new Sequelize('naeoolvlzfexcm', 'd6orq1epqv96kp', '0097bce3
     dialect: 'postgres',
     port: 5432,
     timezone: "-03:00",
-    ssl: { rejectUnauthorized: false },
     dialectOptions: {
-        ssl: true
+        ssl: {
+            require: true,
+            rejectUnauthorized: false // <<<<<<< YOU NEED THIS
+        }
     }
 })
 module.exports = connectionCL;
