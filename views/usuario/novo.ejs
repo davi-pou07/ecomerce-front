@@ -146,7 +146,6 @@
                             var srcData = fileLoadedEvent.target.result; // <--- data: base64
                             document.getElementById("foto").value = srcData;
                             var img = document.getElementById("imagem").src = srcData
-                            console.log(img.src)
                         }
                         fileReader.readAsDataURL(fileToLoad);
                     }

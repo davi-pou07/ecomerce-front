@@ -92,7 +92,6 @@
                             var srcData = fileLoadedEvent.target.result; // <--- data: base64
                             document.getElementById("foto64").value = srcData;
                             var img = document.getElementById("imagem").src = srcData
-                            console.log(img.src)
                         }
                         fileReader.readAsDataURL(fileToLoad);
                     }
@@ -128,7 +127,6 @@
 
                                 event.preventDefault();
                                 axios.post("https://ecomerce-front.herokuapp.com/usuario/editar", { nome: nome, email: email, numero: numero, senha: senha, senhaAtual: senhaAtual, confirm: confirm, foto: foto }).then(res => {
-                                    console.log(res)
                                     if (res.data.erro != undefined) {
                                         alert(res.data.erro)
                                     } else {

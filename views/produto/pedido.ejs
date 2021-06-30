@@ -275,7 +275,6 @@
 
                     axios.post("https://ecomerce-front.herokuapp.com/carrinho/adicionar", { codItem: codItem, quantidadeItem: quantidadeItem, refcoluna: refcoluna, reflinha: reflinha }).then(resp => {
                         alert(resp.data.resp)
-                        console.log(resp.data)
                     })
                 }
 

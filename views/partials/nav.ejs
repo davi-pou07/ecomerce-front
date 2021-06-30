@@ -117,7 +117,6 @@
                 reglog.parentNode.removeChild(reglog);
                 //Colocar nome do cliente
                 var userNome = document.getElementById("userNome").innerHTML = dados.clienteNome.split(" ")[0]
-                console.log(userNome)
                 //Coloca foto do cliente
                 if (dados.clienteFoto != undefined) {
                     var imgCli = document.getElementById("imgCli")
@@ -129,7 +128,6 @@
                 }
 
                 var spanCarrin = document.getElementById("spanCarrin").innerHTML = dados.carrinho.quantidade
-                console.log(spanCarrin)
 
                 var clienteId = document.getElementById("clienteId").value = dados.clienteId
 
@@ -142,10 +140,8 @@
         axios.get('https://ecomerce-front.herokuapp.com/empresa').then(empresa => {
             if (empresa.data != undefined) {
                 empresa.data.forEach(empresa => {
-                    console.log(empresa.nome)
                     var logo = document.getElementById("logo")
                     logo.src = empresa.logo
-                    console.log(empresa.logo)
                     var span = document.getElementById("empreza")
                     span.innerHTML = empresa.nome
                 })
@@ -156,9 +152,7 @@
             if (buscar.value == '' || buscar.value == undefined) {
                 alert("Digite o que deseja pesquisar!")
             } else {
-                console.log(buscar.value)
                 axios.post("http://localhost:8080/find", { busca: buscar.value }).then(busca => {
-                    console.log(busca.data)
                     window.location.href = "/admin/produto/busca/" + busca.data;
                 }).catch(err => {
                     console.log(err)

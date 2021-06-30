@@ -173,11 +173,10 @@
                 var senhaLogin = document.getElementById("senhaLogin").value
                 if (emailLogin != '' && senhaLogin != '') {
                     axios.post("https://ecomerce-front.herokuapp.com/usuario/login",{emailLogin:emailLogin,senhaLogin:senhaLogin}).then(resp =>{
-                        console.log(resp.data)
                         if (resp.data.erro != undefined) {
                             alert("Ocorreu um erro ao logar!\n" + "Erro: " + resp.data.erro)
                         } else {
-                            window.location.href = "https://ecomerce-front.herokuapp.com/"
+                            window.location.href = "http://ecomerce-front.herokuapp.com/"
                         }
                     })
                 } else {

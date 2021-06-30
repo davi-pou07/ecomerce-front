@@ -21,7 +21,6 @@ router.post("/carrinho/adicionar", auth, async (req, res) => {
     }
 
     var produto = await knex("produtos").select().where({ "produtos.id": codItem }).innerJoin("precos", "produtos.id", "precos.produtoId")
-    console.log(produto)
 
 
     var carrinho = await Carrinho.findOne({ where: { clienteId: usuario.id } })
