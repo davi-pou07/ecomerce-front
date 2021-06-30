@@ -66,4 +66,9 @@ router.get("/carrinho/finalizarCompra", auth, async (req, res) => {
     }
 })
 
+router.post("/statusPagamento",(req,res)=>{
+    console.log(req.query)
+    res.send("ok")
+})
+
 module.exports = router
