@@ -1,18 +1,18 @@
 const Sequelize = require("sequelize");
 
-// const connectionCL = new Sequelize('postgres://naeoolvlzfexcm:0097bce388efc76f8d1603d8cd930982f031093997366dc856a3a6aff4b625cc@ec2-35-169-188-58.compute-1.amazonaws.com:5432/d6orq1epqv96kp')
-const connectionCL = new Sequelize('naeoolvlzfexcm', 'd6orq1epqv96kp', '0097bce388efc76f8d1603d8cd930982f031093997366dc856a3a6aff4b625cc', {
-    host: 'ec2-35-169-188-58.compute-1.amazonaws.com',
-    dialect: 'postgres',
-    port: 5432,
-    timezone: "-03:00",
-    dialectOptions: {
-        ssl: {
-            require: true,
-            rejectUnauthorized: false // <<<<<<< YOU NEED THIS
-        }
-    }
-})
+const connectionCL = new Sequelize('postgres://naeoolvlzfexcm:0097bce388efc76f8d1603d8cd930982f031093997366dc856a3a6aff4b625cc@ec2-35-169-188-58.compute-1.amazonaws.com:5432/d6orq1epqv96kp')
+// const connectionCL = new Sequelize('naeoolvlzfexcm', 'd6orq1epqv96kp', '0097bce388efc76f8d1603d8cd930982f031093997366dc856a3a6aff4b625cc', {
+//     host: 'ec2-35-169-188-58.compute-1.amazonaws.com',
+//     dialect: 'postgres',
+//     port: 5432,
+//     timezone: "-03:00",
+//     dialectOptions: {
+//         ssl: {
+//             require: true,
+//             rejectUnauthorized: false // <<<<<<< YOU NEED THIS
+//         }
+//     }
+// })
 module.exports = connectionCL;
 //postgres://naeoolvlzfexcm:0097bce388efc76f8d1603d8cd930982f031093997366dc856a3a6aff4b625cc@ec2-35-169-188-58.compute-1.amazonaws.com:5432/d6orq1epqv96kp
 //postgres://naeoolvlzfexcm:0097bce388efc76f8d1603d8cd930982f031093997366dc856a3a6aff4b625cc@ec2-35-169-188-58.compute-1.amazonaws.com:5432/d6orq1epqv96kp
