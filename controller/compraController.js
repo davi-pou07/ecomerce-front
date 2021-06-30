@@ -68,6 +68,20 @@ router.get("/carrinho/finalizarCompra", auth, async (req, res) => {
 
 router.post("/statusPagamento",(req,res)=>{
     console.log(req.query)
+    var id = req.query.id
+
+    setTimeout(()=>{
+        var filtro = {
+            "order.id":id
+        }
+        MercadoPago.payment.search({
+            qs:filtro
+        }).then(data =>{
+            console.log(data)
+        }).catch(err =>{
+            console.log(err)
+        })
+    },200000)
     res.send("ok")
 })
 
