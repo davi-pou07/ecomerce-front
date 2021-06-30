@@ -45,7 +45,12 @@ router.get("/carrinho/finalizarCompra", auth, async (req, res) => {
                     email: cliente.email,
                     codUser: cliente.id
                 },
-                external_reference: idUnica
+                external_reference: idUnica,
+                redirect_urls:{
+                    failure : 'https://ecomerce-front.herokuapp.com/failure',
+                    pending: 'https://ecomerce-front.herokuapp.com/pending',
+                    success: 'https://ecomerce-front.herokuapp.com/'
+                }
             }
             console.log(dados)
 
@@ -81,12 +86,19 @@ router.post("/statusPagamento",(req,res)=>{
         }).then(data =>{
             console.log("-----------------")
             console.log("RETORNO MERCADO PAGO")
+            console.log("DADOS COMPLETOS")
             console.log(data)
+            console.log("-----------------")
+            console.log("DADOS RESULTS")
+            console.log(data.body.results)
+            console.log("-----------------")
+            console.log("DADOS RESULTS2")
+            console.log(data.response.results)
             console.log("FIM RETORNO MERCADO PAGO")
         }).catch(err =>{
             console.log(err)
         })
-    },200000)
+    },20000)
     res.send("ok")
 })
 
