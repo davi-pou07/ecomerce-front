@@ -17,20 +17,23 @@ MercadoPago.configure({
 })
 // ENTÃO PARAMOS AQUI
 
-router.get("/carrinho/finalizarCompra", auth, async (req, res) => {
-    var usuario = req.session.cli
-
+router.get("/carrinho/finalizarCompra", async (req, res) => {
+    // var usuario = req.session.cli
+    var usuario = {id:1}
     if (usuario != undefined) {
         var cliente = await Cliente.findByPk(usuario.id)
 
         try {
             var carrinho = await Carrinho.findOne({ where: { clienteId: cliente.id } })
             var codItens = await CodItens.findAll({ where: { carrinhoId: carrinho.id } })
+            console.log(codItens)
+            console.log(codItens.length)
             var descricao = ''
-            for (var x = 0; x <= codItens.length; x++) {
+            for (var x = 0; x < codItens.length; x++) {
                 var nomeProduto = await knex("produtos").select("nome").where({ id: codItens[0].produtoId })
                 var descricao = descricao + `${codItens[x].quantidade}x${nomeProduto[0].nome.split(" ")[0]}`
             }
+            console.log(descricao)
             var idUnica = uniqid()
 
             var dados = {
@@ -57,7 +60,7 @@ router.get("/carrinho/finalizarCompra", auth, async (req, res) => {
             }
             console.log("----------DADOS------------")
             console.log(dados)
-
+        
             try {
                 var pagamento = await MercadoPago.preferences.create(dados)
                 console.log(pagamento)
@@ -129,6 +132,7 @@ router.post("/statusPagamento", (req, res) => {
             console.log(data.response.results.fee_details)
             console.log("FIM RETORNO MERCADO PAGO")
             var results = data.body.results
+            console.log(results)
             // knex('dadospagamentos').insert({
             //     dadosId:results.external_reference,
             //     dataAutorizacao:results.date_approved,
