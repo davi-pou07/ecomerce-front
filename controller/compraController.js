@@ -46,12 +46,14 @@ router.get("/carrinho/finalizarCompra", auth, async (req, res) => {
                     codUser: cliente.id
                 },
                 external_reference: idUnica,
-                redirect_urls:{
+                "back_urls":{
                     failure : 'https://ecomerce-front.herokuapp.com/failure',
                     pending: 'https://ecomerce-front.herokuapp.com/pending',
                     success: 'https://ecomerce-front.herokuapp.com/'
-                }
+                },
+                "auto_return": "approved"
             }
+            console.log("----------DADOS------------")
             console.log(dados)
 
             try {
