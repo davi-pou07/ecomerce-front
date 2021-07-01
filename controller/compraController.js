@@ -7,7 +7,7 @@ const Cliente = require('../Databases/client/Cliente');
 const CodItens = require("../Databases/client/CodItens")
 const Carrinho = require("../Databases/client/Carrinho");
 const MercadoPago = require("mercadopago");
-const knex = require("../Databases/admin/databases")
+
 
 const { compareSync } = require('bcryptjs');
 
@@ -62,28 +62,28 @@ router.get("/carrinho/finalizarCompra", auth, async (req, res) => {
                 var pagamento = await MercadoPago.preferences.create(dados)
                 console.log(pagamento)
                 var dadosVendas = knex('dadosvendas').select().where({ idCliente: cliente.id, idCarrinho: carrinho.id })
-                // if (dadosVendas == undefined) {
-                //     knex('dadosvendas').insert({
-                //         dadosId: pagamento.external_reference,
-                //         descricao:descricao,
-                //         quantidade:1,
-                //         currency_id:'BRL',
-                //         unit_price: parseFloat(carrinho.precoTotal),
-                //         emailCliente:cliente.email,
-                //         idCliente:cliente.id,
-                //         idCarrinho:carrinho.id,
-                //         status:'P',
-                //         tentativas:1
-                //     })
-                // }else{
-                //    knex('dadosvendas').update({
-                //     dadosId:pagamento.external_reference,
-                //     tentativas:parseInt(dadosVendas.tentativas) + 1,
-                //     descricao:descricao,
-                //     emailCliente:cliente.email,
-                //     unit_price: parseFloat(carrinho.precoTotal)
-                //    }) 
-                // }
+                if (dadosVendas == undefined) {
+                    knex('dadosvendas').insert({
+                        dadosId: pagamento.external_reference,
+                        descricao:descricao,
+                        quantidade:1,
+                        currency_id:'BRL',
+                        unit_price: parseFloat(carrinho.precoTotal),
+                        emailCliente:cliente.email,
+                        idCliente:cliente.id,
+                        idCarrinho:carrinho.id,
+                        status:'P',
+                        tentativas:1
+                    })
+                }else{
+                   knex('dadosvendas').update({
+                    dadosId:pagamento.external_reference,
+                    tentativas:parseInt(dadosVendas.tentativas) + 1,
+                    descricao:descricao,
+                    emailCliente:cliente.email,
+                    unit_price: parseFloat(carrinho.precoTotal)
+                   }) 
+                }
                 return res.redirect(pagamento.body.init_point)
             }
             catch (err) {
