@@ -125,7 +125,7 @@ router.post("/statusPagamento", (req, res) => {
             console.log(data.body.results)
             console.log("-----------------")
             console.log("items")
-            console.log(data.body.results.additional_info.items)
+            console.log(data.body.results.additional_info)
             console.log("FIM RETORNO MERCADO PAGO")
             var results = data.body.results
             console.log(results)
