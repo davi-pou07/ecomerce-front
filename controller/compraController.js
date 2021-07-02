@@ -133,24 +133,24 @@ router.post("/statusPagamento", (req, res) => {
             console.log("FIM RETORNO MERCADO PAGO")
             var results = data.body.results
             console.log(results)
-            // knex('dadospagamentos').insert({
-            //     dadosId:results.external_reference,
-            //     dataAutorizacao:results.date_approved,
-            //     totalPago:results.total_paid_amount,
-            //     valorBrutoRecebido:results.installment_amount,
-            //     external_reference:results.external_reference,
-            //     tipoDePagamento:results.payment_type_id,
-            //     ordeId:results.order.id,
-            //     detalhePagamento:results.status_detail,
-            //     dataExpiracao:results.date_of_expiration,
-            //     dataLancamento:results.date_created,
-            //     codigoDeBarras:results.barcode.content,
-            //     idCliente:,
-            //     idCarrinho:,
-            //     status:results.status_detail,
-            //     descricao:results.description,
-            //     metodoPagamento:results.payment_method_id
-            // })
+            knex('dadospagamentos').insert({
+                dadosId:results.external_reference,
+                dataAutorizacao:results.date_approved,
+                totalPago:results.total_paid_amount,
+                valorBrutoRecebido:results.installment_amount,
+                external_reference:results.external_reference,
+                tipoDePagamento:results.payment_type_id,
+                ordeId:results.order.id,
+                detalhePagamento:results.status_detail,
+                dataExpiracao:results.date_of_expiration,
+                dataLancamento:results.date_created,
+                codigoDeBarras:results.barcode.content,
+                idCliente:1,
+                idCarrinho:1,
+                status:results.status_detail,
+                descricao:results.description,
+                metodoPagamento:results.payment_method_id
+            })
 
         }).catch(err => {
             console.log(err)
