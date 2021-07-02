@@ -10,6 +10,7 @@ const MercadoPago = require("mercadopago");
 
 
 const { compareSync } = require('bcryptjs');
+const { where } = require('sequelize/types');
 
 MercadoPago.configure({
     sandbox: true,
@@ -48,7 +49,7 @@ router.get("/carrinho/finalizarCompra", async (req, res) => {
             payer: {
                 email: cliente.email,
                 userId: cliente.id,
-                carrinhoId:carrinho.id
+                carrinhoId: carrinho.id
             },
             external_reference: idUnica,
             "back_urls": {
@@ -80,11 +81,11 @@ router.get("/carrinho/finalizarCompra", async (req, res) => {
                         idCarrinho: carrinho.id,
                         status: 'P',
                         tentativas: 1,
-                        createdAt:pagamento.date_created,
-                        updatedAt:pagamento.date_created
-                    }).then(()=>{
+                        createdAt: pagamento.date_created,
+                        updatedAt: pagamento.date_created
+                    }).then(() => {
                         return res.redirect(pag.body.init_point)
-                    }).catch(err =>{
+                    }).catch(err => {
                         console.log(err)
                     })
                 } catch (err) {
@@ -97,7 +98,7 @@ router.get("/carrinho/finalizarCompra", async (req, res) => {
                     descricao: descricao,
                     emailCliente: cliente.email,
                     unit_price: parseFloat(carrinho.precoTotal)
-                }).then(()=>{
+                }).then(() => {
                     return res.redirect(pag.body.init_point)
                 })
             }
@@ -122,30 +123,38 @@ router.post("/statusPagamento", (req, res) => {
         }).then(data => {
 
             var results = data.body.results[0]
-            // knex('dadospagamentos').insert({
-            //     dadosId: results.external_reference,
-            //     dataAutorizacao: results.date_approved,
-            //     totalPago: results.total_paid_amount,
-            //     valorBrutoRecebido: results.installment_amount,
-            //     external_reference: results.external_reference,
-            //     tipoDePagamento: results.payment_type_id,
-            //     ordeId: results.order.id,
-            //     detalhePagamento: results.status_detail,
-            //     dataExpiracao: results.date_of_expiration,
-            //     dataLancamento: results.date_created,
-            //     codigoDeBarras: results.barcode.content,
-            //     idCliente: 1,
-            //     idCarrinho: 1,
-            //     status: results.status_detail,
-            //     descricao: results.description,
-            //     metodoPagamento: results.payment_method_id
-            // })
+            var external_reference = results.external_reference
+            try {
+                var dadosVendas = await knex("dadosvendas").select("clienteId", "carrinhoId").where({ dadosId: external_reference })
 
+                knex('dadospagamentos').insert({
+                    dadosId: results.external_reference,
+                    dataAutorizacao: results.date_approved,
+                    totalPago: results.total_paid_amount,
+                    valorBrutoRecebido: results.installment_amount,
+                    external_reference: results.external_reference,
+                    tipoDePagamento: results.payment_type_id,
+                    ordeId: results.order.id,
+                    detalhePagamento: results.status_detail,
+                    dataExpiracao: results.date_of_expiration,
+                    dataLancamento: results.date_created,
+                    codigoDeBarras: results.barcode.content,
+                    idCliente: dadosVendas.clienteId,
+                    idCarrinho: dadosVendas.carrinhoId,
+                    status: results.status_detail,
+                    descricao: results.description,
+                    metodoPagamento: results.payment_method_id
+                }).then(() => {
+                    res.send("ok")
+                })
+            } catch (err) {
+                res.json("Impossivel de executar a venda")
+                console.log(err)
+            }
         }).catch(err => {
             console.log(err)
         })
     }, 20000)
-    res.send("ok")
 })
 
 module.exports = router
