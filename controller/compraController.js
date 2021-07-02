@@ -47,7 +47,8 @@ router.get("/carrinho/finalizarCompra", async (req, res) => {
             ],
             payer: {
                 email: cliente.email,
-                codUser: cliente.id
+                userId: cliente.id,
+                carrinhoId:carrinho.id
             },
             external_reference: idUnica,
             "back_urls": {
@@ -126,6 +127,8 @@ router.post("/statusPagamento", (req, res) => {
             console.log("-----------------")
             console.log("items")
             console.log(data.body.results[0].additional_info)
+            console.log("payer")
+            console.log(data.body.results[0].payer.identification)
             console.log("FIM RETORNO MERCADO PAGO")
             var results = data.body.results
             console.log(results)
