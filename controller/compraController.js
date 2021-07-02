@@ -120,21 +120,8 @@ router.post("/statusPagamento", (req, res) => {
         MercadoPago.payment.search({
             qs: filtro
         }).then(data => {
-            console.log("-----------------")
-            console.log("RETORNO MERCADO PAGO")
-            console.log("-----------------")
-            console.log("DADOS RESULTS")
-            console.log(data.body.results)
-            console.log("-----------------")
-            console.log("items")
-            console.log(data.body.results[0].additional_info)
-            console.log("payer")
-            console.log(data.body.results[0].payer.phone)
-            console.log("external_reference")
-            console.log(data.body.results[0].external_reference)
-            console.log("FIM RETORNO MERCADO PAGO")
-            var results = data.body.results
-            console.log(results)
+
+            var results = data.body.results[0]
             // knex('dadospagamentos').insert({
             //     dadosId: results.external_reference,
             //     dataAutorizacao: results.date_approved,
