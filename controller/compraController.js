@@ -111,7 +111,7 @@ router.get("/carrinho/finalizarCompra", async (req, res) => {
 })
 
 
-router.post("/statusPagamento", async(req, res) => {
+router.post("/statusPagamento", async(req, res)=> {
     var id = req.query.id
     setTimeout(() => {
         var filtro = {
@@ -119,7 +119,7 @@ router.post("/statusPagamento", async(req, res) => {
         }
         MercadoPago.payment.search({
             qs: filtro
-        }).then(data => {
+        }).then(async data => {
 
             var results = data.body.results[0]
             var external_reference = results.external_reference
