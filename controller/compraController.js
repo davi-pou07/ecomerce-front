@@ -83,7 +83,7 @@ router.get("/carrinho/finalizarCompra", async (req, res) => {
                         createdAt:pagamento.date_created,
                         updatedAt:pagamento.date_created
                     }).then(()=>{
-                        console.log("insert realizado")
+                        return res.redirect(pag.body.init_point)
                     }).catch(err =>{
                         console.log(err)
                     })
@@ -97,9 +97,10 @@ router.get("/carrinho/finalizarCompra", async (req, res) => {
                     descricao: descricao,
                     emailCliente: cliente.email,
                     unit_price: parseFloat(carrinho.precoTotal)
+                }).then(()=>{
+                    return res.redirect(pag.body.init_point)
                 })
             }
-            return res.redirect(pag.body.init_point)
         }
         catch (err) {
             return res.send(err.message)
@@ -128,7 +129,9 @@ router.post("/statusPagamento", (req, res) => {
             console.log("items")
             console.log(data.body.results[0].additional_info)
             console.log("payer")
-            console.log(data.body.results[0].payer.identification)
+            console.log(data.body.results[0].payer.phone)
+            console.log("external_reference")
+            console.log(data.body.results[0].external_reference)
             console.log("FIM RETORNO MERCADO PAGO")
             var results = data.body.results
             console.log(results)
