@@ -10,7 +10,6 @@ const MercadoPago = require("mercadopago");
 
 
 const { compareSync } = require('bcryptjs');
-const { where } = require('sequelize/types');
 
 MercadoPago.configure({
     sandbox: true,
