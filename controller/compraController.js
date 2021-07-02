@@ -66,7 +66,7 @@ router.get("/carrinho/finalizarCompra", async (req, res) => {
             } catch (err) {
                 console.log("Não foi possivel acessar")
             }
-            if (dadosVendas == '') {
+            if (dadosVendas == '' || dadosVendas == undefined) {
                 try {
                     knex('dadosvendas').insert({
                         dadosId: pagamento.external_reference,
@@ -96,7 +96,7 @@ router.get("/carrinho/finalizarCompra", async (req, res) => {
                     descricao: descricao,
                     emailCliente: cliente.email,
                     unit_price: parseFloat(carrinho.precoTotal)
-                }).then(() => {
+                }).where({id:dadosVendas.id}).then(() => {
                     return res.redirect(pag.body.init_point)
                 })
             }
