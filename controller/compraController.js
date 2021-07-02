@@ -111,7 +111,7 @@ router.get("/carrinho/finalizarCompra", async (req, res) => {
 })
 
 
-router.post("/statusPagamento", (req, res) => {
+router.post("/statusPagamento", async(req, res) => {
     var id = req.query.id
     setTimeout(() => {
         var filtro = {
