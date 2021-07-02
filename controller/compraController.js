@@ -19,8 +19,7 @@ MercadoPago.configure({
 // ENTÃO PARAMOS AQUI
 
 router.get("/carrinho/finalizarCompra", async (req, res) => {
-    // var usuario = req.session.cli
-    var usuario = { id: 1 }
+    var usuario = req.session.cli
     if (usuario != undefined) {
         var cliente = await Cliente.findByPk(usuario.id)
         try {
