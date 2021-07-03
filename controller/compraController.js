@@ -137,8 +137,8 @@ router.post("/statusPagamento", async(req, res)=> {
                     dataExpiracao: results.date_of_expiration,
                     dataLancamento: results.date_created,
                     codigoDeBarras: results.barcode.content,
-                    idCliente: dadosVendas.clienteId,
-                    idCarrinho: dadosVendas.carrinhoId,
+                    clienteId: dadosVendas.clienteId,
+                    carrinhoId: dadosVendas.carrinhoId,
                     status: results.status_detail,
                     descricao: results.description,
                     metodoPagamento: results.payment_method_id
