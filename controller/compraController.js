@@ -132,7 +132,7 @@ router.post("/statusPagamento", async(req, res)=> {
                     valorBrutoRecebido: results.installment_amount,
                     external_reference: results.external_reference,
                     tipoDePagamento: results.payment_type_id,
-                    ordeId: results.order.id,
+                    ordeId: id,
                     detalhePagamento: results.status_detail,
                     dataExpiracao: results.date_of_expiration,
                     dataLancamento: results.date_created,
