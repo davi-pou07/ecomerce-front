@@ -23,7 +23,7 @@ router.get("/carrinho/finalizarCompra", async (req, res) => {
     if (usuario != undefined) {
         var cliente = await Cliente.findByPk(usuario.id)
         try {
-            var carrinho = await Carrinho.findOne({ where: { clienteId: cliente.id } })
+            var carrinho = await Carrinho.findOne({ where: { clienteId: cliente.id,status:true } })
             var codItens = await CodItens.findAll({ where: { carrinhoId: carrinho.id }, raw: true })
             var descricao = ''
             for (x = 0; x < codItens.length; x++) {
@@ -125,14 +125,9 @@ router.post("/statusPagamento", async(req, res)=> {
         }).then(async data => {
 
             var results = data.body.results[0]
-            // console.log(results)
-            // console.log("---------------------------")
-            // console.log(results.transaction_details)
             var external_reference = results.external_reference
             try {
                 var dadosVendas = await knex("dadosvendas").select("clienteId", "carrinhoId").where({ dadosId: external_reference })
-            console.log("---------------------------")
-                console.log(dadosVendas)
                 knex('dadospagamentos').insert({
                     dadosId: results.external_reference,
                     dataAutorizacao: results.date_approved,
@@ -153,6 +148,9 @@ router.post("/statusPagamento", async(req, res)=> {
                     createdAt:results.date_created,
                     updatedAt:results.date_created
                 }).then(() => {
+                    Carrinho.update({
+                        status:false
+                    },{where:{id:dadosVendas.carrinhoId}})
                     res.send("ok")
                 })
             } catch (err) {

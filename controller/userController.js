@@ -169,8 +169,8 @@ router.get("/usuario/logado", async (req, res) => {
 
             var cliente = await Cliente.findByPk(usuario.id)
             if (cliente != undefined) {
-                var carrinho = await Carrinho.findOne({ where: { clienteId: cliente.id } })
-                if (carrinho != undefined) {
+                var carrinho = await Carrinho.findOne({ where: { clienteId: cliente.id, status:true } })
+                if (carrinho != undefined && carrinho.status != false) {
 
                     var nome = cliente.nome.split(" ")[0]
                     var sobrenome = cliente.nome.split(" ")[1]

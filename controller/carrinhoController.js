@@ -23,7 +23,7 @@ router.post("/carrinho/adicionar", auth, async (req, res) => {
     var produto = await knex("produtos").select().where({ "produtos.id": codItem }).innerJoin("precos", "produtos.id", "precos.produtoId")
 
 
-    var carrinho = await Carrinho.findOne({ where: { clienteId: usuario.id } })
+    var carrinho = await Carrinho.findOne({ where: { clienteId: usuario.id,status:true } })
     if (carrinho.quantidade == undefined) {
         carrinho.quantidade = 0
     }
@@ -80,7 +80,7 @@ router.get("/carrinho/caixa", auth, async (req, res) => {
     var usuario = req.session.cli
     if (usuario != undefined) {
         var cliente = await Cliente.findByPk(usuario.id)
-        var carrinho = await Carrinho.findOne({ where: { clienteId: cliente.id } })
+        var carrinho = await Carrinho.findOne({ where: { clienteId: cliente.id,status:true } })
         var codItens = await CodItens.findAll({ where: { carrinhoId: carrinho.id } })
         var idsProdutos = []
         codItens.forEach(codItem => {
@@ -140,7 +140,7 @@ router.post("/carrinho/remover/:codIten", auth, async (req, res) => {
     if (usuario != undefined) {
         try {
             var cliente = await Cliente.findByPk(usuario.id)
-            var carrinho = await Carrinho.findOne({ where: { clienteId: cliente.id } })
+            var carrinho = await Carrinho.findOne({ where: { clienteId: cliente.id,status:true } })
             var codIten = await CodItens.findOne({ where: { carrinhoId: carrinho.id, id: codItem } })
             if (codIten != undefined) {
                 CodItens.destroy({ where: { id: codIten.id } }).then(() => {
