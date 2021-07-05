@@ -126,6 +126,8 @@ router.post("/statusPagamento", async(req, res)=> {
 
             var results = data.body.results[0]
             console.log(results)
+            console.log("---------------------------")
+            console.log(results.transaction_details)
             var external_reference = results.external_reference
             try {
                 var dadosVendas = await knex("dadosvendas").select("clienteId", "carrinhoId").where({ dadosId: external_reference })
@@ -133,8 +135,8 @@ router.post("/statusPagamento", async(req, res)=> {
                 knex('dadospagamentos').insert({
                     dadosId: results.external_reference,
                     dataAutorizacao: results.date_approved,
-                    totalPago: results.total_paid_amount,
-                    valorBrutoRecebido: results.installment_amount,
+                    totalPago: results.transaction_details.total_paid_amount,
+                    valorBrutoRecebido: results.transaction_details.installment_amount,
                     external_reference: results.external_reference,
                     tipoDePagamento: results.payment_type_id,
                     ordeId: id,
