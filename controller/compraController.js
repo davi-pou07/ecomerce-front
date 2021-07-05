@@ -18,7 +18,8 @@ MercadoPago.configure({
 // ENTÃO PARAMOS AQUI
 
 router.get("/carrinho/finalizarCompra", async (req, res) => {
-    var usuario = req.session.cli
+    // var usuario = req.session.cli
+    var usuario = {id:1}
     if (usuario != undefined) {
         var cliente = await Cliente.findByPk(usuario.id)
         try {
@@ -61,11 +62,13 @@ router.get("/carrinho/finalizarCompra", async (req, res) => {
         try {
             var pag = await MercadoPago.preferences.create(dados)
             var pagamento = pag.response
+            console.log(pagamento)
             try {
-                var dadosVendas = await knex('dadosvendas').select().where({ idCliente: cliente.id, idCarrinho: carrinho.id })
+                var dadosVendas = await knex('dadosvendas').select().where({ clienteId: cliente.id, carrinhoId: carrinho.id })
             } catch (err) {
                 console.log("Não foi possivel acessar")
             }
+            console.log(dadosVendas)
             if (dadosVendas == '' || dadosVendas == undefined) {
                 try {
                     knex('dadosvendas').insert({
@@ -90,13 +93,14 @@ router.get("/carrinho/finalizarCompra", async (req, res) => {
                     console.log(err)
                 }
             } else {
+                console.log(pagamento.external_reference) 
                 knex('dadosvendas').update({
                     dadosId: pagamento.external_reference,
-                    tentativas: parseInt(dadosVendas.tentativas) + 1,
+                    tentativas: parseInt(dadosVendas[0].tentativas) + 1,
                     descricao: descricao,
                     emailCliente: cliente.email,
                     unit_price: parseFloat(carrinho.precoTotal)
-                }).where({id:dadosVendas.id}).then(() => {
+                }).where({id:dadosVendas[0].id}).then(() => {
                     return res.redirect(pag.body.init_point)
                 })
             }
@@ -121,6 +125,7 @@ router.post("/statusPagamento", async(req, res)=> {
         }).then(async data => {
 
             var results = data.body.results[0]
+            console.log(results)
             var external_reference = results.external_reference
             try {
                 var dadosVendas = await knex("dadosvendas").select("clienteId", "carrinhoId").where({ dadosId: external_reference })
