@@ -146,7 +146,7 @@ router.post("/statusPagamento", async(req, res)=> {
                     metodoPagamento: results.payment_method_id,
                     createdAt:results.date_created,
                     updatedAt:results.date_created
-                }).then(() => {
+                }).then(async() => {
                     var cliente = await Cliente.findByPk(dadosVendas[0].clienteId)
                     Carrinho.update({
                         status:false
