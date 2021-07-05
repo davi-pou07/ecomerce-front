@@ -64,7 +64,7 @@
 
             <div class="collapse navbar-collapse" id="reglog">
                 <ul class="me-auto mb-2 mb-lg-0 text-white position-relative">
-                    <a href="/user/novo" class="btn btn-success">Registra-se</a>
+                    <a href="/login" class="btn btn-success">Registra-se</a>
                     <a href="/login" class="btn btn-outline-success">Login</a>
                 </ul>
             </div>
@@ -128,11 +128,7 @@
                     var imgCli = document.getElementById("imgCli")
                     imgCli.src = dados.clienteFoto
                 }
-                //Verifica se o cliente ja foi validado pelo e-mail
-                if (dados.clienteValidado != true) {
-                    //ainda faltaaaaaaaaaaaaaaaaaaaaaa
-                }
-
+               
                 var spanCarrin = document.getElementById("spanCarrin").innerHTML = dados.carrinho.quantidade
 
                 var clienteId = document.getElementById("clienteId").value = dados.clienteId

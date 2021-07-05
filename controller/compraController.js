@@ -147,9 +147,23 @@ router.post("/statusPagamento", async(req, res)=> {
                     createdAt:results.date_created,
                     updatedAt:results.date_created
                 }).then(() => {
+                    var cliente = await Cliente.findByPk(dadosVendas[0].clienteId)
                     Carrinho.update({
                         status:false
                     },{where:{id:dadosVendas[0].carrinhoId}})
+                    var emailASerEnviado = {
+                        from: 'poudeyvis007@gmail.com',
+                        to: cliente.email,
+                        subject: `Compra dos produtos: ${results.description}`,
+                        text: 'Sua compra foi efetivada com sucesso' + cliente.nome,
+                    };
+                    remetente.sendMail(emailASerEnviado, function (error) {
+                        if (error) {
+                            console.log(error);
+                        } else {
+                            console.log("Email enviado com sucesso");
+                        }
+                    });
                     res.send("ok")
                 })
             } catch (err) {
