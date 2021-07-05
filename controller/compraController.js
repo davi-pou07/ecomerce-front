@@ -93,7 +93,6 @@ router.get("/carrinho/finalizarCompra", async (req, res) => {
                     console.log(err)
                 }
             } else {
-                console.log(pagamento.external_reference) 
                 knex('dadosvendas').update({
                     dadosId: pagamento.external_reference,
                     tentativas: parseInt(dadosVendas[0].tentativas) + 1,
@@ -125,9 +124,6 @@ router.post("/statusPagamento", async(req, res)=> {
         }).then(async data => {
 
             var results = data.body.results[0]
-            console.log("---------------")
-            console.log(results)
-            console.log("---------------")
             var external_reference = results.external_reference
             try {
                 var dadosVendas = await knex("dadosvendas").select("clienteId", "carrinhoId").where({ dadosId: external_reference })
