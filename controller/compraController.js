@@ -150,8 +150,8 @@ router.post("/statusPagamento", async(req, res)=> {
                     status: results.status_detail,
                     descricao: results.description,
                     metodoPagamento: results.payment_method_id,
-                    createdAt:results.date_approved,
-                    updatedAt:results.date_approved
+                    createdAt:results.date_created,
+                    updatedAt:results.date_created
                 }).then(() => {
                     res.send("ok")
                 })
