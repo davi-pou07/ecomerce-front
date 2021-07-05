@@ -125,6 +125,9 @@ router.post("/statusPagamento", async(req, res)=> {
         }).then(async data => {
 
             var results = data.body.results[0]
+            console.log("---------------")
+            console.log(results)
+            console.log("---------------")
             var external_reference = results.external_reference
             try {
                 var dadosVendas = await knex("dadosvendas").select("clienteId", "carrinhoId").where({ dadosId: external_reference })
