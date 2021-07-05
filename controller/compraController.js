@@ -150,7 +150,7 @@ router.post("/statusPagamento", async(req, res)=> {
                 }).then(() => {
                     Carrinho.update({
                         status:false
-                    },{where:{id:dadosVendas.carrinhoId}})
+                    },{where:{id:dadosVendas[0].carrinhoId}})
                     res.send("ok")
                 })
             } catch (err) {
