@@ -23,7 +23,7 @@ router.post("/carrinho/adicionar", auth, async (req, res) => {
     var produto = await knex("produtos").select().where({ "produtos.id": codItem }).innerJoin("precos", "produtos.id", "precos.produtoId")
 
 
-    var carrinho = await Carrinho.findOne({ where: { clienteId: usuario.id,status:true } })
+    var carrinho = await Carrinho.findOne({ where: { clienteId: usuario.id, status: true } })
     if (carrinho.quantidade == undefined) {
         carrinho.quantidade = 0
     }
@@ -76,11 +76,12 @@ router.post("/carrinho/adicionar", auth, async (req, res) => {
 
 })
 
-router.get("/carrinho/caixa", auth, async (req, res) => {
-    var usuario = req.session.cli
+router.get("/carrinho/caixa", async (req, res) => {
+    // var usuario = req.session.cli
+    var usuario = { id: 1 }
     if (usuario != undefined) {
         var cliente = await Cliente.findByPk(usuario.id)
-        var carrinho = await Carrinho.findOne({ where: { clienteId: cliente.id,status:true } })
+        var carrinho = await Carrinho.findOne({ where: { clienteId: cliente.id, status: true } })
         var codItens = await CodItens.findAll({ where: { carrinhoId: carrinho.id } })
         var idsProdutos = []
         codItens.forEach(codItem => {
@@ -97,42 +98,46 @@ router.get("/carrinho/caixa", auth, async (req, res) => {
     }
 })
 
-// router.post("/carrinho/alterarValores",auth,async(req,res)=>{
-//     var usuario = req.session.cli
-//     var novaQuantidade = req.body.novaQuantidade
-//     var codItem = req.body.codItem
-//     console.log(codItem)
+router.post("/carrinho/alterarValores", auth, async (req, res) => {
+    // var usuario = req.session.cli
+    var usuario = { id: 1 }
+    var novaQuantidade = req.body.novaQuantidade
+    var codItem = req.body.codItem
 
-//     if (usuario != undefined) {
-//         try{
+    if (usuario != undefined) {
+        try {
+            var cliente = await Cliente.findByPk(usuario.id)
+            var carrinho = await Carrinho.findOne({ where: { clienteId: cliente.id, status: true } })
+            var codIten = await CodItens.findOne({ where: { carrinhoId: carrinho.id, id: codItem } })
+            if (codIten.quantidade != novaQuantidade) {
 
-//         var cliente = await Cliente.findByPk(usuario.id)
-//         var carrinho = await Carrinho.findOne({ where: { clienteId: cliente.id } })
-//         var codIten = await CodItens.findOne({ where: { carrinhoId: carrinho.id, id:codItem } })
 
-//         var precoTotalItem = parseFloat(codItem.valorUnit) * novaQuantidade
+                var precoTotalItem = parseFloat(codItem.valorUnit) * parseInt(novaQuantidade)
 
-//         var quantidadeTotalCarrinho = (parseInt(carrinho.quantidade) - parseInt(codIten.quantidade)) + novaQuantidade
-//         var precoTotalCarrinho = (parseFloat(carrinho.precoTotal) - parseFloat(codIten.precoTotalItem)) + precoTotalItem
+                var quantidadeTotalCarrinho = (parseInt(carrinho.quantidade) - parseInt(codIten.quantidade)) + parseInt(novaQuantidade)
+                var precoTotalCarrinho = (parseFloat(carrinho.precoTotal) - parseFloat(codIten.precoTotalItem)) + parseFloat(precoTotalItem)
 
-//         CodItens.update({
-//             quantidade:novaQuantidade,
-//             precoTotalItem:precoTotalItem
-//         },{where:{id:codIten.id}}).then(()=>{
-//             Carrinho.update({
-//                 quantidade:quantidadeTotalCarrinho,
-//                 precoTotal:precoTotalCarrinho
-//             },{where:{id:carrinho.id}}).then(()=>{
-//                 res.json({resp:"Atualização de valores realizada"})
-//             })
-//         })
-//     }catch(err){
-//         console.log(err)
-//     }
-//     } else {
-//         res.redirect("/logar")
-//     }
-// })
+                CodItens.update({
+                    quantidade: novaQuantidade,
+                    precoTotalItem: precoTotalItem
+                }, { where: { id: codIten.id } }).then(() => {
+                    Carrinho.update({
+                        quantidade: quantidadeTotalCarrinho,
+                        precoTotal: precoTotalCarrinho
+                    }, { where: { id: carrinho.id } }).then(() => {
+                        res.json({ resp: "Atualização de valores realizada" })
+                    })
+                })
+            } else {
+                res.json({erro:"Não ah valores a serem atualizados"})
+            }
+        } catch (err) {
+            res.json({erro:"Erro: " + err})
+        }
+    } else {
+        res.redirect("/logar")
+    }
+})
 
 router.post("/carrinho/remover/:codIten", auth, async (req, res) => {
     var usuario = req.session.cli
@@ -140,7 +145,7 @@ router.post("/carrinho/remover/:codIten", auth, async (req, res) => {
     if (usuario != undefined) {
         try {
             var cliente = await Cliente.findByPk(usuario.id)
-            var carrinho = await Carrinho.findOne({ where: { clienteId: cliente.id,status:true } })
+            var carrinho = await Carrinho.findOne({ where: { clienteId: cliente.id, status: true } })
             var codIten = await CodItens.findOne({ where: { carrinhoId: carrinho.id, id: codItem } })
             if (codIten != undefined) {
                 CodItens.destroy({ where: { id: codIten.id } }).then(() => {
