@@ -118,7 +118,7 @@ router.get("/success/", async (req, res) => {
             status: param.status,
             clienteId: dadosVendas[0].clienteId,
             carrinhoId: dadosVendas[0].carrinhoId,
-            colletion_status: param.collection_status,
+            collection_status: param.collection_status,
             formaPagamento: param.payment_type,
             orderId: param.merchant_order_id
         }).then(() => {
