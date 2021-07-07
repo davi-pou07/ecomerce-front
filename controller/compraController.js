@@ -137,7 +137,7 @@ router.get("/success/", async (req, res) => {
     }
 })
 
-router.get("/pending/", (req, res) => {
+router.get("/pending/", async(req, res) => {
     var param = req.query
     try {
         var dadosVendas = await knex("dadosvendas").select().where({ dadosId: param.external_reference })
@@ -166,9 +166,29 @@ router.get("/pending/", (req, res) => {
 })
 
 router.get("/failure/", (req, res) => {
-    console.log("-------------failure------------------")
     var param = req.query
-    res.json(param)
+    try {
+        var dadosVendas = await knex("dadosvendas").select().where({ dadosId: param.external_reference })
+        var date = moment().format();
+        knex("dadostransicoes").insert({
+            dadosId: param.external_reference,
+            status: param.status,
+            clienteId: dadosVendas[0].clienteId,
+            carrinhoId: dadosVendas[0].carrinhoId,
+            collection_status: param.collection_status,
+            formaPagamento: param.payment_type,
+            orderId: param.merchant_order_id,
+            createdAt: date,
+            updatedAt: date
+        }).then(() => {
+            knex("dadosvendas").update({ status: 'F' }).where({ dadosId: dadosVendas[0].dadosId })
+                var dadosTransicoes = await knex("dadostransicoes").select().where({ dadosId: dadosVendas[0].dadosId })
+                res.redirect("/usuario/historico/" + dadosTransicoes[0].id)
+        })
+    } catch (err) {
+        console.log(err)
+        res.send("Ocorreu um erro ao processar dados")
+    }
 })
 
 router.post("/statusPagamento", async (req, res) => {
