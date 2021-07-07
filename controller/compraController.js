@@ -138,10 +138,33 @@ router.get("/success/", async (req, res) => {
 })
 
 router.get("/pending/", (req, res) => {
-    console.log("-------------pending------------------")
     var param = req.query
-    res.json(param)
+    try {
+        var dadosVendas = await knex("dadosvendas").select().where({ dadosId: param.external_reference })
+        var date = moment().format();
+        knex("dadostransicoes").insert({
+            dadosId: param.external_reference,
+            status: param.status,
+            clienteId: dadosVendas[0].clienteId,
+            carrinhoId: dadosVendas[0].carrinhoId,
+            collection_status: param.collection_status,
+            formaPagamento: param.payment_type,
+            orderId: param.merchant_order_id,
+            createdAt: date,
+            updatedAt: date
+        }).then(() => {
+            knex("dadosvendas").update({ status: 'P' }).where({ dadosId: dadosVendas[0].dadosId })
+            Carrinho.update({ status: false }, { where: { id: dadosVendas[0].carrinhoId } }).then(async () => {
+                var dadosTransicoes = await knex("dadostransicoes").select().where({ dadosId: dadosVendas[0].dadosId })
+                res.redirect("/usuario/historico/" + dadosTransicoes[0].id)
+            })
+        })
+    } catch (err) {
+        console.log(err)
+        res.send("Ocorreu um erro ao processar dados")
+    }
 })
+
 router.get("/failure/", (req, res) => {
     console.log("-------------failure------------------")
     var param = req.query
@@ -156,16 +179,25 @@ router.post("/statusPagamento", async (req, res) => {
         MercadoPago.payment.search({
             qs: filtro
         }).then(async data => {
-
+            
             var results = data.body.results[0]
             var external_reference = results.external_reference
+            console.log(results)
             try {
+
                 var dadosPagamentos = await knex("dadospagamentos").select("clienteId", "carrinhoId").where({ dadosId: external_reference }).whereIn("status", ["approved", "authorized"])
+
                 console.log(dadosPagamentos)
-                if (dadosPagamentos != "" || dadosPagamentos != undefined) {
-                    res.json("Pagamento ja efetivado")
+
+                if (dadosPagamentos[0] != "" || dadosPagamentos[0] != undefined) {
+
+                    console.log("Pagamento efetivado")
+                    console.log(dadosPagamentos)
+
                 } else {
+
                     var dadosVendas = await knex("dadosvendas").select("clienteId", "carrinhoId").where({ dadosId: external_reference })
+
                     knex('dadospagamentos').insert({
                         dadosId: results.external_reference,
                         dataAutorizacao: results.date_approved,
@@ -186,10 +218,14 @@ router.post("/statusPagamento", async (req, res) => {
                         createdAt: results.date_created,
                         updatedAt: results.date_created
                     }).then(async () => {
+
                         var cliente = await Cliente.findByPk(dadosVendas[0].clienteId)
+
                         Carrinho.update({
                             status: false
-                        }, { where: { id: dadosVendas[0].carrinhoId } })
+                        }, { where: { id: dadosVendas[0].carrinhoId } }).then(()=>{
+                            console.log("Carrinho inativado")
+                        })
 
                         var emailASerEnviado = {
                             from: 'poudeyvis007@gmail.com',
@@ -197,6 +233,7 @@ router.post("/statusPagamento", async (req, res) => {
                             subject: `Compra dos produtos: ${results.description}`,
                             text: 'Sua compra foi efetivada com sucesso' + cliente.nome,
                         };
+
                         remetente.sendMail(emailASerEnviado, function (error) {
                             if (error) {
                                 console.log(error);
