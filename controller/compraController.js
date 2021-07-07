@@ -15,7 +15,6 @@ MercadoPago.configure({
     sandbox: true,
     access_token: "TEST-1254504299447071-061611-ac2150294a43f6a4d65d10f6f66512f8-257758072"
 })
-// ENTÃO PARAMOS AQUI
 
 router.get("/carrinho/finalizarCompra", async (req, res) => {
     // var usuario = req.session.cli
@@ -30,7 +29,12 @@ router.get("/carrinho/finalizarCompra", async (req, res) => {
                 var nomeProduto = await knex("produtos").select("nome").where({ id: codItens[x].produtoId })
                 var descricao = descricao + `${codItens[x].quantidade}x${nomeProduto[0].nome.split(" ")[0]}`
             }
-            var idUnica = uniqid()
+            var dadosVendas = await knex('dadosvendas').select().where({ clienteId: cliente.id, carrinhoId: carrinho.id })
+            if (dadosVendas == '' || dadosVendas == undefined) {
+                var idUnica = uniqid()
+            } else {
+                var idUnica = dadosVendas.dadosId
+            }
         } catch (err) {
             console.log(err)
             res.json({ erro: "Ocorreu um erro, entre em contato com o suporte" })
@@ -62,11 +66,6 @@ router.get("/carrinho/finalizarCompra", async (req, res) => {
         try {
             var pag = await MercadoPago.preferences.create(dados)
             var pagamento = pag.response
-            try {
-                var dadosVendas = await knex('dadosvendas').select().where({ clienteId: cliente.id, carrinhoId: carrinho.id })
-            } catch (err) {
-                console.log("Não foi possivel acessar")
-            }
             if (dadosVendas == '' || dadosVendas == undefined) {
                 try {
                     knex('dadosvendas').insert({
@@ -92,7 +91,6 @@ router.get("/carrinho/finalizarCompra", async (req, res) => {
                 }
             } else {
                 knex('dadosvendas').update({
-                    dadosId: pagamento.external_reference,
                     tentativas: parseInt(dadosVendas[0].tentativas) + 1,
                     descricao: descricao,
                     emailCliente: cliente.email,
@@ -110,18 +108,18 @@ router.get("/carrinho/finalizarCompra", async (req, res) => {
     }
 })
 
-router.get("/success/",(req,res)=>{
+router.get("/success/", (req, res) => {
     console.log("-------------success------------------")
     var param = req.query
     res.json(param)
 })
 
-router.get("/pending/",(req,res)=>{
+router.get("/pending/", (req, res) => {
     console.log("-------------pending------------------")
     var param = req.query
     res.json(param)
 })
-router.get("/failure/",(req,res)=>{
+router.get("/failure/", (req, res) => {
     console.log("-------------failure------------------")
     var param = req.query
     res.json(param)
@@ -130,7 +128,7 @@ router.get("/failure/",(req,res)=>{
 router.post("/statusPagamento", async (req, res) => {
     var id = req.query.id
     setTimeout(() => {
-        var filtro = {"order.id": id}
+        var filtro = { "order.id": id }
 
         MercadoPago.payment.search({
             qs: filtro
@@ -183,7 +181,7 @@ router.post("/statusPagamento", async (req, res) => {
                                 console.log("Email enviado com sucesso");
                             }
                         });
-                        
+
                         res.send("ok")
                     })
                 }
