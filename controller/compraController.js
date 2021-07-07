@@ -112,7 +112,7 @@ router.get("/success/", async (req, res) => {
     var param = req.query
     try {
         var dadosVendas = await knex("dadosvendas").select("clienteId", "carrinhoId").where({ dadosId: param.external_reference })
-
+        var date = new Date.now()
         knex("dadostransicoes").insert({
             dadosId: param.external_reference,
             status: param.status,
@@ -120,7 +120,9 @@ router.get("/success/", async (req, res) => {
             carrinhoId: dadosVendas[0].carrinhoId,
             collection_status: param.collection_status,
             formaPagamento: param.payment_type,
-            orderId: param.merchant_order_id
+            orderId: param.merchant_order_id,
+            createdAt:date,
+            updatedAt:date
         }).then(() => {
             knex("dadosvendas").update({status:'A'}).where({dadosId:dadosVendas[0].dadosId})
             Carrinho.update({ status: false }, { where: { id: dadosVendas[0].carrinhoId } }).then(async() => {
