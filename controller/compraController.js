@@ -133,7 +133,6 @@ router.get("/success/", async (req, res) => {
     } catch (err) {
         res.send("Ocorreu um erro ao processar dados")
     }
-    res.json(param)
 })
 
 router.get("/pending/", (req, res) => {
