@@ -2,6 +2,7 @@ const express = require('express')
 const router = express.Router()
 const knex = require("../Databases/admin/databases")
 const auth = require("../middlewares/adminAuth")
+var moment = require('moment');
 var uniqid = require('uniqid');
 const Cliente = require('../Databases/client/Cliente');
 const CodItens = require("../Databases/client/CodItens")
@@ -112,7 +113,7 @@ router.get("/success/", async (req, res) => {
     var param = req.query
     try {
         var dadosVendas = await knex("dadosvendas").select("clienteId", "carrinhoId").where({ dadosId: param.external_reference })
-        var date = Date.now()
+        var date = moment().format(); 
         knex("dadostransicoes").insert({
             dadosId: param.external_reference,
             status: param.status,
