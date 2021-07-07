@@ -110,6 +110,19 @@ router.get("/carrinho/finalizarCompra", async (req, res) => {
     }
 })
 
+router.get("/success",(req,res)=>{
+    var param = req.params
+    res.json(param)
+})
+
+router.get("/pending",(req,res)=>{
+    var param = req.params
+    res.json(param)
+})
+router.get("/failure",(req,res)=>{
+    var param = req.params
+    res.json(param)
+})
 
 router.post("/statusPagamento", async (req, res) => {
     var id = req.query.id
