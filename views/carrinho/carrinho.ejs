@@ -71,6 +71,7 @@
                                                                 id="btnMais"
                                                                 onclick="adicionar(this.dataset.index)">+</button>
                                                         </div>
+
                                                     </td>
                                                     <td>
                                                         <div class="price-wrap mt-3">
@@ -87,10 +88,18 @@
                                                         </div> <!-- price-wrap .// -->
                                                     </td>
                                                     <td class="text-right">
+
                                                         <form action="/carrinho/remover/<%=codIten.id%>" id="deleteItem"
                                                             method="POST">
-                                                            <button type="submit" class="btn btn-warning mt-4 ms-4"
-                                                                onclick='return deleteItem();'> Remove</button>
+                                                            <div class="row">
+                                                                <div class="col-md-12">
+                                                                    <button data-index="<%=index%>" class="btn btn-info mt-4 text-white"
+                                                                        id="btnAtualizar" value="<%=codIten.id%>" onclick="atualizar(this.dataset.codIten,this.value)">Atualizar</button>
+                                                                    <button type="submit"
+                                                                        class="btn btn-warning mt-4"
+                                                                        onclick='return deleteItem();'> Remove</button>
+                                                                </div>
+                                                            </div>
                                                         </form>
                                                     </td>
                                                     <%}%>
@@ -151,7 +160,8 @@
                                     </dd>
                                 </dl>
                                 <hr>
-                                <a href="/carrinho/finalizarCompra" class="btn btn-primary form-control">Realizar Compra</a>
+                                <a href="/carrinho/finalizarCompra" class="btn btn-primary form-control">Realizar
+                                    Compra</a>
                                 <hr>
                                 <p class="text-center mb-3">
                                     <img src="/img/payments.png" height="26">
@@ -166,5 +176,18 @@
         </section>
 
         <%- include("./../partials/footer.ejs")%>
-                <script src="/js/carrinho.js"></script>
-                    
+            <script src="/js/carrinho.js"></script>
+            <script>function atualizar(index,codItemid){
+                var btn = `btnValor${x}`
+                axios.post("https://ecomerce-front.herokuapp.com/carrinho/alterarValores",{btn:btn,codItemid:codItemid}).then(resp =>{
+                    if (resp.data.erro !== undefined) {
+                        alert("Ocorreu um erro ao atualizar: "+resp.data.erro)
+                    } else {
+                        alert(resp.data.resp)
+                    }
+                }).catch(err =>{
+                    console.log(err)
+                })
+            var
+
+            }</script>
