@@ -112,8 +112,8 @@ router.get("/carrinho/finalizarCompra", async (req, res) => {
 router.get("/success/", async (req, res) => {
     var param = req.query
     try {
-        var dadosVendas = await knex("dadosvendas").select("clienteId", "carrinhoId").where({ dadosId: param.external_reference })
-        var date = moment().format(); 
+        var dadosVendas = await knex("dadosvendas").select().where({ dadosId: param.external_reference })
+        var date = moment().format();
         knex("dadostransicoes").insert({
             dadosId: param.external_reference,
             status: param.status,
@@ -122,11 +122,11 @@ router.get("/success/", async (req, res) => {
             collection_status: param.collection_status,
             formaPagamento: param.payment_type,
             orderId: param.merchant_order_id,
-            createdAt:date,
-            updatedAt:date
+            createdAt: date,
+            updatedAt: date
         }).then(() => {
-            knex("dadosvendas").update({status:'A'}).where({dadosId:dadosVendas[0].dadosId})
-            Carrinho.update({ status: false }, { where: { id: dadosVendas[0].carrinhoId } }).then(async() => {
+            knex("dadosvendas").update({ status: 'A' }).where({ dadosId: dadosVendas[0].dadosId })
+            Carrinho.update({ status: false }, { where: { id: dadosVendas[0].carrinhoId } }).then(async () => {
                 var dadosTransicoes = await knex("dadostransicoes").select().where({ dadosId: dadosVendas[0].dadosId })
                 res.redirect("/usuario/historico/" + dadosTransicoes[0].id)
             })
