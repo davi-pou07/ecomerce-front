@@ -111,17 +111,17 @@ router.get("/carrinho/finalizarCompra", async (req, res) => {
 })
 
 router.get("/success",(req,res)=>{
-    var param = req.params
-    res.json(param)
+    var bodyy = req.body
+    res.json(bodyy)
 })
 
 router.get("/pending",(req,res)=>{
-    var param = req.params
-    res.json(param)
+    var bodyy = req.body
+    res.json(bodyy)
 })
 router.get("/failure",(req,res)=>{
-    var param = req.params
-    res.json(param)
+    var bodyy = req.body
+    res.json(bodyy)
 })
 
 router.post("/statusPagamento", async (req, res) => {
