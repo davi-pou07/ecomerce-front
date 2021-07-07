@@ -110,27 +110,21 @@ router.get("/carrinho/finalizarCompra", async (req, res) => {
     }
 })
 
-router.get("/success/:dados?",(req,res)=>{
+router.get("/success/",(req,res)=>{
     console.log("-------------success------------------")
-    var param = req.params
+    var param = req.query
     res.json(param)
-    var param2 = req.params.dados
-    console.log(param2)
 })
 
-router.get("/pending/:dados?",(req,res)=>{
+router.get("/pending/",(req,res)=>{
     console.log("-------------pending------------------")
-    var param = req.params
+    var param = req.query
     res.json(param)
-    var param2 = req.params.dados
-    console.log(param2)
 })
-router.get("/failure/:dados?",(req,res)=>{
+router.get("/failure/",(req,res)=>{
     console.log("-------------failure------------------")
-    var param = req.params
+    var param = req.query
     res.json(param)
-    var param2 = req.params.dados
-    console.log(param2)
 })
 
 router.post("/statusPagamento", async (req, res) => {
