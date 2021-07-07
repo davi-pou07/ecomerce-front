@@ -30,10 +30,10 @@ router.get("/carrinho/finalizarCompra", async (req, res) => {
                 var descricao = descricao + `${codItens[x].quantidade}x${nomeProduto[0].nome.split(" ")[0]}`
             }
             var dadosVendas = await knex('dadosvendas').select().where({ clienteId: cliente.id, carrinhoId: carrinho.id })
-            if (dadosVendas == '' || dadosVendas == undefined) {
+            if (dadosVendas[0] == '' || dadosVendas[0] == undefined) {
                 var idUnica = uniqid()
             } else {
-                var idUnica = dadosVendas.dadosId
+                var idUnica = dadosVendas[0].dadosId
             }
         } catch (err) {
             console.log(err)
@@ -66,7 +66,7 @@ router.get("/carrinho/finalizarCompra", async (req, res) => {
         try {
             var pag = await MercadoPago.preferences.create(dados)
             var pagamento = pag.response
-            if (dadosVendas == '' || dadosVendas == undefined) {
+            if (dadosVendas[0] == '' || dadosVendas[0] == undefined) {
                 try {
                     knex('dadosvendas').insert({
                         dadosId: pagamento.external_reference,
