@@ -165,7 +165,7 @@ router.get("/pending/", async(req, res) => {
     }
 })
 
-router.get("/failure/", (req, res) => {
+router.get("/failure/", async(req, res) => {
     var param = req.query
     try {
         var dadosVendas = await knex("dadosvendas").select().where({ dadosId: param.external_reference })
