@@ -123,7 +123,7 @@ router.get("/success/", async (req, res) => {
             orderId: param.merchant_order_id
         }).then(() => {
             knex("dadosvendas").update({status:'A'}).where({dadosId:dadosVendas[0].dadosId})
-            Carrinho.update({ status: false }, { where: { id: dadosVendas[0].carrinhoId } }).then(() => {
+            Carrinho.update({ status: false }, { where: { id: dadosVendas[0].carrinhoId } }).then(async() => {
                 var dadosTransicoes = await knex("dadostransicoes").select().where({ dadosId: dadosVendas[0].dadosId })
                 res.redirect("/usuario/historico/" + dadosTransicoes[0].id)
             })
