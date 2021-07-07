@@ -131,6 +131,7 @@ router.get("/success/", async (req, res) => {
             })
         })
     } catch (err) {
+        console.log(err)
         res.send("Ocorreu um erro ao processar dados")
     }
 })
