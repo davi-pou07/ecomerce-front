@@ -114,7 +114,7 @@ router.get("/success/", async (req, res) => {
         var dadosVendas = await knex("dadosvendas").select("clienteId", "carrinhoId").where({ dadosId: param.external_reference })
 
         knex("dadostransicoes").insert({
-            daodsId: param.external_reference,
+            dadosId: param.external_reference,
             status: param.status,
             clienteId: dadosVendas[0].clienteId,
             carrinhoId: dadosVendas[0].carrinhoId,
