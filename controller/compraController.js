@@ -112,7 +112,7 @@ router.get("/success/", async (req, res) => {
     var param = req.query
     try {
         var dadosVendas = await knex("dadosvendas").select("clienteId", "carrinhoId").where({ dadosId: param.external_reference })
-        var date = new Date.now()
+        var date = Date.now()
         knex("dadostransicoes").insert({
             dadosId: param.external_reference,
             status: param.status,
