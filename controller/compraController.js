@@ -52,9 +52,9 @@ router.get("/carrinho/finalizarCompra", async (req, res) => {
             },
             external_reference: idUnica,
             "back_urls": {
-                failure: 'https://ecomerce-front.herokuapp.com/failure',
-                pending: 'https://ecomerce-front.herokuapp.com/pending',
-                success: 'https://ecomerce-front.herokuapp.com/success'
+                failure: 'https://ecomerce-front.herokuapp.com/failure/',
+                pending: 'https://ecomerce-front.herokuapp.com/pending/',
+                success: 'https://ecomerce-front.herokuapp.com/success/'
             },
             "auto_return": "approved"
         }
@@ -110,18 +110,27 @@ router.get("/carrinho/finalizarCompra", async (req, res) => {
     }
 })
 
-router.get("/success",(req,res)=>{
-    var bodyy = req.body
-    res.json(bodyy)
+router.get("/success/:dados?",(req,res)=>{
+    console.log("-------------success------------------")
+    var param = req.params
+    res.json(param)
+    var param2 = req.params.dados
+    console.log(param2)
 })
 
-router.get("/pending",(req,res)=>{
-    var bodyy = req.body
-    res.json(bodyy)
+router.get("/pending/:dados?",(req,res)=>{
+    console.log("-------------pending------------------")
+    var param = req.params
+    res.json(param)
+    var param2 = req.params.dados
+    console.log(param2)
 })
-router.get("/failure",(req,res)=>{
-    var bodyy = req.body
-    res.json(bodyy)
+router.get("/failure/:dados?",(req,res)=>{
+    console.log("-------------failure------------------")
+    var param = req.params
+    res.json(param)
+    var param2 = req.params.dados
+    console.log(param2)
 })
 
 router.post("/statusPagamento", async (req, res) => {
