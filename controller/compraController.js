@@ -108,9 +108,29 @@ router.get("/carrinho/finalizarCompra", async (req, res) => {
     }
 })
 
-router.get("/success/", (req, res) => {
-    console.log("-------------success------------------")
+router.get("/success/", async (req, res) => {
     var param = req.query
+    try {
+        var dadosVendas = await knex("dadosvendas").select("clienteId", "carrinhoId").where({ dadosId: param.external_reference })
+
+        knex("dadostransicoes").insert({
+            daodsId: param.external_reference,
+            status: param.status,
+            clienteId: dadosVendas[0].clienteId,
+            carrinhoId: dadosVendas[0].carrinhoId,
+            colletion_status: param.collection_status,
+            formaPagamento: param.payment_type,
+            orderId: param.merchant_order_id
+        }).then(() => {
+            knex("dadosvendas").update({status:'A'}).where({dadosId:dadosVendas[0].dadosId})
+            Carrinho.update({ status: false }, { where: { id: dadosVendas[0].carrinhoId } }).then(() => {
+                var dadosTransicoes = await knex("dadostransicoes").select().where({ dadosId: dadosVendas[0].dadosId })
+                res.redirect("/usuario/historico/" + dadosTransicoes[0].id)
+            })
+        })
+    } catch (err) {
+        res.send("Ocorreu um erro ao processar dados")
+    }
     res.json(param)
 })
 
