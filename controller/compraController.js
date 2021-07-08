@@ -17,6 +17,18 @@ MercadoPago.configure({
     access_token: "TEST-1254504299447071-061611-ac2150294a43f6a4d65d10f6f66512f8-257758072"
 })
 
+var remetente = nodemailer.createTransport({
+    host: "smtp.office365.com",
+    service: "Outlook365",
+    port: 587,
+    secure: true,
+    auth: {
+        user: "poudeyvis007@gmail.com",
+        pass: "95599441sergi"
+    }
+});
+
+
 router.get("/carrinho/finalizarCompra", async (req, res) => {
     // var usuario = req.session.cli
     var usuario = { id: 1 }
