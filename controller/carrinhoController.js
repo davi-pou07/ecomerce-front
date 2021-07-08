@@ -76,9 +76,9 @@ router.post("/carrinho/adicionar", auth, async (req, res) => {
 
 })
 
-router.get("/carrinho/caixa", async (req, res) => {
-    // var usuario = req.session.cli
-    var usuario = {id:1}
+router.get("/carrinho/caixa", auth, async (req, res) => {
+    var usuario = req.session.cli
+    // var usuario = {id:1}
     if (usuario != undefined) {
         var cliente = await Cliente.findByPk(usuario.id)
         var carrinho = await Carrinho.findOne({ where: { clienteId: cliente.id, status: true } })
