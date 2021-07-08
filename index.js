@@ -6,7 +6,6 @@ const bodyParser = require("body-parser")
 const session = require("express-session")
 const path = require('path')
 const MercadoPago = require("mercadopago")
-var nodemailer = require("nodemailer");
 const knex = require('./Databases/admin/databases')
 
 const Carrinho = require("./Databases/client/Carrinho")
@@ -27,16 +26,7 @@ MercadoPago.configure({
     access_token: 'TEST-1254504299447071-061611-ac2150294a43f6a4d65d10f6f66512f8-257758072'
 })
 
-var remetente = nodemailer.createTransport({
-    host: "smtp.office365.com",
-    service: "Outlook365",
-    port: 587,
-    secure: true,
-    auth: {
-        user: "poudeyvis007@gmail.com",
-        pass: "davi6259"
-    }
-});
+
 
 
 const { Pool } = require('pg');

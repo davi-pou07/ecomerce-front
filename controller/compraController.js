@@ -8,6 +8,7 @@ const Cliente = require('../Databases/client/Cliente');
 const CodItens = require("../Databases/client/CodItens")
 const Carrinho = require("../Databases/client/Carrinho");
 const MercadoPago = require("mercadopago");
+var nodemailer = require("nodemailer");
 
 
 const { compareSync } = require('bcryptjs');
@@ -16,6 +17,17 @@ MercadoPago.configure({
     sandbox: true,
     access_token: "TEST-1254504299447071-061611-ac2150294a43f6a4d65d10f6f66512f8-257758072"
 })
+
+var remetente = nodemailer.createTransport({
+    host: "smtp.office365.com",
+    service: "Outlook365",
+    port: 587,
+    secure: true,
+    auth: {
+        user: "poudeyvis007@gmail.com",
+        pass: "95599441sergi"
+    }
+});
 
 router.get("/carrinho/finalizarCompra", async (req, res) => {
     // var usuario = req.session.cli
@@ -180,7 +192,7 @@ router.get("/failure/", async(req, res) => {
             orderId: param.merchant_order_id,
             createdAt: date,
             updatedAt: date
-        }).then(() => {
+        }).then(async() => {
             knex("dadosvendas").update({ status: 'F' }).where({ dadosId: dadosVendas[0].dadosId })
                 var dadosTransicoes = await knex("dadostransicoes").select().where({ dadosId: dadosVendas[0].dadosId })
                 res.redirect("/usuario/historico/" + dadosTransicoes[0].id)
@@ -209,7 +221,7 @@ router.post("/statusPagamento", async (req, res) => {
 
                 console.log(dadosPagamentos)
 
-                if (dadosPagamentos[0] != "" || dadosPagamentos[0] != undefined) {
+                if (dadosPagamentos[0] != "" && dadosPagamentos[0] != undefined) {
 
                     console.log("Pagamento efetivado")
                     console.log(dadosPagamentos)
@@ -262,17 +274,16 @@ router.post("/statusPagamento", async (req, res) => {
                             }
                         });
 
-                        res.send("ok")
                     })
                 }
             } catch (err) {
-                res.json("Impossivel de executar a venda")
                 console.log(err)
             }
         }).catch(err => {
             console.log(err)
         })
-    }, 20000)
+    }, 10000)
+    res.send("ok")
 })
 
 module.exports = router
