@@ -209,7 +209,7 @@ router.post("/statusPagamento", async (req, res) => {
 
                 console.log(dadosPagamentos)
 
-                if (dadosPagamentos[0] != "" || dadosPagamentos[0] != undefined) {
+                if (dadosPagamentos != "" || dadosPagamentos != undefined) {
 
                     console.log("Pagamento efetivado")
                     console.log(dadosPagamentos)
