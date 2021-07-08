@@ -180,7 +180,7 @@ router.get("/failure/", async (req, res) => {
             orderId: param.merchant_order_id,
             createdAt: date,
             updatedAt: date
-        }).then(() => {
+        }).then(async() => {
             knex("dadosvendas").update({ status: 'F' }).where({ dadosId: dadosVendas[0].dadosId })
             var dadosTransicoes = await knex("dadostransicoes").select().where({ dadosId: dadosVendas[0].dadosId })
             res.redirect("/usuario/historico/" + dadosTransicoes[0].id)
