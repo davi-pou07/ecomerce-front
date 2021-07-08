@@ -288,6 +288,27 @@ router.post("/usuario/editar", auth, async (req, res) => {
     }
 })
 
+router.get("/usuario/historico",auth,async(req,res)=>{
+    // var usuario = req.session.cli
+    var usuario = {id:1}
+    if (usuario != undefined) {
+        try{
+        var cliente = await Cliente.findByPk(usuario.id)
+        var carrinhos = await Carrinho.findAll({where:{clienteId:cliente.id}})
+        var dadosVendas = await knex("dadosvendas").select().where({clienteId:cliente.id})
+        var dadosTransicoes = await knex("dadostransicoes").select().where({clienteId:cliente.id})
+
+        res.json({cliente:cliente,carrinhos:carrinhos,dadosVendas:dadosVendas,dadosTransicoes:dadosTransicoes})
+        }catch(err){
+            console.log(err)
+            res.redirect("/")
+        }
+    } else {
+        res.redirect("/login")
+    }
+    
+})
+
 router.get("/logout", (req, res) => {
     req.session.cli = undefined
     res.redirect("/")
