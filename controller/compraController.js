@@ -8,6 +8,7 @@ const Cliente = require('../Databases/client/Cliente');
 const CodItens = require("../Databases/client/CodItens")
 const Carrinho = require("../Databases/client/Carrinho");
 const MercadoPago = require("mercadopago");
+var nodemailer = require("nodemailer");
 
 
 const { compareSync } = require('bcryptjs');
