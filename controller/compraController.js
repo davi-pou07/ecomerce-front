@@ -7,6 +7,7 @@ var uniqid = require('uniqid');
 const Cliente = require('../Databases/client/Cliente');
 const CodItens = require("../Databases/client/CodItens")
 const Carrinho = require("../Databases/client/Carrinho");
+const nodemailer = require("nodemailer");
 const MercadoPago = require("mercadopago");
 
 
