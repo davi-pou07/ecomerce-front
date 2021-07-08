@@ -241,17 +241,17 @@ router.post("/statusPagamento", async (req, res) => {
 
                         var cliente = await Cliente.findByPk(dadosVendas[0].clienteId)
 
-                        Carrinho.update({
-                            status: false
-                        }, { where: { id: dadosVendas[0].carrinhoId } }).then(()=>{
-                            console.log("Carrinho inativado")
-                        })
+                        // Carrinho.update({
+                        //     status: false
+                        // }, { where: { id: dadosVendas[0].carrinhoId } }).then(()=>{
+                        //     console.log("Carrinho inativado")
+                        // })
 
                         var emailASerEnviado = {
                             from: 'poudeyvis007@gmail.com',
                             to: cliente.email,
                             subject: `Compra dos produtos: ${results.description}`,
-                            text: 'Sua compra foi efetivada com sucesso' + cliente.nome,
+                            text: 'Sua compra foi efetivada com sucesso ' +  cliente.nome + " /q Codigo: " + external_reference
                         };
 
                         remetente.sendMail(emailASerEnviado, function (error) {
