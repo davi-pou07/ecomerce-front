@@ -8,7 +8,6 @@ const Cliente = require('../Databases/client/Cliente');
 const CodItens = require("../Databases/client/CodItens")
 const Carrinho = require("../Databases/client/Carrinho");
 const MercadoPago = require("mercadopago");
-var nodemailer = require("nodemailer");
 
 
 const { compareSync } = require('bcryptjs');
@@ -17,17 +16,6 @@ MercadoPago.configure({
     sandbox: true,
     access_token: "TEST-1254504299447071-061611-ac2150294a43f6a4d65d10f6f66512f8-257758072"
 })
-
-var remetente = nodemailer.createTransport({
-    host: "smtp.office365.com",
-    service: "Outlook365",
-    port: 587,
-    secure: true,
-    auth: {
-        user: "poudeyvis007@gmail.com",
-        pass: "95599441sergi"
-    }
-});
 
 router.get("/carrinho/finalizarCompra", async (req, res) => {
     // var usuario = req.session.cli
@@ -149,7 +137,7 @@ router.get("/success/", async (req, res) => {
     }
 })
 
-router.get("/pending/", async(req, res) => {
+router.get("/pending/", async (req, res) => {
     var param = req.query
     try {
         var dadosVendas = await knex("dadosvendas").select().where({ dadosId: param.external_reference })
@@ -177,7 +165,7 @@ router.get("/pending/", async(req, res) => {
     }
 })
 
-router.get("/failure/", async(req, res) => {
+router.get("/failure/", async (req, res) => {
     var param = req.query
     try {
         var dadosVendas = await knex("dadosvendas").select().where({ dadosId: param.external_reference })
@@ -192,10 +180,10 @@ router.get("/failure/", async(req, res) => {
             orderId: param.merchant_order_id,
             createdAt: date,
             updatedAt: date
-        }).then(async() => {
+        }).then(() => {
             knex("dadosvendas").update({ status: 'F' }).where({ dadosId: dadosVendas[0].dadosId })
-                var dadosTransicoes = await knex("dadostransicoes").select().where({ dadosId: dadosVendas[0].dadosId })
-                res.redirect("/usuario/historico/" + dadosTransicoes[0].id)
+            var dadosTransicoes = await knex("dadostransicoes").select().where({ dadosId: dadosVendas[0].dadosId })
+            res.redirect("/usuario/historico/" + dadosTransicoes[0].id)
         })
     } catch (err) {
         console.log(err)
@@ -211,7 +199,7 @@ router.post("/statusPagamento", async (req, res) => {
         MercadoPago.payment.search({
             qs: filtro
         }).then(async data => {
-            
+
             var results = data.body.results[0]
             var external_reference = results.external_reference
             console.log(results)
@@ -221,7 +209,7 @@ router.post("/statusPagamento", async (req, res) => {
 
                 console.log(dadosPagamentos)
 
-                if (dadosPagamentos[0] != "" && dadosPagamentos[0] != undefined) {
+                if (dadosPagamentos[0] != "" || dadosPagamentos[0] != undefined) {
 
                     console.log("Pagamento efetivado")
                     console.log(dadosPagamentos)
@@ -258,32 +246,37 @@ router.post("/statusPagamento", async (req, res) => {
                         // }, { where: { id: dadosVendas[0].carrinhoId } }).then(()=>{
                         //     console.log("Carrinho inativado")
                         // })
+                        try {
+                            var emailASerEnviado = {
+                                from: 'poudeyvis007@gmail.com',
+                                to: cliente.email,
+                                subject: `Compra dos produtos: ${results.description}`,
+                                text: 'Sua compra foi efetivada com sucesso ' + cliente.nome + " /q Codigo: " + external_reference
+                            };
 
-                        var emailASerEnviado = {
-                            from: 'poudeyvis007@gmail.com',
-                            to: cliente.email,
-                            subject: `Compra dos produtos: ${results.description}`,
-                            text: 'Sua compra foi efetivada com sucesso ' +  cliente.nome + " /q Codigo: " + external_reference
-                        };
-
-                        remetente.sendMail(emailASerEnviado, function (error) {
-                            if (error) {
-                                console.log(error);
-                            } else {
-                                console.log("Email enviado com sucesso");
-                            }
-                        });
+                            remetente.sendMail(emailASerEnviado, function (error) {
+                                if (error) {
+                                    console.log(error);
+                                } else {
+                                    console.log("Email enviado com sucesso");
+                                }
+                            });
+                        } catch (err) {
+                            console.log(err)
+                        } finally {
+                            res.send("ok")
+                        }
 
                     })
                 }
             } catch (err) {
+                res.json("Impossivel de executar a venda")
                 console.log(err)
             }
         }).catch(err => {
             console.log(err)
         })
-    }, 10000)
-    res.send("ok")
+    }, 20000)
 })
 
 module.exports = router
