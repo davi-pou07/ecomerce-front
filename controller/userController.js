@@ -290,8 +290,8 @@ router.post("/usuario/editar", auth, async (req, res) => {
 })
 
 router.get("/usuario/historico",async(req,res)=>{
-    // var usuario = req.session.cli
-    var usuario = {id:1}
+    var usuario = req.session.cli
+    // var usuario = {id:1}
     if (usuario != undefined) {
         try{
         var cliente = await Cliente.findByPk(usuario.id)

@@ -95,3 +95,20 @@
 
 
         <%- include('../partials/footer.ejs')%>
+        <script type = "text/javascript" src ="http://www.google.com/jsapi"> </script>
+        <script>
+            google.load("language","l");
+            function translate(text){
+                google.language.detect(txt,function(result){
+                    if(!result.erro && result.language){
+                        google.language.translate(txt,"","pt-Br",function(result){
+                            if (result.transltion) {
+                                alert(result.transltion)
+                            } else {
+                                alert("Erro")
+                            }
+                        })
+                    }
+                })
+            }
+        </script>
