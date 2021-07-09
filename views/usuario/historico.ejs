@@ -1,0 +1,97 @@
+<%- include('../partials/head.ejs')%>
+    <%- include('../partials/nav.ejs')%>
+
+        <div class="container">
+            <div class="card">
+                <div class="card-header">
+                    <div class="col-md-12 mt-3">
+                        <div class="personal-image">
+                            <label class="label">
+                                <figure class="personal-figure">
+                                    <img src="<%=foto%>" id="imagem" class="personal-avatar" alt="avatar">
+                                </figure>
+                            </label>
+                        </div>
+                        <p class="text-center">
+                            <%=nome%>
+                        </p>
+                    </div>
+
+                    <div class="row text-center">
+                        <div class="col-md-6">
+                            <h3>Historico de compra</h3>
+                            <p>Acompanhe aqui o historico de compras</p>
+                        </div>
+                        <div class="col-md-6">
+                            <h3>Detalhamento da transação</h3>
+                            <p>Verifique os irems, forma de pagamento...</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body mt-4">
+                    <table class="table table-striped">
+                        <thead class="text-muted">
+                            <tr class="small text-uppercase">
+                                <th scope="col" width="100" class="table-dark">Codigo</th>
+                                <th scope="col" width="160">Descrição</th>
+                                <th scope="col" width="100">Quantidade</th>
+                                <th scope="col" width="120">Valor</th>
+                                <th scope="col" width="120">Data</th>
+                                <th scope="col" width="120">Status</th>
+                                <th scope="col" class="text-right" width="120"> </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <%dadosVendas.forEach(dadovenda=>{%>
+
+                                <tr>
+
+                                    <th scope="row" class="table-dark">
+                                        <%=dadovenda.id%>
+                                    </th>
+                                    <td scope="row">
+                                        <%=dadovenda.descricao%>
+                                    </td>
+                                    <td scope="row" class="text-center">
+                                        <%carrinhos.forEach(carrinho=>{%>
+                                            <%if(carrinho.id==dadovenda.carrinhoId){%>
+                                                <%=carrinho.quantidade%>
+                                                    <%}%>
+                                                        <%})%>
+                                    </td>
+                                    <td scope="row">
+                                        <%=dadovenda.unit_price.toLocaleString('pt-br',{style: 'currency' ,
+                                            currency: 'BRL' })%>
+                                    </td>
+                                    <td scope="row">
+                                        <%dadosTransicoes.forEach(dadostransicao=>{%>
+                                            <%datas.forEach(data=>{%>
+                                                <%if(dadostransicao.dadosId==dadovenda.dadosId && dadostransicao.id == data.id ){%>
+                                                    <%=data.createdAt%>
+                                                        <%}%>
+                                                            <%})%>
+                                                                <%})%>
+                                    </td>
+
+                                    <td scope="row">
+                                        <%dadosTransicoes.forEach(dadostransicao=>{%>
+                                            <%if(dadostransicao.dadosId==dadovenda.dadosId){%>
+                                                <%=dadostransicao.collection_status%>
+                                                <%}%>
+                                            <%})%>
+                                    </td>
+
+                                    <td>
+                                        <button class="btn btn-info">Detalhes</button>
+                                    </td>
+
+                                </tr>
+                                <%})%>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+
+        <%- include('../partials/footer.ejs')%>

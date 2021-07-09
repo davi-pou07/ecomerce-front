@@ -12,6 +12,7 @@ const moment = require("moment")
 const bcrypt = require("bcryptjs")
 const auth = require("../middlewares/adminAuth")
 
+
 // router.post("/criar/usuario", (req, res) => {
 //     var foto = req.body.foto
 //     var nome = req.body.nome
@@ -288,7 +289,7 @@ router.post("/usuario/editar", auth, async (req, res) => {
     }
 })
 
-router.get("/usuario/historico",auth,async(req,res)=>{
+router.get("/usuario/historico",async(req,res)=>{
     // var usuario = req.session.cli
     var usuario = {id:1}
     if (usuario != undefined) {
@@ -297,8 +298,13 @@ router.get("/usuario/historico",auth,async(req,res)=>{
         var carrinhos = await Carrinho.findAll({where:{clienteId:cliente.id}})
         var dadosVendas = await knex("dadosvendas").select().where({clienteId:cliente.id})
         var dadosTransicoes = await knex("dadostransicoes").select().where({clienteId:cliente.id})
-
-        res.json({cliente:cliente,carrinhos:carrinhos,dadosVendas:dadosVendas,dadosTransicoes:dadosTransicoes})
+        var datas =[]
+        dadosTransicoes.forEach(dados =>{
+            var data = moment(dados.createdAt).format('Do MMMM YYYY, h:mm:ss a')
+            var dado = {id:dados.id,createdAt:data}
+            datas.push(dado)
+        })
+        res.render("usuario/historico",{nome:cliente.nome,id:cliente.id,foto:cliente.foto,carrinhos:carrinhos,dadosVendas:dadosVendas,dadosTransicoes:dadosTransicoes,datas:datas})
         }catch(err){
             console.log(err)
             res.redirect("/")
