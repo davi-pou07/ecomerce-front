@@ -76,9 +76,9 @@ router.post("/carrinho/adicionar", auth, async (req, res) => {
 
 })
 
-router.get("/carrinho/caixa", auth, async (req, res) => {
-    var usuario = req.session.cli
-    // var usuario = {id:1}
+router.get("/carrinho/caixa", async (req, res) => {
+    // var usuario = req.session.cli
+    var usuario = {id:1}
     if (usuario != undefined) {
         var cliente = await Cliente.findByPk(usuario.id)
         var carrinho = await Carrinho.findOne({ where: { clienteId: cliente.id, status: true } })
@@ -98,23 +98,23 @@ router.get("/carrinho/caixa", auth, async (req, res) => {
     }
 })
 
-router.post("/carrinho/alterarValores",auth,async(req,res)=>{
-    var usuario = req.session.cli
+router.post("/carrinho/alterarValores",async(req,res)=>{
+    // var usuario = req.session.cli
+    var usuario = {id:1}
     var novaQuantidade = req.body.novaQuantidade
     var codItem = req.body.codItem
-    console.log(codItem)
 
     if (usuario != undefined) {
         try{
 
         var cliente = await Cliente.findByPk(usuario.id)
-        var carrinho = await Carrinho.findOne({ where: { clienteId: cliente.id } })
+        var carrinho = await Carrinho.findOne({ where: { clienteId: cliente.id,staus:true } })
         var codIten = await CodItens.findOne({ where: { carrinhoId: carrinho.id, id:codItem } })
 
-        var precoTotalItem = parseFloat(codItem.valorUnit) * novaQuantidade
+        var precoTotalItem = parseFloat(codItem.valorUnit) * parseInt(novaQuantidade)
 
-        var quantidadeTotalCarrinho = (parseInt(carrinho.quantidade) - parseInt(codIten.quantidade)) + novaQuantidade
-        var precoTotalCarrinho = (parseFloat(carrinho.precoTotal) - parseFloat(codIten.precoTotalItem)) + precoTotalItem
+        var quantidadeTotalCarrinho = (parseInt(carrinho.quantidade) - parseInt(codIten.quantidade)) + parseInt(novaQuantidade)
+        var precoTotalCarrinho = (parseFloat(carrinho.precoTotal) - parseFloat(codIten.precoTotalItem)) + parseFloat(precoTotalItem)
 
         CodItens.update({
             quantidade:novaQuantidade,

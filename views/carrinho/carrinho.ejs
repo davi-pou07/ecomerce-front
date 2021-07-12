@@ -93,10 +93,11 @@
                                                             method="POST">
                                                             <div class="row">
                                                                 <div class="col-md-12">
-                                                                    <button data-index="<%=index%>" class="btn btn-info mt-4 text-white"
-                                                                        id="btnAtualizar" value="<%=codIten.id%>" onclick="atualizar(this.dataset.codIten,this.value)">Atualizar</button>
-                                                                    <button type="submit"
-                                                                        class="btn btn-warning mt-4"
+                                                                    <button type="button" data-index="<%=index%>"
+                                                                        class="btn btn-info mt-4 text-white"
+                                                                        id="btnAtualizar" value="<%=codIten.id%>"
+                                                                        onclick="atualizar(this.dataset.index,this.value)">Atualizar</button>
+                                                                    <button type="submit" class="btn btn-warning mt-4"
                                                                         onclick='return deleteItem();'> Remove</button>
                                                                 </div>
                                                             </div>
@@ -177,17 +178,19 @@
 
         <%- include("./../partials/footer.ejs")%>
             <script src="/js/carrinho.js"></script>
-            <script>function atualizar(index,codItemid){
-                var btn = `btnValor${x}`
-                axios.post("https://ecomerce-front.herokuapp.com/carrinho/alterarValores",{btn:btn,codItemid:codItemid}).then(resp =>{
-                    if (resp.data.erro !== undefined) {
-                        alert("Ocorreu um erro ao atualizar: "+resp.data.erro)
-                    } else {
-                        alert(resp.data.resp)
-                    }
-                }).catch(err =>{
-                    console.log(err)
-                })
-            var
-
-            }</script>
+            <script>
+                function atualizar(index, codItem) {
+                    var btn = `btnValor${index}`
+                    var novaQuantidade = document.getElementById(btn).value
+                    var codItem = codItem
+                    axios.post("https://ecomerce-front.herokuapp.com/carrinho/alterarValores", { novaQuantidade: novaQuantidade, codItem: codItem }).then(resp => {
+                        if (resp.data.erro !== undefined) {
+                            alert("Ocorreu um erro ao atualizar: " + resp.data.erro)
+                        } else {
+                            alert(resp.data.resp)
+                        }
+                    }).catch(err => {
+                        console.log(err)
+                    })
+                }
+            </script>
