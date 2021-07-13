@@ -21,7 +21,7 @@ router.post("/carrinho/adicionar", auth, async (req, res) => {
     }
 
     var produto = await knex("produtos").select().where({ "produtos.id": codItem }).innerJoin("precos", "produtos.id", "precos.produtoId")
-    if (prodto[0].desconto > 0) {
+    if (produto[0].desconto > 0) {
     var precoUnit = produto[0].desconto
     } else {
     var precoUnit = produto[0].venda
