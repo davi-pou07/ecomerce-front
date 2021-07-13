@@ -110,31 +110,31 @@ router.post("/carrinho/alterarValores", async (req, res) => {
             var cliente = await Cliente.findByPk(usuario.id)
             var carrinho = await Carrinho.findOne({ where: { clienteId: cliente.id, status: true } })
             var codIten = await CodItens.findOne({ where: { carrinhoId: carrinho.id, id: codItem } })
-            console.log("-------Cliente------")
-            console.log(cliente)
-            console.log("-------Carrinho------")
-            console.log(carrinho)
-            console.log("-------CodIten------")
-            console.log(codIten)
 
             var precoTotalItem = parseFloat(codIten.precoUnit) * parseInt(novaQuantidade)
 
             var quantidadeTotalCarrinho = (parseInt(carrinho.quantidade) - parseInt(codIten.quantidade)) + parseInt(novaQuantidade)
             var precoTotalCarrinho = (parseFloat(carrinho.precoTotal) - parseFloat(codIten.precoTotalItem)) + parseFloat(precoTotalItem)
-            console.log("--------------------------LOGS----------------------")
-            console.log("novaQuantidade: "+novaQuantidade+"\n"+"precoTotalItem: "+precoTotalItem+"\n"+"quantidadeTotalCarrinho: "+quantidadeTotalCarrinho+"\n"+"precoTotalCarrinho "+precoTotalCarrinho)
-            // CodItens.update({
-            //     quantidade: novaQuantidade,
-            //     precoTotalItem: precoTotalItem
-            // }, { where: { id: codIten.id } }).then(() => {
-            //     Carrinho.update({
-            //         quantidade: quantidadeTotalCarrinho,
-            //         precoTotal: precoTotalCarrinho
-            //     }, { where: { id: carrinho.id } }).then(() => {
-            //         res.json({ resp: "Atualização de valores realizada" })
-            //     })
-            // })
+            
+            CodItens.update({
+                quantidade: novaQuantidade,
+                precoTotalItem: precoTotalItem
+            }, { where: { id: codIten.id } }).then(() => {
+                Carrinho.update({
+                    quantidade: quantidadeTotalCarrinho,
+                    precoTotal: precoTotalCarrinho
+                }, { where: { id: carrinho.id } }).then(() => {
+                    res.json({ resp: "Atualização de valores realizada" })
+                }).catch(err => {
+                    console.log(err)
+                    res.json({ erro: "Erro ao efetuar a atualização de valores" })
+                })
+            }).catch(err => {
+                console.log(err)
+                res.json({ erro: "Erro ao efetuar a atualização de valores" })
+            })
         } catch (err) {
+            res.json({ erro: "Não foi possivel localizar seus dados, efetue login novamente" })
             console.log(err)
         }
     } else {
