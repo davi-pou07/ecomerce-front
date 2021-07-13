@@ -108,7 +108,7 @@ router.post("/carrinho/alterarValores",async(req,res)=>{
         try{
 
         var cliente = await Cliente.findByPk(usuario.id)
-        var carrinho = await Carrinho.findOne({ where: { clienteId: cliente.id,staus:true } })
+        var carrinho = await Carrinho.findOne({ where: { clienteId: cliente.id,status:true } })
         var codIten = await CodItens.findOne({ where: { carrinhoId: carrinho.id, id:codItem } })
 
         var precoTotalItem = parseFloat(codItem.valorUnit) * parseInt(novaQuantidade)
