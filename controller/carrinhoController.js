@@ -21,7 +21,11 @@ router.post("/carrinho/adicionar", auth, async (req, res) => {
     }
 
     var produto = await knex("produtos").select().where({ "produtos.id": codItem }).innerJoin("precos", "produtos.id", "precos.produtoId")
-
+    if (prodto[0].desconto > 0) {
+    var precoUnit = produto[0].desconto
+    } else {
+    var precoUnit = produto[0].venda
+    }
 
     var carrinho = await Carrinho.findOne({ where: { clienteId: usuario.id, status: true } })
     if (carrinho.quantidade == undefined) {
@@ -37,18 +41,19 @@ router.post("/carrinho/adicionar", auth, async (req, res) => {
         quantidadeItem = parseInt(quantidadeItem) + parseInt(codItems.quantidade)
         quantidadeTotalCarrinho = parseInt(quantidadeTotalCarrinho) + parseInt(quantidadeItem)
 
-        var precoTotalItem = produto[0].venda * parseInt(quantidadeItem)
-
+        var precoTotalItem = parseFloat(precoUnit) * parseInt(quantidadeItem)
+        
         var precoTotalCarrinho = (parseFloat(carrinho.precoTotal) - parseInt(codItems.precoTotalItem)) + parseFloat(precoTotalItem)
         CodItens.update({
             quantidade: quantidadeItem,
-            precoTotalItem: precoTotalItem
+            precoTotalItem: precoTotalItem,
+            precoUnit: parseFloat(precoUnit)
         }, { where: { id: codItems.id } }).then(resp => {
             console.log({ resp: "Foi realizado o ajuste" })
         })
 
     } else {
-        var precoTotalItem = produto[0].venda * quantidadeItem
+        var precoTotalItem = parseFloat(precoUnit) * parseInt(quantidadeItem)
 
         CodItens.create({
             produtoId: codItem,
@@ -56,7 +61,7 @@ router.post("/carrinho/adicionar", auth, async (req, res) => {
             refcoluna: refcoluna,
             reflinha: reflinha,
             carrinhoId: carrinho.id,
-            precoUnit: produto[0].venda,
+            precoUnit: parseFloat(precoUnit),
             precoTotalItem: precoTotalItem
         }).then(resp => {
             console.log({ resp: "Foi realizado a adição" })
