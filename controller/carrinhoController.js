@@ -117,7 +117,7 @@ router.post("/carrinho/alterarValores", async (req, res) => {
             console.log("-------CodIten------")
             console.log(codIten)
 
-            var precoTotalItem = parseFloat(codItem.valorUnit) * parseInt(novaQuantidade)
+            var precoTotalItem = parseFloat(codIten.precoUnit) * parseInt(novaQuantidade)
 
             var quantidadeTotalCarrinho = (parseInt(carrinho.quantidade) - parseInt(codIten.quantidade)) + parseInt(novaQuantidade)
             var precoTotalCarrinho = (parseFloat(carrinho.precoTotal) - parseFloat(codIten.precoTotalItem)) + parseFloat(precoTotalItem)
