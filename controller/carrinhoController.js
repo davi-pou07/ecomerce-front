@@ -78,7 +78,7 @@ router.post("/carrinho/adicionar", auth, async (req, res) => {
 
 router.get("/carrinho/caixa", async (req, res) => {
     // var usuario = req.session.cli
-    var usuario = {id:1}
+    var usuario = { id: 1 }
     if (usuario != undefined) {
         var cliente = await Cliente.findByPk(usuario.id)
         var carrinho = await Carrinho.findOne({ where: { clienteId: cliente.id, status: true } })
@@ -98,38 +98,45 @@ router.get("/carrinho/caixa", async (req, res) => {
     }
 })
 
-router.post("/carrinho/alterarValores",async(req,res)=>{
+router.post("/carrinho/alterarValores", async (req, res) => {
     // var usuario = req.session.cli
-    var usuario = {id:1}
+    var usuario = { id: 1 }
     var novaQuantidade = req.body.novaQuantidade
     var codItem = req.body.codItem
 
     if (usuario != undefined) {
-        try{
+        try {
 
-        var cliente = await Cliente.findByPk(usuario.id)
-        var carrinho = await Carrinho.findOne({ where: { clienteId: cliente.id,status:true } })
-        var codIten = await CodItens.findOne({ where: { carrinhoId: carrinho.id, id:codItem } })
+            var cliente = await Cliente.findByPk(usuario.id)
+            var carrinho = await Carrinho.findOne({ where: { clienteId: cliente.id, status: true } })
+            var codIten = await CodItens.findOne({ where: { carrinhoId: carrinho.id, id: codItem } })
+            console.log("-------Cliente------")
+            console.log(cliente)
+            console.log("-------Carrinho------")
+            console.log(carrinho)
+            console.log("-------CodIten------")
+            console.log(codIten)
 
-        var precoTotalItem = parseFloat(codItem.valorUnit) * parseInt(novaQuantidade)
+            var precoTotalItem = parseFloat(codItem.valorUnit) * parseInt(novaQuantidade)
 
-        var quantidadeTotalCarrinho = (parseInt(carrinho.quantidade) - parseInt(codIten.quantidade)) + parseInt(novaQuantidade)
-        var precoTotalCarrinho = (parseFloat(carrinho.precoTotal) - parseFloat(codIten.precoTotalItem)) + parseFloat(precoTotalItem)
-
-        CodItens.update({
-            quantidade:novaQuantidade,
-            precoTotalItem:precoTotalItem
-        },{where:{id:codIten.id}}).then(()=>{
-            Carrinho.update({
-                quantidade:quantidadeTotalCarrinho,
-                precoTotal:precoTotalCarrinho
-            },{where:{id:carrinho.id}}).then(()=>{
-                res.json({resp:"Atualização de valores realizada"})
-            })
-        })
-    }catch(err){
-        console.log(err)
-    }
+            var quantidadeTotalCarrinho = (parseInt(carrinho.quantidade) - parseInt(codIten.quantidade)) + parseInt(novaQuantidade)
+            var precoTotalCarrinho = (parseFloat(carrinho.precoTotal) - parseFloat(codIten.precoTotalItem)) + parseFloat(precoTotalItem)
+            console.log("--------------------------LOGS----------------------")
+            console.log("novaQuantidade: "+novaQuantidade+"\n"+"precoTotalItem: "+precoTotalItem+"\n"+"quantidadeTotalCarrinho: "+quantidadeTotalCarrinho+"\n"+"precoTotalCarrinho "+precoTotalCarrinho)
+            // CodItens.update({
+            //     quantidade: novaQuantidade,
+            //     precoTotalItem: precoTotalItem
+            // }, { where: { id: codIten.id } }).then(() => {
+            //     Carrinho.update({
+            //         quantidade: quantidadeTotalCarrinho,
+            //         precoTotal: precoTotalCarrinho
+            //     }, { where: { id: carrinho.id } }).then(() => {
+            //         res.json({ resp: "Atualização de valores realizada" })
+            //     })
+            // })
+        } catch (err) {
+            console.log(err)
+        }
     } else {
         res.redirect("/logar")
     }
