@@ -8,8 +8,10 @@ const path = require('path')
 const MercadoPago = require("mercadopago")
 const knex = require('./Databases/admin/databases')
 
+const Cliente = require("./Databases/client/Cliente")
 const Carrinho = require("./Databases/client/Carrinho")
 const CodItens = require("./Databases/client/CodItens")
+const Endereco = require("./Databases/client/Endereco")
 
 const carrinhoController = require("./controller/carrinhoController")
 const empresaController = require("./controller/empresaController")
@@ -19,7 +21,6 @@ const categoriaControler = require("./controller/categoriaController")
 const compraControler = require("./controller/compraController")
 
 const connectionCL = require('./Databases/client/databasesCL')
-const Cliente = require("./Databases/client/Cliente")
 
 MercadoPago.configure({
     sandbox: true,
