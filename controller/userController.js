@@ -87,7 +87,7 @@ router.post("/usuario/login", (req, res) => {
 
     if (emailLogin != '' && senhaLogin != '') {
 
-        Cliente.findOne({ where: { email: emailLogin } }).then(cli => {
+        Cliente.findOne({ where: { email: emailLogin.toLowerCase() } }).then(cli => {
             if (cli != undefined) {
                 var correct = bcrypt.compareSync(senhaLogin, cli.senha)
                 var nomeCli = cli.nome.split(" ")[0]
@@ -126,7 +126,7 @@ router.post("/usuario/criar", (req, res) => {
                         if (clienteCadastrado == undefined) {
                             Cliente.create({
                                 nome: nome,
-                                email: email,
+                                email: email.toLowerCase(),
                                 numero: numero,
                                 senha: hash,
                                 status: true,
@@ -259,7 +259,7 @@ router.post("/usuario/editar", auth, async (req, res) => {
                                 Cliente.update({
                                     nome: nome,
                                     numero: numero,
-                                    email: email,
+                                    email: email.toLowerCase(),
                                     foto: foto,
                                     senha:hash
                                 },{where:{id:usuario}}).then(cliente =>{
