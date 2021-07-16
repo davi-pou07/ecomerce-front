@@ -89,13 +89,14 @@
                                                     </td>
                                                     <td class="text-right">
 
-                                                        <form action="/carrinho/remover/<%=codIten.id%>" id="deleteItem"
-                                                            method="POST">
+                                                        <form action="/carrinho/remover/<%=codIten.id%>"
+                                                            id="deleteItem<%=index%>" method="POST">
                                                             <div class="row">
                                                                 <div class="col-md-12">
                                                                     <button type="button" data-index="<%=index%>"
                                                                         class="btn btn-info mt-4 text-white"
-                                                                        id="btnAtualizar" value="<%=codIten.id%>"
+                                                                        id="btnAtualizar<%=index%>"
+                                                                        value="<%=codIten.id%>"
                                                                         onclick="atualizar(this.dataset.index,this.value)">Atualizar</button>
                                                                     <button type="submit" class="btn btn-warning mt-4"
                                                                         onclick='return deleteItem();'> Remove</button>
@@ -124,7 +125,7 @@
                                         <label for="cep" class="form-label">CEP</label>
                                         <input class="form-control mascCEP" size="10" maxlength="9" type="text" id="cep"
                                             name="cep" placeholder="Informe o CEP" autocomplete="off"
-                                            onblur="pesquisacep(this.value);" required>
+                                            onblur="pesquisacep(this.value);verificaCidade()" required>
                                     </div>
 
                                     <div class="col-md-2">
@@ -136,25 +137,25 @@
                                     <div class="col-md-2">
                                         <label for="rua" class="form-label">Rua</label>
                                         <input class="form-control" type="text" id="rua" name="rua" autocomplete="off"
-                                            size="60" required>
+                                            size="60" required disabled>
                                     </div>
 
                                     <div class="col-md-2">
                                         <label for="bairro" class="form-label">Bairro</label>
                                         <input class="form-control" type="text" id="bairro" name="bairro" size="40"
-                                            autocomplete="off" required>
+                                            autocomplete="off" required disabled>
                                     </div>
 
                                     <div class="col-md-2">
                                         <label for="cidade" class="form-label">Cidade</label>
                                         <input class="form-control" size="40" type="text" id="cidade" name="cidade"
-                                            autocomplete="off" required>
+                                            autocomplete="off" required disabled>
                                     </div>
 
                                     <div class="col-md-2">
                                         <label for="uf" class="form-label">UF</label>
                                         <input class="form-control" size="2" type="text" id="uf" name="estado"
-                                            autocomplete="off" required>
+                                            autocomplete="off" required disabled>
                                     </div>
                                     <div class="col-md-12">
                                         <label for="complemento" class="form-label mt-2">Complemento</label>
@@ -166,8 +167,8 @@
                             </div>
                         </div>
 
-                        <div class="alert alert-success mt-3">
-                            <p class="icontext"><i class="icon text-success fa fa-truck"></i> Delivery gratis em Teresina</p>
+                        <div class="mt-2" id="respostaEntrega">
+                            <p class="icontext"><i class="icon text-success fa fa-truck"></i></p>
                         </div>
 
                     </main> <!-- col.// -->
@@ -228,7 +229,24 @@
         <%- include("./../partials/footer.ejs")%>
             <script src="/js/carrinho.js"></script>
             <script src="/js/pesquisaCep.js"></script>
-
+            <script>
+                function verificaCidade() {
+                    var respostaEntrega = document.getElementById("respostaEntrega")
+                    respostaEntrega.innerHTML = ['<div class="spinner-border" role="status"><span class="sr-only"></span></div>'].join('');
+                    var cidadesEntrega = ['teresina', 'Timon']
+                    setTimeout(async () => {
+                        var cidade = document.getElementById("cidade").value
+                        var entrega = await cidadesEntrega.find(cidadeEntrega => cidadeEntrega.toLowerCase() == cidade.toLowerCase())
+                        if (entrega != undefined) {
+                            respostaEntrega.innerHTML = ''
+                            respostaEntrega.innerHTML = [`<div class="alert alert-success" id="respostaEntrega"><p class="icontext"><i class="icon text-success fa fa-truck"></i></p>Entrega para ${cidade} disponivel</div>`].join('');
+                        } else {
+                            respostaEntrega.innerHTML = ''
+                            respostaEntrega.innerHTML = [`<div class="alert alert-danger" id="respostaEntrega"><p class="icontext"><i class="icon text-success fa fa-truck"></i></p>Entrega para ${cidade} indisponivel</div>`].join('');
+                        }
+                    }, 5000)
+                }
+            </script>
             <script>
                 function atualizar(index, codItem) {
                     var btn = `btnValor${index}`
