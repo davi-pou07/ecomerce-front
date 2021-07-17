@@ -167,6 +167,21 @@
                             </div>
                         </div>
 
+                        <div class="position-fixed bottom-0 start-0 p-3 " style="z-index: 11">
+                            <div id="liveToast" data-bs-delay="10000" class="toast hide" role="alert" aria-live="assertive"
+                                aria-atomic="true">
+                                <div class="toast-header">
+                                    <img src="" class="rounded me-2" alt="...">
+                                    <strong class="me-auto">Ecomerce</strong>
+                                    <small id="small">Agora</small>
+                                    <button type="button" class="btn-close" data-bs-dismiss="toast"
+                                        aria-label="Close"></button>
+                                </div>
+                                <div class="toast-body" id="toastMsm">
+
+                                </div>
+                            </div>
+                        </div>
                         <div class="mt-2" id="respostaEntrega">
                             <p class="icontext"><i class="icon text-success fa fa-truck"></i></p>
                         </div>
@@ -231,20 +246,38 @@
             <script src="/js/pesquisaCep.js"></script>
             <script>
                 function verificaCidade() {
-                    var respostaEntrega = document.getElementById("respostaEntrega")
+
+                    var toastLiveExample = document.getElementById('liveToast')
+                    var toast = new bootstrap.Toast(toastLiveExample)
+                    toast.show()
+
+                    var respostaEntrega = document.getElementById("toastMsm")
+
                     respostaEntrega.innerHTML = ['<div class="spinner-border" role="status"><span class="sr-only"></span></div>'].join('');
+
                     var cidadesEntrega = ['teresina', 'Timon']
+
                     setTimeout(async () => {
+                        if (cidade == undefined) {
+                            cidade = 'local informado'
+                        } else {
                         var cidade = document.getElementById("cidade").value
+                            
+                        }
                         var entrega = await cidadesEntrega.find(cidadeEntrega => cidadeEntrega.toLowerCase() == cidade.toLowerCase())
                         if (entrega != undefined) {
                             respostaEntrega.innerHTML = ''
-                            respostaEntrega.innerHTML = [`<div class="alert alert-success" id="respostaEntrega"><p class="icontext"><i class="icon text-success fa fa-truck"></i></p>Entrega para ${cidade} disponivel</div>`].join('');
+                            respostaEntrega.innerHTML = `Entrega para ${cidade} disponivel!`
+                            respostaEntrega.classList.add("bg-success")
+                            respostaEntrega.classList.add("text-white")
+
                         } else {
                             respostaEntrega.innerHTML = ''
-                            respostaEntrega.innerHTML = [`<div class="alert alert-danger" id="respostaEntrega"><p class="icontext"><i class="icon text-success fa fa-truck"></i></p>Entrega para ${cidade} indisponivel</div>`].join('');
+                            respostaEntrega.innerHTML = `Entrega para ${cidade} indisponivel!`
+                            respostaEntrega.classList.add("bg-danger")
+                            respostaEntrega.classList.add("text-white")
                         }
-                    }, 5000)
+                    }, 3000)
                 }
             </script>
             <script>

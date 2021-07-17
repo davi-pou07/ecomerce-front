@@ -17,7 +17,7 @@ function meu_callback(conteudo) {
     else {
         //CEP não Encontrado.
         limpa_formulário_cep();
-        alert("CEP não encontrado.");
+        // alert("CEP não encontrado.");
     }
 }
 
@@ -58,7 +58,7 @@ function pesquisacep(valor) {
         else {
             //cep é inválido.
             limpa_formulário_cep();
-            alert("Formato de CEP inválido.");
+            // alert("Formato de CEP inválido.");
         }
     } //end if.
     else {
