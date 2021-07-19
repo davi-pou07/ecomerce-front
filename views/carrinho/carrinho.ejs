@@ -124,7 +124,7 @@
                                         <input type="image" src="/img/entrega.png" width="50px" height="50px" alt="">
                                     </div>
                                     <div class="col-md-11">
-                                    <h4 class="mb-4 mt-2">Local de entrega</h4>
+                                        <h4 class="mb-4 mt-2">Local de entrega</h4>
                                     </div>
                                     <hr>
                                 </div>
@@ -133,7 +133,7 @@
                                         <label for="cep" class="form-label">CEP</label>
                                         <input class="form-control mascCEP" size="10" maxlength="9" type="text" id="cep"
                                             name="cep" placeholder="Informe o CEP" autocomplete="off"
-                                            onblur="pesquisacep(this.value);verificaCidade()" required>
+                                            onblur="pesquisacep(this.value);verificaCidade();" required>
                                     </div>
 
                                     <div class="col-md-2">
@@ -145,25 +145,25 @@
                                     <div class="col-md-2">
                                         <label for="rua" class="form-label">Rua</label>
                                         <input class="form-control" type="text" id="rua" name="rua" autocomplete="off"
-                                            size="60" required disabled>
+                                            size="60" required>
                                     </div>
 
                                     <div class="col-md-2">
                                         <label for="bairro" class="form-label">Bairro</label>
                                         <input class="form-control" type="text" id="bairro" name="bairro" size="40"
-                                            autocomplete="off" required disabled>
+                                            autocomplete="off" required>
                                     </div>
 
                                     <div class="col-md-2">
                                         <label for="cidade" class="form-label">Cidade</label>
                                         <input class="form-control" size="40" type="text" id="cidade" name="cidade"
-                                            autocomplete="off" required disabled>
+                                            autocomplete="off" required>
                                     </div>
 
                                     <div class="col-md-2">
                                         <label for="uf" class="form-label">UF</label>
                                         <input class="form-control" size="2" type="text" id="uf" name="estado"
-                                            autocomplete="off" required disabled>
+                                            autocomplete="off" required>
                                     </div>
                                     <input type="hidden" id="enderecoValidado" value="false">
 
@@ -181,8 +181,8 @@
                             <div id="liveToast" data-bs-delay="20000" class="toast hide" role="alert"
                                 aria-live="assertive" aria-atomic="true">
                                 <div class="toast-header">
-                                    <img src="" class="rounded me-2" alt="...">
-                                    <strong class="me-auto">Ecomerce</strong>
+                                    <img src="/img/logo.png" width="15px" height="15px" class="rounded me-2" alt="...">
+                                    <strong class="me-auto">Ican</strong>
                                     <small id="small">Agora</small>
                                     <button type="button" class="btn-close" data-bs-dismiss="toast"
                                         aria-label="Close"></button>
@@ -236,7 +236,8 @@
                                     </dd>
                                 </dl>
                                 <hr>
-                                <a href="/carrinho/finalizarCompra" onclick="finalizaCompra(event)" class="btn btn-primary form-control">Realizar
+                                <a href="/carrinho/finalizarCompra" onclick="finalizaCompra(event)"
+                                    class="btn btn-primary form-control">Realizar
                                     Compra</a>
                                 <hr>
                                 <p class="text-center mb-3">
@@ -254,27 +255,33 @@
         <%- include("./../partials/footer.ejs")%>
             <script src="/js/carrinho.js"></script>
             <script src="/js/pesquisaCep.js"></script>
-            <script>
-                function finalizaCompra(event){
-                    event.preventDefault();
-                    
-                    var cep = document.getElementById('cep').value
-                    var cidade = document.getElementById('cidade').value
-                    var numero = document.getElementById("numero").value
-                    var rua = document.getElementById("rua").value
-                    var bairro = document.getElementById("bairro").value
-                    var uf = document.getElementById("uf").value
-                    var enderecoValidado = document.getElementById('enderecoValidado').value
 
-                    if (cep == '' || cidade == '' || numero == '' || rua == '' || bairro == '' || uf == '') {
+            <script>
+                function finalizaCompra(event) {
+                    event.preventDefault();
+
+                    var cep = document.getElementById('cep')
+                    var cidade = document.getElementById('cidade')
+                    var numero = document.getElementById("numero")
+                    var rua = document.getElementById("rua")
+                    var bairro = document.getElementById("bairro")
+                    var uf = document.getElementById("uf")
+                    var enderecoValidado = document.getElementById('enderecoValidado')
+
+                    if (cep.value == '' || cidade.value == '' || numero.value == '' || rua.value == '' || bairro.value == '' || uf.value == '' || enderecoValidado.value == 'false') {
                         alert("Informações referente a entrega estão incompletas ou inválidas")
-                    } else {
-                        if (enderecoValidado != false && enderecoValidado != 'false') {
-                            window.location.href = '/carrinho/finalizarCompra'
+
+                        if (numero.value == '') {
+                            numero.classList.add("is-invalid")
+                            numero.classList.remove("is-valid")
                         } else {
-                        var cep = document.getElementById('cep')
-                        alert("Informações referente a entrega estão incompletas ou inválidas")
+                            numero.classList.add("is-valid")
+                            numero.classList.remove("is-invalid")
                         }
+                    } else {
+                        numero.classList.add("is-valid")
+                        numero.classList.remove("is-invalid")
+                        window.location.href = '/carrinho/finalizarCompra'
                     }
                 }
             </script>
