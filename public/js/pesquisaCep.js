@@ -13,6 +13,7 @@ function meu_callback(conteudo) {
         document.getElementById('bairro').value = (conteudo.bairro);
         document.getElementById('cidade').value = (conteudo.localidade);
         document.getElementById('uf').value = (conteudo.uf);
+        document.getElementById('enderecoValidado').value = true
     } //end if.
     else {
         //CEP não Encontrado.

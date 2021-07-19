@@ -119,8 +119,16 @@
 
                         <div class="card mt-3">
                             <div class="card-body">
-                                <h4 class="mb-4">Local de entrega</h4>
                                 <div class="row">
+                                    <div class="col-md-1">
+                                        <input type="image" src="/img/entrega.png" width="50px" height="50px" alt="">
+                                    </div>
+                                    <div class="col-md-11">
+                                    <h4 class="mb-4 mt-2">Local de entrega</h4>
+                                    </div>
+                                    <hr>
+                                </div>
+                                <div class="row mt-2">
                                     <div class="col-md-2">
                                         <label for="cep" class="form-label">CEP</label>
                                         <input class="form-control mascCEP" size="10" maxlength="9" type="text" id="cep"
@@ -157,6 +165,8 @@
                                         <input class="form-control" size="2" type="text" id="uf" name="estado"
                                             autocomplete="off" required disabled>
                                     </div>
+                                    <input type="hidden" id="enderecoValidado" value="false">
+
                                     <div class="col-md-12">
                                         <label for="complemento" class="form-label mt-2">Complemento</label>
                                         <input class="form-control" size="2" type="text" id="complemento"
@@ -168,8 +178,8 @@
                         </div>
 
                         <div class="position-fixed bottom-0 start-0 p-3 " style="z-index: 11">
-                            <div id="liveToast" data-bs-delay="10000" class="toast hide" role="alert" aria-live="assertive"
-                                aria-atomic="true">
+                            <div id="liveToast" data-bs-delay="20000" class="toast hide" role="alert"
+                                aria-live="assertive" aria-atomic="true">
                                 <div class="toast-header">
                                     <img src="" class="rounded me-2" alt="...">
                                     <strong class="me-auto">Ecomerce</strong>
@@ -226,7 +236,7 @@
                                     </dd>
                                 </dl>
                                 <hr>
-                                <a href="/carrinho/finalizarCompra" class="btn btn-primary form-control">Realizar
+                                <a href="/carrinho/finalizarCompra" onclick="finalizaCompra(event)" class="btn btn-primary form-control">Realizar
                                     Compra</a>
                                 <hr>
                                 <p class="text-center mb-3">
@@ -245,6 +255,30 @@
             <script src="/js/carrinho.js"></script>
             <script src="/js/pesquisaCep.js"></script>
             <script>
+                function finalizaCompra(event){
+                    event.preventDefault();
+                    
+                    var cep = document.getElementById('cep').value
+                    var cidade = document.getElementById('cidade').value
+                    var numero = document.getElementById("numero").value
+                    var rua = document.getElementById("rua").value
+                    var bairro = document.getElementById("bairro").value
+                    var uf = document.getElementById("uf").value
+                    var enderecoValidado = document.getElementById('enderecoValidado').value
+
+                    if (cep == '' || cidade == '' || numero == '' || rua == '' || bairro == '' || uf == '') {
+                        alert("Informações referente a entrega estão incompletas ou inválidas")
+                    } else {
+                        if (enderecoValidado != false && enderecoValidado != 'false') {
+                            window.location.href = '/carrinho/finalizarCompra'
+                        } else {
+                        var cep = document.getElementById('cep')
+                        alert("Informações referente a entrega estão incompletas ou inválidas")
+                        }
+                    }
+                }
+            </script>
+            <script>
                 function verificaCidade() {
 
                     var toastLiveExample = document.getElementById('liveToast')
@@ -257,24 +291,29 @@
 
                     var cidadesEntrega = ['teresina', 'Timon']
 
+
                     setTimeout(async () => {
-                        if (cidade == undefined) {
+                        var cidade = document.getElementById("cidade").value
+                        console.log(cidade)
+                        if (cidade == '') {
                             cidade = 'local informado'
                         } else {
-                        var cidade = document.getElementById("cidade").value
-                            
+                            var cidade = document.getElementById("cidade").value
+
                         }
                         var entrega = await cidadesEntrega.find(cidadeEntrega => cidadeEntrega.toLowerCase() == cidade.toLowerCase())
                         if (entrega != undefined) {
                             respostaEntrega.innerHTML = ''
                             respostaEntrega.innerHTML = `Entrega para ${cidade} disponivel!`
                             respostaEntrega.classList.add("bg-success")
+                            respostaEntrega.classList.remove("bg-danger")
                             respostaEntrega.classList.add("text-white")
 
                         } else {
                             respostaEntrega.innerHTML = ''
                             respostaEntrega.innerHTML = `Entrega para ${cidade} indisponivel!`
                             respostaEntrega.classList.add("bg-danger")
+                            respostaEntrega.classList.remove("bg-success")
                             respostaEntrega.classList.add("text-white")
                         }
                     }, 3000)
