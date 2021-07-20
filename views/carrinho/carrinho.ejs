@@ -281,7 +281,9 @@
                     } else {
                         numero.classList.add("is-valid")
                         numero.classList.remove("is-invalid")
+
                         axios.post("https://ecomerce-front.herokuapp.com/entrega/adicionar",{cep:cep.value,cidade:cidade.value,numero:numero.value,rua:rua.value,bairro:bairro.value,uf:uf.value}).then(()=>{
+                            alert("Deu certo")
                             window.location.href = '/carrinho/finalizarCompra'
                         }).catch(err =>{
                             console.log(err)
