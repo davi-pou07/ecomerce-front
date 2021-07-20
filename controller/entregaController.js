@@ -26,9 +26,10 @@ router.post("/entrega/adicionar", async(req, res) => {
             var cliente = await Cliente.findByPk(usuario.id)
             var carrinho = await Carrinho.findOne({ where: { clienteId: cliente.id, status: true } })
 
-            var dadosEntrega = await knex("dadosentrega").select().where({carrinhoId:carrinho.id,clienteId:cliente.id})[0]
-
-            if (dadosEntrega == undefined) {
+            var dadosEntrega = await knex("dadosentrega").select().where({carrinhoId:carrinho.id,clienteId:cliente.id})
+            console.log(dadosEntrega[0])
+            
+            if (dadosEntrega[0] == undefined) {
                 knex("dadosentregas").insert({
                     cep:cep,
                     rua:rua,
