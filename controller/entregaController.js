@@ -4,6 +4,7 @@ const knex = require("../Databases/admin/databases")
 const Carrinho = require("../Databases/client/Carrinho")
 const Cliente = require("../Databases/client/Cliente")
 const auth = require("../middlewares/adminAuth")
+var moment = require('moment');
 var uniqid = require('uniqid');
 
 router.post("/entrega/adicionar", async(req, res) => {
@@ -39,7 +40,9 @@ router.post("/entrega/adicionar", async(req, res) => {
                     clienteId:cliente.id,
                     carrinhoId:carrinho.id,
                     codigoRastreioInterno:codigoRastreioInterno,
-                    status:status
+                    status:status,
+                    createdAt:moment().format(),
+                    updatedAt:moment().format()
                 }).then(()=>{
                     console.log("Salvo dado da entrega")
                 }).catch(err =>{
