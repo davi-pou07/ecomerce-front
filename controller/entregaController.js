@@ -7,8 +7,8 @@ const auth = require("../middlewares/adminAuth")
 var uniqid = require('uniqid');
 
 router.post("/entrega/adicionar", async(req, res) => {
-    var usuario = req.session.cli
-
+    // var usuario = req.session.cli
+    var usuario = {id:1}
     var cep = req.body.cep
     var rua = req.body.rua
     var numero = req.body.numero
