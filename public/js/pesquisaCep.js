@@ -54,6 +54,7 @@ function meu_callback(conteudo) {
         uf.classList.add('is-valid')
 
         document.getElementById('enderecoValidado').value = true
+        verificaCidade()
     } //end if.
     else {
         //CEP não Encontrado.

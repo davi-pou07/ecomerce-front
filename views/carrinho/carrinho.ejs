@@ -133,7 +133,7 @@
                                         <label for="cep" class="form-label">CEP</label>
                                         <input class="form-control mascCEP" size="10" maxlength="9" type="text" id="cep"
                                             name="cep" placeholder="Informe o CEP" autocomplete="off"
-                                            onblur="pesquisacep(this.value);verificaCidade();" required>
+                                            onblur="pesquisacep(this.value);" required>
                                     </div>
 
                                     <div class="col-md-2">
@@ -227,6 +227,10 @@
                                     <dd class="text-right">R$ 00,00</dd>
                                 </dl>
                                 <dl class="dlist-align">
+                                    <dt>Frete:</dt>
+                                    <dd class="text-right">R$ 00,00</dd>
+                                </dl>
+                                <dl class="dlist-align">
                                     <dt>Valor Total:</dt>
                                     <dd class="text-right  h5" data-valor="<%=carrinho.precoTotal%>" id="valorTotal">
                                         <strong>
@@ -282,17 +286,17 @@
                         numero.classList.add("is-valid")
                         numero.classList.remove("is-invalid")
 
-                        axios.post("https://ecomerce-front.herokuapp.com/entrega/adicionar",{cep:cep.value,cidade:cidade.value,numero:numero.value,rua:rua.value,bairro:bairro.value,uf:uf.value}).then(()=>{
+                        axios.post("https://ecomerce-front.herokuapp.com/entrega/adicionar", { cep: cep.value, cidade: cidade.value, numero: numero.value, rua: rua.value, bairro: bairro.value, uf: uf.value }).then(() => {
                             alert("Deu certo")
                             window.location.href = '/carrinho/finalizarCompra'
-                        }).catch(err =>{
+                        }).catch(err => {
                             console.log(err)
                         })
                     }
                 }
             </script>
             <script>
-                function verificaCidade() {
+                async function verificaCidade() {
 
                     var toastLiveExample = document.getElementById('liveToast')
                     var toast = new bootstrap.Toast(toastLiveExample)
@@ -302,34 +306,31 @@
 
                     respostaEntrega.innerHTML = ['<div class="spinner-border" role="status"><span class="sr-only"></span></div>'].join('');
 
-                    var cidadesEntrega = ['teresina', 'Timon']
+                    var resp = await axios.get("http://localhost:3000/entrega/locais")
+                    var cidadesEntrega = resp.data
 
+                    var cidade = document.getElementById("cidade").value
+                    var bairro = document.getElementById("bairro").value
 
-                    setTimeout(async () => {
-                        var cidade = document.getElementById("cidade").value
-                        console.log(cidade)
-                        if (cidade == '') {
-                            cidade = 'local informado'
-                        } else {
-                            var cidade = document.getElementById("cidade").value
+                    if (cidade == '') {
+                        cidade = 'local informado'
+                    }
+                    //testar se find acha um {}
+                    var entrega = await cidadesEntrega.find(cidadeEntrega => cidadeEntrega.toLowerCase() == cidade.toLowerCase())
+                    if (entrega != undefined) {
+                        respostaEntrega.innerHTML = ''
+                        respostaEntrega.innerHTML = `Entrega para ${cidade} disponivel!`
+                        respostaEntrega.classList.add("bg-success")
+                        respostaEntrega.classList.remove("bg-danger")
+                        respostaEntrega.classList.add("text-white")
 
-                        }
-                        var entrega = await cidadesEntrega.find(cidadeEntrega => cidadeEntrega.toLowerCase() == cidade.toLowerCase())
-                        if (entrega != undefined) {
-                            respostaEntrega.innerHTML = ''
-                            respostaEntrega.innerHTML = `Entrega para ${cidade} disponivel!`
-                            respostaEntrega.classList.add("bg-success")
-                            respostaEntrega.classList.remove("bg-danger")
-                            respostaEntrega.classList.add("text-white")
-
-                        } else {
-                            respostaEntrega.innerHTML = ''
-                            respostaEntrega.innerHTML = `Entrega para ${cidade} indisponivel!`
-                            respostaEntrega.classList.add("bg-danger")
-                            respostaEntrega.classList.remove("bg-success")
-                            respostaEntrega.classList.add("text-white")
-                        }
-                    }, 3000)
+                    } else {
+                        respostaEntrega.innerHTML = ''
+                        respostaEntrega.innerHTML = `Entrega para ${cidade} indisponivel!`
+                        respostaEntrega.classList.add("bg-danger")
+                        respostaEntrega.classList.remove("bg-success")
+                        respostaEntrega.classList.add("text-white")
+                    }
                 }
             </script>
             <script>

@@ -7,6 +7,12 @@ const auth = require("../middlewares/adminAuth")
 var moment = require('moment');
 var uniqid = require('uniqid');
 
+router.get("/entrega/locais",(req,res)=>{
+    knex("locaisdeliveries").select().then(locaisDelivery =>{
+        res.json(locaisDelivery)
+    })
+})
+
 router.post("/entrega/adicionar", async(req, res) => {
     // var usuario = req.session.cli
     var usuario = {id:1}
@@ -19,6 +25,7 @@ router.post("/entrega/adicionar", async(req, res) => {
     var complemento = req.body.complemento
     var codigoRastreioInterno = uniqid("Ras-")
     var status = 'Pagamento Pendente'
+    var valor = req.body.valor
 
     if (usuario != undefined) {
         //verifica se bairro / cidade esta cadastrado nos dados
@@ -42,6 +49,7 @@ router.post("/entrega/adicionar", async(req, res) => {
                     carrinhoId:carrinho.id,
                     codigoRastreioInterno:codigoRastreioInterno,
                     status:status,
+                    valor:valor,
                     createdAt:moment().format(),
                     updatedAt:moment().format()
                 }).then(()=>{
@@ -59,6 +67,7 @@ router.post("/entrega/adicionar", async(req, res) => {
                     uf:uf,
                     cidade:cidade,
                     complemento:complemento,
+                    valor:valor,
                     codigoRastreioInterno:codigoRastreioInterno,
                     status:status
                 }).where({id:dadosEntrega.id}).then(()=>{
