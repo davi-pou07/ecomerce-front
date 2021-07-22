@@ -234,7 +234,7 @@ router.post("/statusPagamento", async (req, res) => {
                 } else {
 
                     var dadosVendas = await knex("dadosvendas").select("clienteId", "carrinhoId").where({ dadosId: external_reference })
-
+                    //codigoDeBarras: results.barcode.content, =----- COM ERRO
                     knex('dadospagamentos').insert({
                         dadosId: results.external_reference,
                         dataAutorizacao: results.date_approved,
