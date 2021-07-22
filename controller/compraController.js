@@ -38,6 +38,8 @@ router.get("/carrinho/finalizarCompra",auth, async (req, res) => {
         try {
             var carrinho = await Carrinho.findOne({ where: { clienteId: cliente.id, status: true } })
             var codItens = await CodItens.findAll({ where: { carrinhoId: carrinho.id }, raw: true })
+            var dadoEntrega = await knex('dadosentregas').select().where({clienteId:cliente.id,carrinhoId:carrinho.id})
+
             var descricao = ''
             for (x = 0; x < codItens.length; x++) {
                 var nomeProduto = await knex("produtos").select("nome").where({ id: codItens[x].produtoId })
@@ -49,6 +51,7 @@ router.get("/carrinho/finalizarCompra",auth, async (req, res) => {
             } else {
                 var idUnica = dadosVendas[0].dadosId
             }
+            var precoTotal = parseFloat(carrinho.precoTotal) + parseFloat(dadoEntrega.preco)
         } catch (err) {
             console.log(err)
             res.json({ erro: "Ocorreu um erro, entre em contato com o suporte" })
@@ -87,7 +90,7 @@ router.get("/carrinho/finalizarCompra",auth, async (req, res) => {
                         descricao: descricao,
                         quantidade: 1,
                         currency_id: 'BRL',
-                        unit_price: parseFloat(carrinho.precoTotal),
+                        unit_price: precoTotal,
                         emailCliente: cliente.email,
                         clienteId: cliente.id,
                         carrinhoId: carrinho.id,
@@ -108,7 +111,7 @@ router.get("/carrinho/finalizarCompra",auth, async (req, res) => {
                     tentativas: parseInt(dadosVendas[0].tentativas) + 1,
                     descricao: descricao,
                     emailCliente: cliente.email,
-                    unit_price: parseFloat(carrinho.precoTotal)
+                    unit_price: precoTotal
                 }).where({ id: dadosVendas[0].id }).then(() => {
                     return res.redirect(pag.body.init_point)
                 })
@@ -138,6 +141,7 @@ router.get("/success/", async (req, res) => {
             createdAt: date,
             updatedAt: date
         }).then(() => {
+            knex("dadosentregas").update({status: 'Entrega em andamento' }).where({clienteId: dadosVendas[0].clienteId,carrinhoId: dadosVendas[0].carrinhoId})
             knex("dadosvendas").update({ status: 'A' }).where({ dadosId: dadosVendas[0].dadosId })
             Carrinho.update({ status: false }, { where: { id: dadosVendas[0].carrinhoId } }).then(async () => {
                 var dadosTransicoes = await knex("dadostransicoes").select().where({ dadosId: dadosVendas[0].dadosId })
