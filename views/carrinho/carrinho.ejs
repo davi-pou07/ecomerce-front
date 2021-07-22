@@ -315,7 +315,7 @@
 
                     respostaEntrega.innerHTML = ['<div class="spinner-border" role="status"><span class="sr-only"></span></div>'].join('');
 
-                    var resp = await axios.get("http://localhost:3000/entrega/locais")
+                    var resp = await axios.get("https://ecomerce-front.herokuapp.com/entrega/locais")
                     var cidadesEntrega = resp.data
                     var cit = document.getElementById("cidade").value
                     var bai = document.getElementById("bairro").value
