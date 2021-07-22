@@ -29,15 +29,14 @@ router.post("/entrega/adicionar", async (req, res) => {
     var locaisdeliveries = await knex("locaisdeliveries").select()
     var bai = bairro.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "")
     var cid = cidade.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "")
-    console.log(locaisdeliveries)
-    console.log('locaisdeliveries ------')
+
+
     var entrega = await locaisdeliveries.find(cidadeEntrega => cidadeEntrega.cidade.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "") == cid
         && cidadeEntrega.bairro.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "") == bai)
     if (entrega == undefined) {
         var entrega = await locaisdeliveries.find(cidadeEntrega => cidadeEntrega.cidade.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "") == cid && cidadeEntrega.bairro == '')
     }
-    console.log(entrega)
-    console.log('entrega ------')
+
 
     if (usuario != undefined) {
         //verifica se bairro / cidade esta cadastrado nos dados
@@ -46,7 +45,6 @@ router.post("/entrega/adicionar", async (req, res) => {
             var carrinho = await Carrinho.findOne({ where: { clienteId: cliente.id, status: true } })
 
             var dadosEntrega = await knex("dadosentregas").select().where({ carrinhoId: carrinho.id, clienteId: cliente.id })
-            console.log(dadosEntrega[0])
 
             if (dadosEntrega[0] == undefined) {
                 knex("dadosentregas").insert({
@@ -82,7 +80,7 @@ router.post("/entrega/adicionar", async (req, res) => {
                     valor: entrega.preco,
                     codigoRastreioInterno: codigoRastreioInterno,
                     status: status
-                }).where({ id: dadosEntrega.id }).then(() => {
+                }).where({ id: dadosEntrega[0].id }).then(() => {
                     console.log("Modificado o dado da entrega")
                 }).catch(err => {
                     console.log(err)
