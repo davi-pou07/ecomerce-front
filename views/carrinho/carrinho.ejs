@@ -325,15 +325,10 @@
                     if (cidade == '') {
                         cidade = 'local informado'
                     }
-                    //testar se find acha um {}
                     var entrega = await cidadesEntrega.find(cidadeEntrega => cidadeEntrega.cidade.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "") == cidade
                         && cidadeEntrega.bairro.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "") == bairro)
-                    console.log("Cidade entrega")
-                    console.log(entrega)
 
                     var entrega2 = await cidadesEntrega.find(cidadeEntrega => cidadeEntrega.cidade.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "") == cidade && cidadeEntrega.bairro == '')
-                    console.log("Cidade entrega2")
-                    console.log(entrega2)
 
                     if (entrega != undefined) {
                         respostaEntrega.innerHTML = ''
