@@ -1,5 +1,6 @@
 function limpa_formulário_cep() {
     //Limpa valores do formulário de cep.
+    zerarFrete()
     var rua = document.getElementById('rua')
     var bairro = document.getElementById('bairro')
     var cidade = document.getElementById('cidade')
@@ -21,6 +22,7 @@ function limpa_formulário_cep() {
 
     uf.classList.remove('is-invalid')
     uf.classList.remove('is-valid')
+    document.getElementById('enderecoValidado').value = false
 
 }
 
@@ -62,6 +64,7 @@ function meu_callback(conteudo) {
         var cep = document.getElementById('cep')
         cep.classList.add('is-invalid')
         cep.classList.remove('is-valid')
+        document.getElementById('enderecoValidado').value = false
         // alert("CEP não encontrado.");
     }
 }
@@ -107,6 +110,7 @@ function pesquisacep(valor) {
             var cep = document.getElementById('cep')
             cep.classList.add('is-invalid')
             cep.classList.remove('is-valid')
+            
             // alert("Formato de CEP inválido.");
         }
     } //end if.

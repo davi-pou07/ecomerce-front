@@ -224,11 +224,11 @@
                                 </dl>
                                 <dl class="dlist-align">
                                     <dt>Desconto:</dt>
-                                    <dd class="text-right">R$ 00,00</dd>
+                                    <dd class="text-right" id="valorDesconto" data-valor="0">R$ 00,00</dd>
                                 </dl>
                                 <dl class="dlist-align">
                                     <dt>Frete:</dt>
-                                    <dd class="text-right">R$ 00,00</dd>
+                                    <dd class="text-right" id="valorFrete" data-valor="">R$ 00,00</dd>
                                 </dl>
                                 <dl class="dlist-align">
                                     <dt>Valor Total:</dt>
@@ -295,43 +295,83 @@
                     }
                 }
             </script>
-            <script>
-                async function verificaCidade() {
 
+            <script>
+                function zerarFrete() {
+                    var valorFrete = document.getElementById("valorFrete")
+                    var n = 00
+                    valorFrete.dataset.valor = n
+                    valorFrete.innerHTML = n.toLocaleString('pt-br', { style: 'currency', currency: 'BRL' })
+                    somarTotais()
+                }
+
+                async function verificaCidade() {
+                    zerarFrete()
                     var toastLiveExample = document.getElementById('liveToast')
                     var toast = new bootstrap.Toast(toastLiveExample)
                     toast.show()
 
                     var respostaEntrega = document.getElementById("toastMsm")
+                    var valorFrete = document.getElementById("valorFrete")
 
                     respostaEntrega.innerHTML = ['<div class="spinner-border" role="status"><span class="sr-only"></span></div>'].join('');
 
                     var resp = await axios.get("http://localhost:3000/entrega/locais")
                     var cidadesEntrega = resp.data
-
-                    var cidade = document.getElementById("cidade").value
-                    var bairro = document.getElementById("bairro").value
-
+                    var cit = document.getElementById("cidade").value
+                    var bai = document.getElementById("bairro").value
+                    var bairro = bai.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "")
+                    var cidade = cit.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "")
                     if (cidade == '') {
                         cidade = 'local informado'
                     }
                     //testar se find acha um {}
-                    var entrega = await cidadesEntrega.find(cidadeEntrega => cidadeEntrega.toLowerCase() == cidade.toLowerCase())
+                    var entrega = await cidadesEntrega.find(cidadeEntrega => cidadeEntrega.cidade.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "") == cidade
+                        && cidadeEntrega.bairro.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "") == bairro)
+                    console.log("Cidade entrega")
+                    console.log(entrega)
+
+                    var entrega2 = await cidadesEntrega.find(cidadeEntrega => cidadeEntrega.cidade.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "") == cidade && cidadeEntrega.bairro == '')
+                    console.log("Cidade entrega2")
+                    console.log(entrega2)
+
                     if (entrega != undefined) {
                         respostaEntrega.innerHTML = ''
-                        respostaEntrega.innerHTML = `Entrega para ${cidade} disponivel!`
+                        respostaEntrega.innerHTML = `Entrega para ${entrega.cidade} - ${entrega.bairro} disponivel!`
                         respostaEntrega.classList.add("bg-success")
                         respostaEntrega.classList.remove("bg-danger")
                         respostaEntrega.classList.add("text-white")
-
+                        var delivery = entrega
+                    } else if (entrega2 != undefined) {
+                        respostaEntrega.innerHTML = ''
+                        respostaEntrega.innerHTML = `Entrega para ${entrega2.cidade} disponivel!`
+                        respostaEntrega.classList.add("bg-success")
+                        respostaEntrega.classList.remove("bg-danger")
+                        respostaEntrega.classList.add("text-white")
+                        var delivery = entrega2
                     } else {
                         respostaEntrega.innerHTML = ''
-                        respostaEntrega.innerHTML = `Entrega para ${cidade} indisponivel!`
+                        respostaEntrega.innerHTML = `Entrega para ${cit} indisponivel!`
                         respostaEntrega.classList.add("bg-danger")
                         respostaEntrega.classList.remove("bg-success")
                         respostaEntrega.classList.add("text-white")
+                        var cep = document.getElementById('cep')
+                        cep.value = ''
+                        cep.classList.remove('is-valid')
+                        cep.classList.add('is-invalid')
+                        document.getElementById('enderecoValidado').value = false
                     }
+                    if (delivery != undefined) {
+                        valorFrete.dataset.valor = parseFloat(delivery.preco)
+                        valorFrete.innerHTML = parseFloat(delivery.preco).toLocaleString('pt-br', { style: 'currency', currency: 'BRL' })
+                        somarTotais()
+                    } else {
+                        zerarFrete()
+                    }
+
                 }
+
+
             </script>
             <script>
                 function atualizar(index, codItem) {

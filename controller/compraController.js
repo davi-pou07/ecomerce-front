@@ -31,8 +31,8 @@ var remetente = nodemailer.createTransport({
 
 
 router.get("/carrinho/finalizarCompra",auth, async (req, res) => {
-    var usuario = req.session.cli
-    // var usuario = { id: 1 }
+    // var usuario = req.session.cli
+    var usuario = { id: 1 }
     if (usuario != undefined) {
         var cliente = await Cliente.findByPk(usuario.id)
         try {

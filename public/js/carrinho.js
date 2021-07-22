@@ -4,18 +4,20 @@ function deleteItem() {
 
 function somarTotais() {
     var quantidadeTotal = document.getElementById("quantidadeTotal").value
+    var valorDesconto = document.getElementById("valorDesconto").dataset.valor
+    var valorFrete = document.getElementById("valorFrete").dataset.valor
     var precoTot = 0
     for (var y = 0; y < quantidadeTotal; y++) {
         var precoTotalItem = document.getElementById(`price${y}`).dataset.total
 
-        var precoTotAtual = document.getElementById("precoTotal").dataset.valor
 
         precoTot = parseInt(precoTot) + parseInt(precoTotalItem)
         document.getElementById("precoTotal").innerHTML = precoTot.toLocaleString('pt-br', { style: 'currency', currency: 'BRL' })
         document.getElementById("precoTotal").dataset.valor = precoTot
-        document.getElementById("valorTotal").innerHTML = precoTot.toLocaleString('pt-br', { style: 'currency', currency: 'BRL' })
-        document.getElementById("valorTotal").dataset.valor = precoTot
     }
+    var precoTotal = (parseFloat(precoTot) + parseFloat(valorFrete)) - parseFloat(valorDesconto)
+    document.getElementById("valorTotal").innerHTML = precoTotal.toLocaleString('pt-br', { style: 'currency', currency: 'BRL' })
+    document.getElementById("valorTotal").dataset.valor = precoTotal
 }
 
 function diminuir(x) {
