@@ -286,7 +286,7 @@
                         numero.classList.add("is-valid")
                         numero.classList.remove("is-invalid")
 
-                        axios.post("https://ecomerce-front.herokuapp.com/entrega/adicionar", { cep: cep.value, cidade: cidade.value, numero: numero.value, rua: rua.value, bairro: bairro.value, uf: uf.value }).then(resp => {
+                        axios.post("https://ecomerce-front.herokuapp.com/entrega/adicionar/", { cep: cep.value, cidade: cidade.value, numero: numero.value, rua: rua.value, bairro: bairro.value, uf: uf.value }).then(resp => {
                             console.log(resp)
                             location.href = 'https://ecomerce-front.herokuapp.com/carrinho/finalizarCompra/'
                         }).catch(err => {
