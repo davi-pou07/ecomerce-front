@@ -288,10 +288,10 @@
 
                         axios.post("https://ecomerce-front.herokuapp.com/entrega/adicionar", { cep: cep.value, cidade: cidade.value, numero: numero.value, rua: rua.value, bairro: bairro.value, uf: uf.value }).then(resp => {
                             console.log(resp)
+                            window.location.href = '/carrinho/finalizarCompra'
                         }).catch(err => {
                             console.log(err)
                         })
-                        return true
                     }
                 }
             </script>
