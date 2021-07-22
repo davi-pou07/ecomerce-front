@@ -82,9 +82,10 @@ router.post("/entrega/adicionar", async (req, res) => {
                     status: status
                 }).where({ id: dadosEntrega[0].id }).then(() => {
                     console.log("Modificado o dado da entrega")
+                    res.json({resp:"Modificado o dado da entrega"})
                 }).catch(err => {
                     console.log(err)
-                    res.redirect('/')
+                    res.json({erro:"Ocorreu algum erro"})
                 })
             }
         } catch (error) {
@@ -92,7 +93,7 @@ router.post("/entrega/adicionar", async (req, res) => {
             console.log(error)
         }
     } else {
-        res.redirect("/logar")
+        res.json({erro:"Favor efetuar novamente o Login"})
     }
 
 })
