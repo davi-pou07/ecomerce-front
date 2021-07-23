@@ -63,10 +63,7 @@
             </div>
 
             <div class="collapse navbar-collapse" id="reglog">
-                <ul class="me-auto mb-2 mb-lg-0 text-white position-relative">
-                    <a href="/login" class="btn btn-success">Registra-se</a>
-                    <a href="/login" class="btn btn-outline-success">Login</a>
-                </ul>
+                
             </div>
 
             <div class="personal-imageNav" id="divPerfil">
@@ -115,11 +112,14 @@
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script>
         //VERIFICA USUARIO LOGADO E COLOCA INFORMAÇÕES NA DIV
+        var reglog = document.getElementById("reglog")
+
+        reglog.innerHTML = ['<div class="spinner-border text-primary" role="status"><span class="visually-hidden"></span></div>'].join('');
+
         axios.get('https://ecomerce-front.herokuapp.com/usuario/logado').then(resp => {
             var dados = resp.data
             if (dados.clienteId != undefined) {
                 //Remover botãoes de login
-                var reglog = document.getElementById("reglog")
                 reglog.parentNode.removeChild(reglog);
                 //Colocar nome do cliente
                 var userNome = document.getElementById("userNome").innerHTML = dados.clienteNome.split(" ")[0]
@@ -128,7 +128,6 @@
                     var imgCli = document.getElementById("imgCli")
                     imgCli.src = dados.clienteFoto
                 }
-               
                 var spanCarrin = document.getElementById("spanCarrin").innerHTML = dados.carrinho.quantidade
 
                 var clienteId = document.getElementById("clienteId").value = dados.clienteId
@@ -137,6 +136,7 @@
                 var divPerfil = document.getElementById("divPerfil")
                 divPerfil.parentNode.removeChild(divPerfil);
 
+                document.getElementById("reglog").innerHTML = ['<ul class="me-auto mb-2 mb-lg-0 text-white position-relative"><a href="/login" class="btn btn-success">Registra-se</a><a href="/login" class="btn btn-outline-success">Login</a></ul>'].join('');
             }
         })
         axios.get('https://ecomerce-front.herokuapp.com/empresa').then(empresa => {
