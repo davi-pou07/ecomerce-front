@@ -220,9 +220,13 @@ router.post("/statusPagamento", async (req, res) => {
             var results = data.body.results[0]
             var external_reference = results.external_reference
             console.log(results)
+            console.log("------------------------------------")
             if (results.barcode == undefined) {
-                results.barcode = {content:0}
+                var barcode = 0
+            }else{
+                var barcode = results.barcode.content
             }
+            console.log(results.barcode.content)
             try {
 
                 var dadosPagamentos = await knex("dadospagamentos").select("clienteId", "carrinhoId").where({ dadosId: external_reference }).whereIn("status", ["approved", "authorized"])
@@ -249,7 +253,7 @@ router.post("/statusPagamento", async (req, res) => {
                         detalhePagamento: results.status_detail,
                         dataExpiracao: results.date_of_expiration,
                         dataLancamento: results.date_created,
-                        codigoDeBarras: results.barcode.content,
+                        codigoDeBarras:barcode,
                         clienteId: dadosVendas[0].clienteId,
                         carrinhoId: dadosVendas[0].carrinhoId,
                         status: results.status_detail,
