@@ -30,7 +30,7 @@ var remetente = nodemailer.createTransport({
 });
 
 
-router.get("/carrinho/finalizarCompra",auth, async (req, res) => {
+router.get("/carrinho/finalizarCompra", async (req, res) => {
     // var usuario = req.session.cli
     var usuario = { id: 1 }
     if (usuario != undefined) {
@@ -51,7 +51,8 @@ router.get("/carrinho/finalizarCompra",auth, async (req, res) => {
             } else {
                 var idUnica = dadosVendas[0].dadosId
             }
-            var precoTotal = parseFloat(carrinho.precoTotal) + parseFloat(dadoEntrega.preco)
+            var precoTotal = parseFloat(carrinho.precoTotal) + parseFloat(dadoEntrega[0].valor)
+
         } catch (err) {
             console.log(err)
             res.json({ erro: "Ocorreu um erro, entre em contato com o suporte" })
@@ -63,7 +64,7 @@ router.get("/carrinho/finalizarCompra",auth, async (req, res) => {
                     title: descricao,
                     quantity: 1,
                     currency_id: 'BRL',
-                    unit_price: parseFloat(carrinho.precoTotal)
+                    unit_price: parseFloat(precoTotal)
                 }
             ],
             payer: {
