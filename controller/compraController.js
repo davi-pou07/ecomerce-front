@@ -52,6 +52,7 @@ router.get("/carrinho/finalizarCompra", async (req, res) => {
                 var idUnica = dadosVendas[0].dadosId
             }
             var precoTotal = parseFloat(carrinho.precoTotal) + parseFloat(dadoEntrega[0].valor)
+            console.log("Preco total = "+ precoTotal)
 
         } catch (err) {
             console.log(err)
