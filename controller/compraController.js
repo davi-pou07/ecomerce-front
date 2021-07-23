@@ -226,7 +226,7 @@ router.post("/statusPagamento", async (req, res) => {
             }else{
                 var barcode = results.barcode.content
             }
-            console.log(results.barcode.content)
+            console.log(barcode)
             try {
 
                 var dadosPagamentos = await knex("dadospagamentos").select("clienteId", "carrinhoId").where({ dadosId: external_reference }).whereIn("status", ["approved", "authorized"])
