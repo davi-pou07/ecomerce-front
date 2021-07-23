@@ -220,6 +220,9 @@ router.post("/statusPagamento", async (req, res) => {
             var results = data.body.results[0]
             var external_reference = results.external_reference
             console.log(results)
+            if (results.barcode.content == undefined) {
+                results.barcode.content = 0
+            }
             try {
 
                 var dadosPagamentos = await knex("dadospagamentos").select("clienteId", "carrinhoId").where({ dadosId: external_reference }).whereIn("status", ["approved", "authorized"])
@@ -255,7 +258,7 @@ router.post("/statusPagamento", async (req, res) => {
                         createdAt: results.date_created,
                         updatedAt: results.date_created
                     }).then(async () => {
-
+                        console.log("Forma de pagamento adicionada bb")
                         var cliente = await Cliente.findByPk(dadosVendas[0].clienteId)
 
                         // Carrinho.update({
