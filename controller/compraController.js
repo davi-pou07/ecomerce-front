@@ -220,8 +220,8 @@ router.post("/statusPagamento", async (req, res) => {
             var results = data.body.results[0]
             var external_reference = results.external_reference
             console.log(results)
-            if (results.barcode.content == undefined) {
-                results.barcode.content = 0
+            if (results.barcode == undefined) {
+                results.barcode = {content:0}
             }
             try {
 
