@@ -240,9 +240,9 @@
                                     </dd>
                                 </dl>
                                 <hr>
-                                <a href="/carrinho/finalizarCompra" onclick="finalizaCompra(event)"
+                                <button onclick="finalizaCompra()"
                                     class="btn btn-primary form-control">Realizar
-                                    Compra</a>
+                                    Compra</button>
                                 <hr>
                                 <p class="text-center mb-3">
                                     <img src="/img/payments.png" height="26">
@@ -261,8 +261,7 @@
             <script src="/js/pesquisaCep.js"></script>
 
             <script>
-                function finalizaCompra(event) {
-                    event.preventDefault();
+                function finalizaCompra() {
 
                     var cep = document.getElementById('cep')
                     var cidade = document.getElementById('cidade')
