@@ -290,8 +290,8 @@ router.post("/usuario/editar", auth, async (req, res) => {
 })
 
 router.get("/usuario/historico",async(req,res)=>{
-    var usuario = req.session.cli
-    // var usuario = {id:1}
+    // var usuario = req.session.cli
+    var usuario = {id:1}
     if (usuario != undefined) {
         try{
         var cliente = await Cliente.findByPk(usuario.id)
@@ -314,6 +314,40 @@ router.get("/usuario/historico",async(req,res)=>{
     }
     
 })
+
+router.get("/usuario/transicao/:transicaoId",async(req,res)=>{
+    // var usuario = req.session.cli
+    var transicaoId = req.params.transicaoId
+    var usuario = {id:1}
+    if (usuario != undefined) {
+        try{
+            //dados da empresa
+        var cliente = await Cliente.findByPk(usuario.id)
+        var dadosTransicoes = await knex("dadostransicoes").select().where({clienteId:cliente.id,id:transicaoId})
+        console.log(dadosTransicoes)
+        var dadosVendas = await knex("dadosvendas").select().where({clienteId:cliente.id,dadosId:dadosTransicoes[0].dadosId})
+        var dadosPagamentos =  await knex("dadospagamentos").select().where({clienteId:cliente.id,dadosId:dadosTransicoes[0].dadosId})
+        var carrinho = await Carrinho.findOnde({where:{clienteId:cliente.id,id:dadosTransicoes[0].carrinhoId}})
+        var dadosEntregas = await knex("dadosentregas").select().where({clienteId:cliente.id,carrinhoId:carrinho.id})
+        var datas =[]
+        dadosTransicoes.forEach(dados =>{
+            var data = moment(dados.createdAt).format('Do MMMM YYYY, h:mm:ss a')
+            var dado = {id:dados.id,createdAt:data}
+            datas.push(dado)
+        })
+        res.json({nome:cliente.nome,id:cliente.id,foto:cliente.foto,carrinho:carrinho,dadosVendas:dadosVendas,dadosTransicoes:dadosTransicoes,datas:datas,dadosPagamentos:dadosPagamentos,dadosEntregas:dadosEntregas})
+        // res.render("usuario/transicao",{nome:cliente.nome,id:cliente.id,foto:cliente.foto,carrinho:carrinho,dadosVendas:dadosVendas,dadosTransicoes:dadosTransicoes,datas:datas,dadosPagamentos:dadosPagamentos,dadosEntregas:dadosEntregas})
+        }catch(err){
+            console.log(err)
+            res.redirect("/")
+        }
+    } else {
+        res.redirect("/login")
+    }
+    
+})
+
+
 
 router.get("/logout", (req, res) => {
     req.session.cli = undefined

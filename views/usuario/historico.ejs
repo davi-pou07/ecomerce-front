@@ -43,7 +43,7 @@
                         </thead>
                         <tbody>
                             <%dadosVendas.forEach((dadovenda,index)=>{%>
-<input type="hidden" id="index" value="<%=index%>">
+                                <input type="hidden" id="index" value="<%=index%>">
                                 <tr>
 
                                     <th scope="row" class="table-info">
@@ -113,7 +113,7 @@
                     })
                 }
                 var index = document.getElementById("index").value
-                for(var x=0;x<index.length;x++){
+                for (var x = 0; x < index.length; x++) {
                     var y = document.getElementById(`row${x}`).innerHTML
                     console.log(y)
                     translate(y)
