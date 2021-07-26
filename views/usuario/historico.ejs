@@ -64,16 +64,17 @@
                                             currency: 'BRL' })%>
                                     </td>
                                     <td scope="row">
-                                        <%dadosTransicoes.forEach(dadostransicao=>{%>
-                                            <%datas.forEach(data=>{%>
-                                                <%if(dadostransicao.dadosId==dadovenda.dadosId &&
-                                                    dadostransicao.id==data.id ){%>
-                                                    <%=data.createdAt%>
-                                                        <%}%>
-                                                            <%})%>
-                                                                <%})%>
-                                    </td>
+                                        <%var x=0%>
 
+                                            <%dadosTransicoes.forEach(dadostransicao=>{%>
+                                                <%datas.forEach(data=>{%>
+                                                    <%if(dadostransicao.dadosId==dadovenda.dadosId &&
+                                                        dadostransicao.id==data.id ){%>
+                                                        <%=data.createdAt%>
+                                                            <%}%>
+                                                                <%})%>
+                                                                    <%})%>
+                                    </td>
                                     <td scope="row" id="row<%=index%>">
                                         <%dadosTransicoes.forEach(dadostransicao=>{%>
                                             <%if(dadostransicao.dadosId==dadovenda.dadosId){%>
@@ -83,7 +84,12 @@
                                     </td>
 
                                     <td>
-                                        <button class="btn btn-info">Detalhes</button>
+                                        <%dadosTransicoes.forEach(dadostransicao=>{%>
+                                            <%if(dadostransicao.dadosId==dadovenda.dadosId){%>
+                                                <a href="/usuario/transicao/<%=dadostransicao.id%>"
+                                                    class="btn btn-info">Detalhes</a>
+                                                <%}%>
+                                                    <%})%>
                                     </td>
 
                                 </tr>

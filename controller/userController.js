@@ -335,8 +335,8 @@ router.get("/usuario/transicao/:transicaoId",async(req,res)=>{
             var dado = {id:dados.id,createdAt:data}
             datas.push(dado)
         })
-       
-        res.render("usuario/transicao",{nome:cliente.nome,id:cliente.id,foto:cliente.foto,carrinho:carrinho,dadosVendas:dadosVendas,dadosTransicoes:dadosTransicoes,datas:datas,dadosPagamentos:dadosPagamentos,dadosEntregas:dadosEntregas})
+       res.json({nome:cliente.nome,id:cliente.id,foto:cliente.foto,carrinho:carrinho,dadosVendas:dadosVendas,dadosTransicoes:dadosTransicoes,datas:datas,dadosPagamentos:dadosPagamentos,dadosEntregas:dadosEntregas})
+        // res.render("usuario/transicao",{nome:cliente.nome,id:cliente.id,foto:cliente.foto,carrinho:carrinho,dadosVendas:dadosVendas,dadosTransicoes:dadosTransicoes,datas:datas,dadosPagamentos:dadosPagamentos,dadosEntregas:dadosEntregas})
         }catch(err){
             console.log(err)
             res.redirect("/")
