@@ -225,6 +225,7 @@ router.post("/statusPagamento", async (req, res) => {
             console.log(data.body.results[0])
             console.log('-------------------------')
             var results = data.body.results[0]
+            
             var external_reference = results.external_reference
             if (results.barcode == undefined) {
                 var barcode = 0
@@ -263,6 +264,7 @@ router.post("/statusPagamento", async (req, res) => {
                         status: results.status_detail,
                         descricao: results.description,
                         metodoPagamento: results.payment_method_id,
+                        boletoUrl:results.transaction_details.external_resource_url,
                         createdAt: results.date_created,
                         updatedAt: results.date_created
                     }).then(async () => {
