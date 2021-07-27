@@ -232,6 +232,11 @@ router.post("/statusPagamento", async (req, res) => {
             }else{
                 var barcode = results.barcode.content
             }
+            if (results.transaction_details.external_resource_url == undefined) {
+                var boletoUrl = 0
+            } else {
+                var boletoUrl = results.transaction_details.external_resource_url
+            }
             console.log(barcode)
             try {
 
@@ -264,7 +269,7 @@ router.post("/statusPagamento", async (req, res) => {
                         status: results.status_detail,
                         descricao: results.description,
                         metodoPagamento: results.payment_method_id,
-                        boletoUrl:results.transaction_details.external_resource_url,
+                        boletoUrl:boletoUrl,
                         createdAt: results.date_created,
                         updatedAt: results.date_created
                     }).then(async () => {

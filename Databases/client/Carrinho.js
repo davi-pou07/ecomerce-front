@@ -20,8 +20,8 @@ const Carrinho = connectionCL.define('carrinhos',{
 Carrinho.belongsTo(Cliente)
 
 
-Carrinho.sync({force:true}).then(()=>{
-    console.log("Tabela Carrinho criada")        
-})
+// Carrinho.sync({force:true}).then(()=>{
+//     console.log("Tabela Carrinho criada")        
+// })
 
 module.exports = Carrinho
