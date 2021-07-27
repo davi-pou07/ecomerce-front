@@ -13,70 +13,6 @@ const bcrypt = require("bcryptjs")
 const auth = require("../middlewares/adminAuth")
 
 
-// router.post("/criar/usuario", (req, res) => {
-//     var foto = req.body.foto
-//     var nome = req.body.nome
-//     var sobrenome = req.body.sobrenome
-//     var email = req.body.email
-//     var celular = req.body.celular
-//     var senha = req.body.senha
-//     var confirm = req.body.confirm
-//     var cpf = req.body.cpf
-//     var nas = req.body.dataNasc
-//     var dataNasc = moment(nas).format("YYYYMMDD")
-//     if (nome != "" && sobrenome != "" && email != "" && celular != "" && senha != "" && confirm != "" && cpf != "" && dataNasc != "") {
-//         if (validator.isEmail(email) == true) {
-//             if (validator.isMobilePhone(celular, 'pt-BR', false) == true) {
-//                 if (validCpf.isValid(cpf) == true) {
-//                     var idade = moment().diff(dataNasc, "years")
-//                     if (parseInt(idade) >= 13) {
-//                         if (senha == confirm) {
-//                             var salt = bcrypt.genSaltSync(10)
-//                             var hash = bcrypt.hashSync(senha, salt)
-//                             Cliente.findOne({ where: { [Op.or]: [{ email: email }, { celular: celular }, { cpf: cpf }] } }).then(clienteCadastrado => {
-//                                 if (clienteCadastrado == undefined) {
-//                                     Cliente.create({
-//                                         nome: nome,
-//                                         sobrenome: sobrenome,
-//                                         status: true,
-//                                         cpf: cpf,
-//                                         celular: celular,
-//                                         email: email,
-//                                         senha: hash,
-//                                         dataNasc: dataNasc,
-//                                         foto: foto
-//                                     }).then(cliente => {
-//                                         Carrinho.create({
-//                                             status:true,
-//                                             clienteId:cliente.id
-//                                         }).then(carrinho =>{
-//                                             res.json({resp: "Cliente cadastrado com sucesso"})
-//                                         })
-//                                     })
-//                                 } else {
-//                                     res.json({ erro: "Cliente ja cadastrado, por favor faça o login" })
-//                                 }
-//                             })
-//                         } else {
-//                             res.json({ erro: "Senha inválida" })
-//                         }
-//                     } else {
-//                         res.json({ erro: "Idade inválida para cadastro" })
-//                     }
-//                 } else {
-//                     res.json({ erro: "CPF inválido" })
-//                 }
-//             } else {
-//                 res.json({ erro: "Telefone celular inválido" })
-//             }
-//         } else {
-//             res.json({ erro: "EMAIL inválido" })
-//         }
-//     } else {
-//         res.json({ erro: "Dados não definidos" })
-//     }
-// })
-
 router.get("/login", (req, res) => {
     res.render("usuario/login")
 })
@@ -321,22 +257,15 @@ router.get("/usuario/transicao/:transicaoId",async(req,res)=>{
     var usuario = {id:1}
     if (usuario != undefined) {
         try{
-            //dados da empresa
+        var empresa = await knex("empresas").select()
         var cliente = await Cliente.findByPk(usuario.id)
-        var dadosTransicoes = await knex("dadostransicoes").select().where({clienteId:cliente.id,id:transicaoId})
-        console.log(dadosTransicoes)
-        var dadosVendas = await knex("dadosvendas").select().where({clienteId:cliente.id,dadosId:dadosTransicoes[0].dadosId})
-        var dadosPagamentos =  await knex("dadospagamentos").select().where({clienteId:cliente.id,dadosId:dadosTransicoes[0].dadosId})
-        var carrinho = await Carrinho.findOne({where:{clienteId:cliente.id,id:dadosTransicoes[0].carrinhoId}})
-        var dadosEntregas = await knex("dadosentregas").select().where({clienteId:cliente.id,carrinhoId:carrinho.id})
-        var datas =[]
-        dadosTransicoes.forEach(dados =>{
-            var data = moment(dados.createdAt).format('Do MMMM YYYY, h:mm:ss a')
-            var dado = {id:dados.id,createdAt:data}
-            datas.push(dado)
-        })
-       res.json({nome:cliente.nome,id:cliente.id,foto:cliente.foto,carrinho:carrinho,dadosVendas:dadosVendas,dadosTransicoes:dadosTransicoes,datas:datas,dadosPagamentos:dadosPagamentos,dadosEntregas:dadosEntregas})
-        // res.render("usuario/transicao",{nome:cliente.nome,id:cliente.id,foto:cliente.foto,carrinho:carrinho,dadosVendas:dadosVendas,dadosTransicoes:dadosTransicoes,datas:datas,dadosPagamentos:dadosPagamentos,dadosEntregas:dadosEntregas})
+        var dadosTransicao = await knex("dadostransicoes").select().where({clienteId:cliente.id,id:transicaoId})
+        var dadosVenda = await knex("dadosvendas").select().where({clienteId:cliente.id,dadosId:dadosTransicao[0].dadosId})
+        var dadosPagamento =  await knex("dadospagamentos").select().where({clienteId:cliente.id,dadosId:dadosTransicao[0].dadosId})
+        var carrinho = await Carrinho.findOne({where:{clienteId:cliente.id,id:dadosTransicao[0].carrinhoId}})
+        var dadosEntrega = await knex("dadosentregas").select().where({clienteId:cliente.id,carrinhoId:carrinho.id})
+        var data = moment(dadosTransicao[0].createdAt).format('Do MMMM YYYY, h:mm:ss a')
+        res.render("usuario/transicao",{nome:cliente.nome,id:cliente.id,foto:cliente.foto,carrinho:carrinho,dadosVenda:dadosVenda[0],dadosTransicao:dadosTransicao[0],data:data,dadosPagamento:dadosPagamento[0],dadosEntrega:dadosEntrega[0],empresa:empresa[0]})
         }catch(err){
             console.log(err)
             res.redirect("/")

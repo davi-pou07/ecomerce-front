@@ -1,7 +1,90 @@
-<%- include("./partials/head.ejs")%>
+<%- include("../partials/head.ejs")%>
+    <%- include("../partials/nav.ejs")%>
 
+        <div class="container">
+            <div class="card mt-3">
+                <div class="card-header bg-primary text-white text-center">
+                    <h3>Demonstrativo de compra</h3>
+                    <p>Verifique abaixo o comprovante e o status de sua compra</p>
 
-    <%- include("./partials/nav.ejs")%>
+                    <div class="personal-image">
+                        <label class="label">
+                            <figure class="personal-figure">
+                                <%if(empresa.logo==undefined){%>
+                                    <img src="/img/avatar.jpg" class="personal-avatar" id="imagem" alt="avatar">
+                                    <%}else{%>
+                                        <img src="<%=empresa.logo%>" class="personal-avatar" id="imagem" alt="avatar">
+                                        <%}%>
+                            </figure>
+                        </label>
+                    </div>
+                </div>
 
+                <div class="card-body">
+                    <table class="table table">
+                        <h5>Resumo:</h5>
+                        <hr>
+                        <thead class="text-muted">
+                            <tr class="small text-uppercase">
+                                <th scope="col" width="100">Ordem</th>
+                                <th scope="col" width="160">Descrição</th>
+                                <th scope="col" width="120">Valor</th>
+                                <th scope="col" width="120">Data</th>
+                                <th scope="col" width="120">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <th scope="row">
+                                    <%=dadosTransicao.orderId%>
+                                </th>
+                                <td scope="row">
+                                    <%=dadosVenda.descricao%>
+                                </td>
+                                <td scope="row">
+                                    <%=dadosVenda.unit_price.toLocaleString('pt-br',{style: 'currency' , currency: 'BRL'
+                                        })%>
+                                </td>
+                                <td scope="row">
+                                    <%=data%>
+                                </td>
+                                <td scope="row">
+                                    <span class="bg-warning text-white px-3 btn">
+                                        <%=dadosTransicao.status%>
+                                    </span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <br>
+                    <div class="row">
+                        <%if(dadosTransicao.status=='pending' ){%>
+                            <%if(dadosPagamento.codigoDeBarras !=undefined){%>
+                                <div class="col-md-5">
+                                    <label for="codbar">Codigo de Barras</label>
+                                    <div class="input-group mb-3">
+                                        <input type="text" class="form-control" placeholder="Recipient's username" aria-label="Recipient's username" aria-describedby="button-addon2" id="codbar" value="<%=dadosPagamento.codigoDeBarras%>">
+                                        <button class="btn btn-outline-secondary" type="button" id="btnCopiar" onclick="copiar()">copiar</button>
+                                      </div>
+                                </div>
+                                <div class="col-md-5">
+                                    <label for="">Data de vencimento</label>
+                                    <input type="date" class="form-control" value="<%=data%>">
+                                </div>
+                                <%}%>
+                                    <%}else{%>
+                                        <%}%>
+                    </div>
 
-        <%- include("./partials/footer.ejs")%>
+                </div>
+            </div>
+        </div>
+
+        <%- include("../partials/footer.ejs")%>
+        <script>
+            function copiar(){
+                var codbar = document.getElementById('codbar').select()
+                document.execCommand('copy')
+                alert("Codigo de Barras copiado")
+            }
+        </script>

@@ -218,11 +218,14 @@ router.post("/statusPagamento", async (req, res) => {
         MercadoPago.payment.search({
             qs: filtro
         }).then(async data => {
-
+            console.log(data)
+            console.log('-------------------------')
+            console.log(data.body)
+            console.log('-------------------------')
+            console.log(data.body.results[0])
+            console.log('-------------------------')
             var results = data.body.results[0]
             var external_reference = results.external_reference
-            console.log(results)
-            console.log("------------------------------------")
             if (results.barcode == undefined) {
                 var barcode = 0
             }else{
@@ -243,7 +246,6 @@ router.post("/statusPagamento", async (req, res) => {
                 } else {
 
                     var dadosVendas = await knex("dadosvendas").select("clienteId", "carrinhoId").where({ dadosId: external_reference })
-                    //codigoDeBarras: results.barcode.content, =----- COM ERRO
                     knex('dadospagamentos').insert({
                         dadosId: results.external_reference,
                         dataAutorizacao: results.date_approved,
