@@ -147,7 +147,7 @@ router.get("/success/", async (req, res) => {
             knex("dadosvendas").update({ status: 'A' }).where({ dadosId: dadosVendas[0].dadosId })
             Carrinho.update({ status: false }, { where: { id: dadosVendas[0].carrinhoId } }).then(async () => {
                 var dadosTransicoes = await knex("dadostransicoes").select().where({ dadosId: dadosVendas[0].dadosId })
-                res.redirect("/usuario/historico/" + dadosTransicoes[0].id)
+                res.redirect("/usuario/transicao/" + dadosTransicoes[0].id)
             })
         })
     } catch (err) {
@@ -175,7 +175,7 @@ router.get("/pending/", async (req, res) => {
             knex("dadosvendas").update({ status: 'P' }).where({ dadosId: dadosVendas[0].dadosId })
             Carrinho.update({ status: false }, { where: { id: dadosVendas[0].carrinhoId } }).then(async () => {
                 var dadosTransicoes = await knex("dadostransicoes").select().where({ dadosId: dadosVendas[0].dadosId })
-                res.redirect("/usuario/historico/" + dadosTransicoes[0].id)
+                res.redirect("/usuario/transicao/" + dadosTransicoes[0].id)
             })
         })
     } catch (err) {
@@ -202,7 +202,7 @@ router.get("/failure/", async (req, res) => {
         }).then(async() => {
             knex("dadosvendas").update({ status: 'F' }).where({ dadosId: dadosVendas[0].dadosId })
             var dadosTransicoes = await knex("dadostransicoes").select().where({ dadosId: dadosVendas[0].dadosId })
-            res.redirect("/usuario/historico/" + dadosTransicoes[0].id)
+            res.redirect("/usuario/transicao/" + dadosTransicoes[0].id)
         })
     } catch (err) {
         console.log(err)
@@ -218,8 +218,6 @@ router.post("/statusPagamento", async (req, res) => {
         MercadoPago.payment.search({
             qs: filtro
         }).then(async data => {
-            console.log(data)
-            console.log('-------------------------')
             console.log(data.body)
             console.log('-------------------------')
             console.log(data.body.results[0])

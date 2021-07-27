@@ -63,13 +63,21 @@
                                 <div class="col-md-5">
                                     <label for="codbar">Codigo de Barras</label>
                                     <div class="input-group mb-3">
-                                        <input type="text" class="form-control" placeholder="Recipient's username" aria-label="Recipient's username" aria-describedby="button-addon2" id="codbar" value="<%=dadosPagamento.codigoDeBarras%>">
+                                        <input type="text" class="form-control bg-white" placeholder="Recipient's username" aria-label="Recipient's username" aria-describedby="button-addon2" id="codbar" disabled value="<%=dadosPagamento.codigoDeBarras%>">
                                         <button class="btn btn-outline-secondary" type="button" id="btnCopiar" onclick="copiar()">copiar</button>
                                       </div>
                                 </div>
-                                <div class="col-md-5">
+                                <div class="col-md-2">
                                     <label for="">Data de vencimento</label>
-                                    <input type="date" class="form-control" value="<%=data%>">
+                                    <input type="text" class="form-control bg-white text-center" disabled value="<%=dataExpiracao%>">
+                                </div>
+                                <div class="col-md-2">
+                                    <label for="">Valor do documento</label>
+                                    <input type="text" class="form-control bg-white text-center" disabled value="<%=dadosVenda.unit_price.toLocaleString('pt-br',{style: 'currency' , currency: 'BRL'
+                                })%>">
+                                </div>
+                                <div class="col-md-3">
+                                    <a href="https://www.mercadopago.com/mlb/payments/sandbox/ticket/helper?payment_id=<%=dadosTransicao.orderId%>&payment_method_reference_id=9827237757&caller_id=712825767&hash=fed90990-6ea7-43b0-8562-91a4ed6ee84a" class="btn btn-danger text-white text-center ms-5 mt-4">Reiprimir Boleto</a>
                                 </div>
                                 <%}%>
                                     <%}else{%>
