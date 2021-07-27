@@ -159,6 +159,7 @@ router.get("/success/", async (req, res) => {
 router.get("/pending/", async (req, res) => {
     var param = req.query
     console.log(param)
+    console.log("-------------------")
     try {
         var dadosVendas = await knex("dadosvendas").select().where({ dadosId: param.external_reference })
         var date = moment().format();
