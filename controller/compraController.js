@@ -38,7 +38,7 @@ router.get("/carrinho/finalizarCompra", async (req, res) => {
         try {
             var carrinho = await Carrinho.findOne({ where: { clienteId: cliente.id, status: true } })
             var codItens = await CodItens.findAll({ where: { carrinhoId: carrinho.id }, raw: true })
-            var dadoEntrega = await knex('dadosentregas').select().where({clienteId:cliente.id,carrinhoId:carrinho.id})
+            var dadoEntrega = await knex('dadosentregas').select().where({ clienteId: cliente.id, carrinhoId: carrinho.id })
 
             var descricao = ''
             for (x = 0; x < codItens.length; x++) {
@@ -52,7 +52,7 @@ router.get("/carrinho/finalizarCompra", async (req, res) => {
                 var idUnica = dadosVendas[0].dadosId
             }
             var precoTotal = parseFloat(carrinho.precoTotal) + parseFloat(dadoEntrega[0].valor)
-            console.log("Preco total = "+ precoTotal)
+            console.log("Preco total = " + precoTotal)
 
         } catch (err) {
             console.log(err)
@@ -128,9 +128,12 @@ router.get("/carrinho/finalizarCompra", async (req, res) => {
 })
 
 router.get("/success/", async (req, res) => {
+    console.log("--------Sucess--------")
     var param = req.query
     try {
         var dadosVendas = await knex("dadosvendas").select().where({ dadosId: param.external_reference })
+        console.log("--------Dados vendas--------")
+        console.log(dadosVendas)
         var date = moment().format();
         knex("dadostransicoes").insert({
             dadosId: param.external_reference,
@@ -142,15 +145,21 @@ router.get("/success/", async (req, res) => {
             orderId: param.merchant_order_id,
             createdAt: date,
             updatedAt: date
-        }).then(() => {
+        }).then(async () => {
             //parametros.dataprevistaentrega
-            var dataPrevista = moment().add(10,'days').calendar()   
-            knex("dadosentregas").update({status: 'Entrega em andamento',dataPrevista:dataPrevista}).where({clienteId: dadosVendas[0].clienteId,carrinhoId: dadosVendas[0].carrinhoId})
+            var dataPrevista = moment().add(10, 'days').calendar()
+            console.log("--------dataPrevista--------")
+            console.log(dataPrevista)
+            knex("dadosentregas").update({ status: 'Entrega em andamento', dataPrevista: dataPrevista }).where({ clienteId: dadosVendas[0].clienteId, carrinhoId: dadosVendas[0].carrinhoId })
+
             knex("dadosvendas").update({ status: 'A' }).where({ dadosId: dadosVendas[0].dadosId })
-            Carrinho.update({ status: false }, { where: { id: dadosVendas[0].carrinhoId } }).then(async () => {
-                var dadosTransicoes = await knex("dadostransicoes").select().where({ dadosId: dadosVendas[0].dadosId })
-                res.redirect("/usuario/transicao/" + dadosTransicoes[0].id)
-            })
+
+            Carrinho.update({ status: false }, { where: { id: dadosVendas[0].carrinhoId } })
+            
+            var dadosTransicoes = await knex("dadostransicoes").select().where({ dadosId: dadosVendas[0].dadosId })
+            console.log("--------dadosTransicoes--------")
+            console.log(dadosTransicoes)
+            res.redirect("/usuario/transicao/" + dadosTransicoes[0].id)
         })
     } catch (err) {
         console.log(err)
@@ -203,7 +212,7 @@ router.get("/failure/", async (req, res) => {
             orderId: param.merchant_order_id,
             createdAt: date,
             updatedAt: date
-        }).then(async() => {
+        }).then(async () => {
             knex("dadosvendas").update({ status: 'F' }).where({ dadosId: dadosVendas[0].dadosId })
             var dadosTransicoes = await knex("dadostransicoes").select().where({ dadosId: dadosVendas[0].dadosId })
             res.redirect("/usuario/transicao/" + dadosTransicoes[0].id)
@@ -227,11 +236,11 @@ router.post("/statusPagamento", async (req, res) => {
             console.log(data.body.results[0])
             console.log('-------------------------')
             var results = data.body.results[0]
-            
+
             var external_reference = results.external_reference
             if (results.barcode == undefined) {
                 var barcode = 0
-            }else{
+            } else {
                 var barcode = results.barcode.content
             }
             if (results.transaction_details.external_resource_url == undefined) {
@@ -265,13 +274,13 @@ router.post("/statusPagamento", async (req, res) => {
                         detalhePagamento: results.status_detail,
                         dataExpiracao: results.date_of_expiration,
                         dataLancamento: results.date_created,
-                        codigoDeBarras:barcode,
+                        codigoDeBarras: barcode,
                         clienteId: dadosVendas[0].clienteId,
                         carrinhoId: dadosVendas[0].carrinhoId,
                         status: results.status_detail,
                         descricao: results.description,
                         metodoPagamento: results.payment_method_id,
-                        boletoUrl:boletoUrl,
+                        boletoUrl: boletoUrl,
                         createdAt: results.date_created,
                         updatedAt: results.date_created
                     }).then(async () => {
