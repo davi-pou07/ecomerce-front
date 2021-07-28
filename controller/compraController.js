@@ -143,7 +143,9 @@ router.get("/success/", async (req, res) => {
             createdAt: date,
             updatedAt: date
         }).then(() => {
-            knex("dadosentregas").update({status: 'Entrega em andamento' }).where({clienteId: dadosVendas[0].clienteId,carrinhoId: dadosVendas[0].carrinhoId})
+            //parametros.dataprevistaentrega
+            var dataPrevista = moment().add(10,'days').calendar()   
+            knex("dadosentregas").update({status: 'Entrega em andamento',dataPrevista:dataPrevista}).where({clienteId: dadosVendas[0].clienteId,carrinhoId: dadosVendas[0].carrinhoId})
             knex("dadosvendas").update({ status: 'A' }).where({ dadosId: dadosVendas[0].dadosId })
             Carrinho.update({ status: false }, { where: { id: dadosVendas[0].carrinhoId } }).then(async () => {
                 var dadosTransicoes = await knex("dadostransicoes").select().where({ dadosId: dadosVendas[0].dadosId })
