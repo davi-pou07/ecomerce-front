@@ -128,12 +128,10 @@ router.get("/carrinho/finalizarCompra", async (req, res) => {
 })
 
 router.get("/success/", async (req, res) => {
-    console.log("--------Sucess--------")
+
     var param = req.query
     try {
         var dadosVendas = await knex("dadosvendas").select().where({ dadosId: param.external_reference })
-        console.log("--------Dados vendas--------")
-        console.log(dadosVendas)
         var date = moment().format();
         knex("dadostransicoes").insert({
             dadosId: param.external_reference,
@@ -147,18 +145,17 @@ router.get("/success/", async (req, res) => {
             updatedAt: date
         }).then(async () => {
             //parametros.dataprevistaentrega
-            var dataPrevista = moment().add(10, 'days').calendar()
-            console.log("--------dataPrevista--------")
-            console.log(dataPrevista)
-            knex("dadosentregas").update({ status: 'Entrega em andamento', dataPrevista: dataPrevista }).where({ clienteId: dadosVendas[0].clienteId, carrinhoId: dadosVendas[0].carrinhoId })
+           
+            var dataPrevista =moment().add(10,"days").format("DD/MM/YYYY")
 
-            knex("dadosvendas").update({ status: 'A' }).where({ dadosId: dadosVendas[0].dadosId })
+           await knex("dadosentregas").update({ status: 'Entrega em andamento', dataPrevista: dataPrevista }).where({ clienteId: dadosVendas[0].clienteId, carrinhoId: dadosVendas[0].carrinhoId })
 
-            Carrinho.update({ status: false }, { where: { id: dadosVendas[0].carrinhoId } })
-            
+           await knex("dadosvendas").update({ status: 'A' }).where({ dadosId: dadosVendas[0].dadosId })
+
+           await Carrinho.update({ status: false }, { where: { id: dadosVendas[0].carrinhoId } })
+
             var dadosTransicoes = await knex("dadostransicoes").select().where({ dadosId: dadosVendas[0].dadosId })
-            console.log("--------dadosTransicoes--------")
-            console.log(dadosTransicoes)
+        
             res.redirect("/usuario/transicao/" + dadosTransicoes[0].id)
         })
     } catch (err) {
