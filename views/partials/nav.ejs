@@ -15,14 +15,15 @@
     <!--End of Tawk.to Script-->
 
 
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark bg-gradient">
+    <nav class="navbar navbar-expand-sm navbar-dark bg-dark bg-gradient">
 
-        <div class="container">
+        <div class="container" role="navigation">
 
             <a class="navbar-brand" href="/">
                 <img src="/img/icon.png" id="logo" width="50" height="44" class="d-inline-block align-top">
             </a>
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
+            <div class="collapse navbar-collapse" role="navigation" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle text-white" href="#" role="button"
@@ -35,10 +36,9 @@
                         </ul>
                     </li>
                 </ul>
-
             </div>
 
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <div class="collapse navbar-collapse" role="navigation" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <form class="input-group">
                         <input class="form-control me-3" type="search" placeholder="Ex: simples"
@@ -48,8 +48,13 @@
                 </ul>
             </div>
 
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo02"
+                aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
             <input type="hidden" name="clienteId" id="clienteId">
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <div class="collapse navbar-collapse" role="navigation" id="navbarSupportedContent">
                 <ul class="me-auto mb-2 mb-lg-0 text-white position-relative">
                     <a href="/carrinho/caixa">
                         <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor"
@@ -63,11 +68,11 @@
                 </ul>
             </div>
 
-            <div class="collapse navbar-collapse" id="reglog">
+            <div class="collapse navbar-collapse" role="navigation" id="reglog">
 
             </div>
 
-            <div class="personal-imageNav" id="divPerfil">
+            <div class="personal-imageNav" role="navigation" id="divPerfil">
                 <label class="label">
                     <figure class="personal-figureNav">
                         <div class="collapse navbar-collapse">
@@ -105,9 +110,6 @@
             </div>
         </div>
 
-        </div>
-
-        </div>
     </nav>
 
     <a href="https://api.whatsapp.com/send?phone=+55086994726085&text=Tenho uma duvida!" target="_blank"
