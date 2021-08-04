@@ -15,7 +15,7 @@
     <!--End of Tawk.to Script-->
 
 
-    <nav class="navbar navbar-expand-sm navbar-dark bg-dark bg-gradient">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark bg-gradient">
 
         <div class="container" role="navigation">
 
@@ -54,7 +54,7 @@
             </button>
             
             <input type="hidden" name="clienteId" id="clienteId">
-            <div class="collapse navbar-collapse" role="navigation" id="navbarSupportedContent">
+            <div class="mx-2" role="navigation" id="navbarSupportedContent">
                 <ul class="me-auto mb-2 mb-lg-0 text-white position-relative">
                     <a href="/carrinho/caixa">
                         <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor"
@@ -68,7 +68,7 @@
                 </ul>
             </div>
 
-            <div class="collapse navbar-collapse" role="navigation" id="reglog">
+            <div class="navbar-collapse" role="navigation" id="reglog">
 
             </div>
 
@@ -152,7 +152,7 @@
                 var divPerfil = document.getElementById("divPerfil")
                 divPerfil.parentNode.removeChild(divPerfil);
 
-                document.getElementById("reglog").innerHTML = ['<ul class="me-auto mb-2 mb-lg-0 text-white position-relative"><a href="/login" class="btn btn-success">Registra-se</a><a href="/login" class="btn btn-outline-success">Login</a></ul>'].join('');
+                document.getElementById("reglog").innerHTML = ['<ul class="me-auto mb-2 text-white"><a href="/login" class="btn btn-success">Registra-se</a><a href="/login" class="btn btn-outline-success">Login</a></ul>'].join('');
             }
         })
         axios.get('https://ecomerce-front.herokuapp.com/empresa').then(empresa => {
