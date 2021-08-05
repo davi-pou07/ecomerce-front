@@ -109,10 +109,15 @@
                     </div>
                 </div>
 
-        </div>
+                <<<<<<< HEAD </div>
 
-        </nav>
+            </nav>
         </div>
+        ======= document.getElementById("reglog").innerHTML = ['
+        <ul class="me-auto mb-2 text-white"><a href="/login" class="btn btn-success">Registra-se</a><a href="/login" class="btn btn-outline-success">Login</a></ul>'].join(''); } }) axios.get('https://ecomerce-front.herokuapp.com/empresa').then(empresa => { if (empresa.data != undefined)
+        { empresa.data.forEach(empresa => { var logo = document.getElementById("logo") logo.src = empresa.logo var span = document.getElementById("empreza") span.innerHTML = empresa.nome }) } }) function busca() { var buscar = document.getElementById("pesquisa")
+        if (buscar.value == '' || buscar.value == undefined) { alert("Digite o que deseja pesquisar!") } else { axios.post("http://localhost:8080/find", { busca: buscar.value }).then(busca => { window.location.href = "/admin/produto/busca/" + busca.data;
+        }).catch(err => { console.log(err) }) } } >>>>>>> b3270512c6b059dec02215d07483b6c2effc5ae6
 
         <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
         <script>
