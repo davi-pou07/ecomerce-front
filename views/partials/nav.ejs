@@ -2,9 +2,11 @@
 
     <!--Start of Tawk.to Script-->
     <script type="text/javascript">
-        var Tawk_API = Tawk_API || {}, Tawk_LoadStart = new Date();
-        (function () {
-            var s1 = document.createElement("script"), s0 = document.getElementsByTagName("script")[0];
+        var Tawk_API = Tawk_API || {},
+            Tawk_LoadStart = new Date();
+        (function() {
+            var s1 = document.createElement("script"),
+                s0 = document.getElementsByTagName("script")[0];
             s1.async = true;
             s1.src = 'https://embed.tawk.to/609990e1b1d5182476b79b33/1f5btrsok';
             s1.charset = 'UTF-8';
@@ -15,167 +17,156 @@
     <!--End of Tawk.to Script-->
 
 
-    <nav class="navbar navbar-expand-sm navbar-dark bg-dark bg-gradient">
+    <body>
+        <div id="header">
+            <nav class="navbar navbar-dark justify-content-between navbar-expand-lg bg-dark bg-gradient">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-6 p-0 ps-2">
+                            <a href="#" class="navbar-brand">
+                                <img src="./img/logo.png" class="img-fluid" height="50px" width="50px" alt="">
 
-        <div class="container" role="navigation">
-
-            <a class="navbar-brand" href="/">
-                <img src="/img/icon.png" id="logo" width="50" height="44" class="d-inline-block align-top">
-            </a>
-
-            <div class="collapse navbar-collapse" role="navigation" id="navbarSupportedContent">
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle text-white" href="#" role="button"
-                            id="navbarDropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
-                            <span id="empreza" class="text-uppercase fw-bold text-white"></span></a>
-                        <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-
-                            <li><a href="/admin/empresa" class="dropdown-item">Quem Somos!</a></li>
-
-                        </ul>
-                    </li>
-                </ul>
-            </div>
-
-            <div class="collapse navbar-collapse" role="navigation" id="navbarSupportedContent">
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                    <form class="input-group">
-                        <input class="form-control me-3" type="search" placeholder="Ex: simples"
-                            aria-label="Informe um">
-                        <button class="btn btn-outline-success" type="submit">Pesquisar</button>
-                    </form>
-                </ul>
-            </div>
-
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo02"
-                aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            
-            <input type="hidden" name="clienteId" id="clienteId">
-            <div class="collapse navbar-collapse" role="navigation" id="navbarSupportedContent">
-                <ul class="me-auto mb-2 mb-lg-0 text-white position-relative">
-                    <a href="/carrinho/caixa">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor"
-                            class="bi bi-cart" viewBox="0 0 16 16">
-                            <path
-                                d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5zM3.102 4l1.313 7h8.17l1.313-7H3.102zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2z" />
-                        </svg>
-                        <span id="spanCarrin"
-                            class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-secondary">0</span>
-                    </a>
-                </ul>
-            </div>
-
-            <div class="collapse navbar-collapse" role="navigation" id="reglog">
-
-            </div>
-
-            <div class="personal-imageNav" role="navigation" id="divPerfil">
-                <label class="label">
-                    <figure class="personal-figureNav">
-                        <div class="collapse navbar-collapse">
-                            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                                <li class="nav-item dropdown">
-                                    <a class="nav-link dropdown-toggle text-white" href="#" role="button"
-                                        id="navbarDropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
-                                        <img src="/img/avatar.jpg" class="personal-avatarNav" id="imgCli"
-                                            alt="avatar"></a>
-                                    <ul class="dropdown-menu dropdown-menu-dark"
-                                        aria-labelledby="navbarDropdownMenuLink">
-                                        <li><a class="dropdown-item text-center" id="userNome">Usuario</a></li>
-                                        <li>
-                                            <hr class="dropdown-divider">
-                                        </li>
-                                        <li>
-                                            <a class="dropdown-item" href="/usuario/edit/">Editar</a>
-                                        </li>
-                                        <li>
-                                            <hr class="dropdown-divider">
-                                        </li>
-                                        <li>
-                                            <a class="dropdown-item" href="/usuario/historico/">Historico de Comp.</a>
-                                        </li>
-                                        <li>
-                                            <hr class="dropdown-divider">
-                                        </li>
-                                        <li><a class="dropdown-item" id="aUsuarios" href="/logout">Sair</a></li>
-
-                                    </ul>
-                                </li>
+                            </a>
                         </div>
-                    </figure>
-                </label>
-            </div>
+                        <div class="col-6 p-0">
+                            <span>
+                                <ul class="navbar-nav mt-1">
+                                    <li class="nav-item dropdown">
+                                        <a class="nav-link dropdown-toggle text-uppercase fw-bold text-white show"
+                                            href="#" role="button" id="navbarDropdownMenuLink" data-bs-toggle="dropdown"
+                                            aria-expanded="true">
+                                            ICAN
+                                        </a>
+                                        <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                            <li><a href="/admin/empresa" class="dropdown-item">Quem Somos!</a></li>
+                                        </ul>
+
+                                    </li>
+                                </ul>
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12 p-0">
+                            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
+                                <form class="d-flex">
+                                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                                    <button class="btn btn-outline-success" type="submit">Pesquisar</button>
+                                </form>
+
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <ul class=" mt-4 me-md-5 mx-1 mt-lg-2 me-md-0 mb-lg-0 text-white position-relative">
+                        <a href="/carrinho/caixa">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-cart" viewBox="0 0 16 16">
+                                <path
+                                    d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5zM3.102 4l1.313 7h8.17l1.313-7H3.102zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2z" />
+                            </svg>
+                            <span id="spanCarrin" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-secondary">0</span>
+                        </a>
+                    </ul>
+
+                    <div class="me-4 personal-imageNav" role="navigation" id="divPerfil">
+                        <label class="label">
+                            <figure class="personal-figureNav">
+
+                                <ul class="navbar-nav me-md-auto mb-2 mb-lg-0">
+                                    <li class="nav-item dropdown">
+                                        <a class="nav-link dropdown-toggle text-white" href="#" role="button"
+                                            id="navbarDropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+                                            <img src="/img/avatar.jpg" class="personal-avatarNav" id="imgCli"
+                                                alt="avatar"></a>
+                                        <ul class="dropdown-menu dropdown-menu-dark"
+                                            aria-labelledby="navbarDropdownMenuLink">
+                                            <li><a class="dropdown-item text-center" id="userNome">Usuario</a></li>
+                                            <li>
+                                                <hr class="dropdown-divider">
+                                            </li>
+                                            <li>
+                                                <a class="dropdown-item" href="/usuario/edit/">Editar</a>
+                                            </li>
+                                            <li>
+                                                <hr class="dropdown-divider">
+                                            </li>
+                                            <li>
+                                                <a class="dropdown-item" href="/usuario/historico/">Historico de
+                                                    Comp.</a>
+                                            </li>
+                                            <li>
+                                                <hr class="dropdown-divider">
+                                            </li>
+                                            <li><a class="dropdown-item" id="aUsuarios" href="/logout">Sair</a></li>
+
+                                        </ul>
+                                    </li>
+                            </figure>
+                        </label>
+                    </div>
+                </div>
+
         </div>
 
-    </nav>
+        </nav>
+        </div>
 
-    <a href="https://api.whatsapp.com/send?phone=+55086994726085&text=Tenho uma duvida!" target="_blank"
-        style="position:fixed;bottom:100px;right:30px;">
-        <svg enable-background="new 0 0 512 512" width="50" height="50" version="1.1" viewBox="0 0 512 512"
-            xml:space="preserve" xmlns="http://www.w3.org/2000/svg">
-            <path
-                d="M256.064,0h-0.128l0,0C114.784,0,0,114.816,0,256c0,56,18.048,107.904,48.736,150.048l-31.904,95.104  l98.4-31.456C155.712,496.512,204,512,256.064,512C397.216,512,512,397.152,512,256S397.216,0,256.064,0z"
-                fill="#4CAF50" />
-            <path
-                d="m405.02 361.5c-6.176 17.44-30.688 31.904-50.24 36.128-13.376 2.848-30.848 5.12-89.664-19.264-75.232-31.168-123.68-107.62-127.46-112.58-3.616-4.96-30.4-40.48-30.4-77.216s18.656-54.624 26.176-62.304c6.176-6.304 16.384-9.184 26.176-9.184 3.168 0 6.016 0.16 8.576 0.288 7.52 0.32 11.296 0.768 16.256 12.64 6.176 14.88 21.216 51.616 23.008 55.392 1.824 3.776 3.648 8.896 1.088 13.856-2.4 5.12-4.512 7.392-8.288 11.744s-7.36 7.68-11.136 12.352c-3.456 4.064-7.36 8.416-3.008 15.936 4.352 7.36 19.392 31.904 41.536 51.616 28.576 25.44 51.744 33.568 60.032 37.024 6.176 2.56 13.536 1.952 18.048-2.848 5.728-6.176 12.8-16.416 20-26.496 5.12-7.232 11.584-8.128 18.368-5.568 6.912 2.4 43.488 20.48 51.008 24.224 7.52 3.776 12.48 5.568 14.304 8.736 1.792 3.168 1.792 18.048-4.384 35.52z"
-                fill="#FAFAFA" />
-        </svg>
-    </a>
+        <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+        <script>
+            //VERIFICA USUARIO LOGADO E COLOCA INFORMAÇÕES NA DIV
+            var reglog = document.getElementById("reglog")
 
-    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-    <script>
-        //VERIFICA USUARIO LOGADO E COLOCA INFORMAÇÕES NA DIV
-        var reglog = document.getElementById("reglog")
+            reglog.innerHTML = ['<div class="spinner-border text-primary" role="status"><span class="visually-hidden"></span></div>'].join('');
 
-        reglog.innerHTML = ['<div class="spinner-border text-primary" role="status"><span class="visually-hidden"></span></div>'].join('');
+            axios.get('https://ecomerce-front.herokuapp.com/usuario/logado').then(resp => {
+                var dados = resp.data
+                if (dados.clienteId != undefined) {
+                    //Remover botãoes de login
+                    reglog.parentNode.removeChild(reglog);
+                    //Colocar nome do cliente
+                    var userNome = document.getElementById("userNome").innerHTML = dados.clienteNome.split(" ")[0]
+                        //Coloca foto do cliente
+                    if (dados.clienteFoto != undefined) {
+                        var imgCli = document.getElementById("imgCli")
+                        imgCli.src = dados.clienteFoto
+                    }
+                    var spanCarrin = document.getElementById("spanCarrin").innerHTML = dados.carrinho.quantidade
 
-        axios.get('https://ecomerce-front.herokuapp.com/usuario/logado').then(resp => {
-            var dados = resp.data
-            if (dados.clienteId != undefined) {
-                //Remover botãoes de login
-                reglog.parentNode.removeChild(reglog);
-                //Colocar nome do cliente
-                var userNome = document.getElementById("userNome").innerHTML = dados.clienteNome.split(" ")[0]
-                //Coloca foto do cliente
-                if (dados.clienteFoto != undefined) {
-                    var imgCli = document.getElementById("imgCli")
-                    imgCli.src = dados.clienteFoto
+                    var clienteId = document.getElementById("clienteId").value = dados.clienteId
+
+                } else {
+                    var divPerfil = document.getElementById("divPerfil")
+                    divPerfil.parentNode.removeChild(divPerfil);
+
+                    document.getElementById("reglog").innerHTML = ['<ul class="me-auto mb-2 mb-lg-0 text-white position-relative"><a href="/login" class="btn btn-success">Registra-se</a><a href="/login" class="btn btn-outline-success">Login</a></ul>'].join('');
                 }
-                var spanCarrin = document.getElementById("spanCarrin").innerHTML = dados.carrinho.quantidade
+            })
+            axios.get('https://ecomerce-front.herokuapp.com/empresa').then(empresa => {
+                if (empresa.data != undefined) {
+                    empresa.data.forEach(empresa => {
+                        var logo = document.getElementById("logo")
+                        logo.src = empresa.logo
+                        var span = document.getElementById("empreza")
+                        span.innerHTML = empresa.nome
+                    })
+                }
+            })
 
-                var clienteId = document.getElementById("clienteId").value = dados.clienteId
-
-            } else {
-                var divPerfil = document.getElementById("divPerfil")
-                divPerfil.parentNode.removeChild(divPerfil);
-
-                document.getElementById("reglog").innerHTML = ['<ul class="me-auto mb-2 mb-lg-0 text-white position-relative"><a href="/login" class="btn btn-success">Registra-se</a><a href="/login" class="btn btn-outline-success">Login</a></ul>'].join('');
+            function busca() {
+                var buscar = document.getElementById("pesquisa")
+                if (buscar.value == '' || buscar.value == undefined) {
+                    alert("Digite o que deseja pesquisar!")
+                } else {
+                    axios.post("http://localhost:8080/find", {
+                        busca: buscar.value
+                    }).then(busca => {
+                        window.location.href = "/admin/produto/busca/" + busca.data;
+                    }).catch(err => {
+                        console.log(err)
+                    })
+                }
             }
-        })
-        axios.get('https://ecomerce-front.herokuapp.com/empresa').then(empresa => {
-            if (empresa.data != undefined) {
-                empresa.data.forEach(empresa => {
-                    var logo = document.getElementById("logo")
-                    logo.src = empresa.logo
-                    var span = document.getElementById("empreza")
-                    span.innerHTML = empresa.nome
-                })
-            }
-        })
-        function busca() {
-            var buscar = document.getElementById("pesquisa")
-            if (buscar.value == '' || buscar.value == undefined) {
-                alert("Digite o que deseja pesquisar!")
-            } else {
-                axios.post("http://localhost:8080/find", { busca: buscar.value }).then(busca => {
-                    window.location.href = "/admin/produto/busca/" + busca.data;
-                }).catch(err => {
-                    console.log(err)
-                })
-            }
-        }
-
-    </script>
+        </script>
