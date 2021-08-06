@@ -152,12 +152,11 @@
 
             axios.get('https://ecomerce-front.herokuapp.com/empresa').then(empresa => {
                 if (empresa.data != undefined) {
-                    empresa.data.forEach(empresa => {
+                    var empresa = empresa.data[0]
                         var logo = document.getElementById("logo")
                         logo.src = empresa.logo
                         var span = document.getElementById("empreza")
                         span.innerHTML = empresa.nome
-                    })
                 }
             })
 
