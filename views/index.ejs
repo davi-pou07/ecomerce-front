@@ -15,7 +15,7 @@
                         <ul class="dropdown-menu">
                             <%categorias.forEach(categoria=>{%>
                                 <%if(categoria.destaque==true){%>
-                                    <li><a class="dropdown-item" href="#">
+                                    <li><a class="dropdown-item" href="/categoria/<%=categoria.id%>">
                                             <%=categoria.titulo%>
                                         </a></li>
                                     <%}%>
@@ -32,13 +32,13 @@
                     <li class="nav-item">
                         <div class="input-group">
                             <img src="/img/historico.png" class="img-fluid mt-md-1" width="30px" height="30px">
-                            <a class="nav-link" href="#">Historico de Compra</a>
+                            <a class="nav-link" href="/usuario/historico/">Historico de Compra</a>
                         </div>
                     </li>
                     <li class="nav-item">
                         <div class="input-group">
                             <img src="/img/carrinho.png" class="img-fluid mt-md-1" width="30px" height="30px">
-                            <a class="nav-link" href="#">Carrinho</a>
+                            <a class="nav-link" href="/carrinho/caixa">Carrinho</a>
                         </div>
 
                     </li>
