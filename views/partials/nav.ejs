@@ -61,7 +61,7 @@
                         </div>
                     </div>
 
-
+                    <!-- Carrinho -->
                     <ul class=" mt-4 me-md-5 mx-1 mt-lg-2 me-md-0 mb-lg-0 text-white position-relative">
                         <a href="/carrinho/caixa">
                             <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor"
@@ -73,17 +73,19 @@
                                 class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-secondary">0</span>
                         </a>
                     </ul>
-
+                    <!-- Person -->
                     <div class="me-4 personal-imageNav" role="navigation" id="divPerfil">
                         <label class="label">
                             <figure class="personal-figureNav">
 
                                 <ul class="navbar-nav me-md-auto mb-2 mb-lg-0">
-                                    <li class="nav-item dropdown">
-                                        <a class="nav-link dropdown-toggle text-white" href="#" role="button"
-                                            id="navbarDropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <li class="nav-item">
+                                        <a class="nav-link text-white" href="/login" id="dropTogle"
+                                            role="button" id="navbarDropdownMenuLink" data-bs-toggle=""
+                                            aria-expanded="false">
                                             <img src="/img/avatar.jpg" class="personal-avatarNav" id="imgCli"
-                                                alt="avatar"></a>
+                                                alt="avatar">
+                                        </a>
                                         <ul class="dropdown-menu dropdown-menu-dark"
                                             aria-labelledby="navbarDropdownMenuLink">
                                             <li><a class="dropdown-item text-center" id="userNome">Usuario</a></li>
@@ -117,15 +119,18 @@
         <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
         <script>
             //VERIFICA USUARIO LOGADO E COLOCA INFORMAÇÕES NA DIV
-            var reglog = document.getElementById("reglog")
 
-            reglog.innerHTML = ['<div class="spinner-border text-primary" role="status"><span class="visually-hidden"></span></div>'].join('');
+            var dropTogle = document.getElementById("dropTogle")
+            dropTogle.innerHTML = ['<div class="spinner-border text-primary" role="status"><span class="visually-hidden"></span></div>'].join('');
 
             axios.get('https://ecomerce-front.herokuapp.com/usuario/logado').then(resp => {
                 var dados = resp.data
                 if (dados.clienteId != undefined) {
-                    //Remover botãoes de login
-                    reglog.parentNode.removeChild(reglog);
+
+                    dropTogle.innerHTML = ['<img src="/img/avatar.jpg" class="personal-avatarNav" id="imgCli" alt="avatar">'].join('');
+                    dropTogle.classList.add('dropdown-toggle')
+                    dropTogle.href = '#'
+                    dropTogle.dataset.bsToggle = 'dropdown'
                     //Colocar nome do cliente
                     var userNome = document.getElementById("userNome").innerHTML = dados.clienteNome.split(" ")[0]
                     //Coloca foto do cliente
@@ -133,17 +138,18 @@
                         var imgCli = document.getElementById("imgCli")
                         imgCli.src = dados.clienteFoto
                     }
+                    //droptogle
+
                     var spanCarrin = document.getElementById("spanCarrin").innerHTML = dados.carrinho.quantidade
 
-                    var clienteId = document.getElementById("clienteId").value = dados.clienteId
-
                 } else {
-                    var divPerfil = document.getElementById("divPerfil")
-                    divPerfil.parentNode.removeChild(divPerfil);
-
-                    document.getElementById("reglog").innerHTML = ['<ul class="me-auto mb-2 mb-lg-0 text-white position-relative"><a href="/login" class="btn btn-success">Registra-se</a><a href="/login" class="btn btn-outline-success">Login</a></ul>'].join('');
+                    dropTogle.innerHTML = ['<img src="/img/avatar.jpg" class="personal-avatarNav" id="imgCli" alt="avatar">'].join('');
+                    dropTogle.classList.remove('dropdown-toggle')
+                    dropTogle.href = '/login'
+                    dropTogle.dataset.bsToggle = ''
                 }
             })
+
             axios.get('https://ecomerce-front.herokuapp.com/empresa').then(empresa => {
                 if (empresa.data != undefined) {
                     empresa.data.forEach(empresa => {
