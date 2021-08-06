@@ -4,7 +4,7 @@
     <script type="text/javascript">
         var Tawk_API = Tawk_API || {},
             Tawk_LoadStart = new Date();
-        (function() {
+        (function () {
             var s1 = document.createElement("script"),
                 s0 = document.getElementsByTagName("script")[0];
             s1.async = true;
@@ -52,7 +52,8 @@
                             <div class="collapse navbar-collapse" id="navbarSupportedContent">
 
                                 <form class="d-flex">
-                                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                                    <input class="form-control me-2" type="search" placeholder="Search"
+                                        aria-label="Search">
                                     <button class="btn btn-outline-success" type="submit">Pesquisar</button>
                                 </form>
 
@@ -63,11 +64,13 @@
 
                     <ul class=" mt-4 me-md-5 mx-1 mt-lg-2 me-md-0 mb-lg-0 text-white position-relative">
                         <a href="/carrinho/caixa">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-cart" viewBox="0 0 16 16">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor"
+                                class="bi bi-cart" viewBox="0 0 16 16">
                                 <path
                                     d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5zM3.102 4l1.313 7h8.17l1.313-7H3.102zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2z" />
                             </svg>
-                            <span id="spanCarrin" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-secondary">0</span>
+                            <span id="spanCarrin"
+                                class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-secondary">0</span>
                         </a>
                     </ul>
 
@@ -108,16 +111,8 @@
                         </label>
                     </div>
                 </div>
-
-                <<<<<<< HEAD </div>
-
             </nav>
         </div>
-        ======= document.getElementById("reglog").innerHTML = ['
-        <ul class="me-auto mb-2 text-white"><a href="/login" class="btn btn-success">Registra-se</a><a href="/login" class="btn btn-outline-success">Login</a></ul>'].join(''); } }) axios.get('https://ecomerce-front.herokuapp.com/empresa').then(empresa => { if (empresa.data != undefined)
-        { empresa.data.forEach(empresa => { var logo = document.getElementById("logo") logo.src = empresa.logo var span = document.getElementById("empreza") span.innerHTML = empresa.nome }) } }) function busca() { var buscar = document.getElementById("pesquisa")
-        if (buscar.value == '' || buscar.value == undefined) { alert("Digite o que deseja pesquisar!") } else { axios.post("http://localhost:8080/find", { busca: buscar.value }).then(busca => { window.location.href = "/admin/produto/busca/" + busca.data;
-        }).catch(err => { console.log(err) }) } } >>>>>>> b3270512c6b059dec02215d07483b6c2effc5ae6
 
         <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
         <script>
@@ -133,7 +128,7 @@
                     reglog.parentNode.removeChild(reglog);
                     //Colocar nome do cliente
                     var userNome = document.getElementById("userNome").innerHTML = dados.clienteNome.split(" ")[0]
-                        //Coloca foto do cliente
+                    //Coloca foto do cliente
                     if (dados.clienteFoto != undefined) {
                         var imgCli = document.getElementById("imgCli")
                         imgCli.src = dados.clienteFoto
