@@ -80,9 +80,8 @@
 
                                 <ul class="navbar-nav me-md-auto mb-2 mb-lg-0">
                                     <li class="nav-item">
-                                        <a class="nav-link text-white" href="/login" id="dropTogle"
-                                            role="button" id="navbarDropdownMenuLink" data-bs-toggle=""
-                                            aria-expanded="false">
+                                        <a class="nav-link text-white" href="/login" id="dropTogle" role="button"
+                                            id="navbarDropdownMenuLink" data-bs-toggle="" aria-expanded="false">
                                             <img src="/img/avatar.jpg" class="personal-avatarNav" id="imgCli"
                                                 alt="avatar">
                                         </a>
@@ -153,10 +152,10 @@
             axios.get('https://ecomerce-front.herokuapp.com/empresa').then(empresa => {
                 if (empresa.data != undefined) {
                     var empresa = empresa.data[0]
-                        var logo = document.getElementById("logo")
-                        logo.src = empresa.logo
-                        var span = document.getElementById("empreza")
-                        span.innerHTML = empresa.nome
+                    var logo = document.getElementById("logo")
+                    logo.src = empresa.logo
+                    var span = document.getElementById("empreza")
+                    span.innerHTML = empresa.nome
                 }
             })
 
