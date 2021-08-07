@@ -226,7 +226,7 @@ router.post("/usuario/editar", auth, async (req, res) => {
 })
 
 router.get("/usuario/historico",async(req,res)=>{
-    // var usuario = req.session.cli
+    var usuario = req.session.cli
     var usuario = {id:1}
     if (usuario != undefined) {
         try{
@@ -252,7 +252,7 @@ router.get("/usuario/historico",async(req,res)=>{
 })
 
 router.get("/usuario/transicao/:transicaoId",async(req,res)=>{
-    // var usuario = req.session.cli
+    var usuario = req.session.cli
     var transicaoId = req.params.transicaoId
     var usuario = {id:1}
     if (usuario != undefined) {
