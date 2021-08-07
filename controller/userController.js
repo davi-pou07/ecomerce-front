@@ -16,7 +16,7 @@ const auth = require("../middlewares/adminAuth")
 router.get("/login", (req, res) => {
     res.render("usuario/login")
 })
-
+// INFORMAR SE JA ESTA CADASTRADO O EMAIL OU O CAELULAR
 router.post("/usuario/login", (req, res) => {
     var emailLogin = req.body.emailLogin
     var senhaLogin = req.body.senhaLogin
@@ -227,7 +227,7 @@ router.post("/usuario/editar", auth, async (req, res) => {
 
 router.get("/usuario/historico",async(req,res)=>{
     var usuario = req.session.cli
-    var usuario = {id:1}
+    //var usuario = {id:1}
     if (usuario != undefined) {
         try{
         var cliente = await Cliente.findByPk(usuario.id)
@@ -254,7 +254,7 @@ router.get("/usuario/historico",async(req,res)=>{
 router.get("/usuario/transicao/:transicaoId",async(req,res)=>{
     var usuario = req.session.cli
     var transicaoId = req.params.transicaoId
-    var usuario = {id:1}
+    //var usuario = {id:1}
     if (usuario != undefined) {
         try{
         var empresa = await knex("empresas").select()
