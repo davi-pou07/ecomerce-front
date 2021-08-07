@@ -336,50 +336,52 @@
                 <h2 class="title text-center">Nossos produtos</h2>
                 <h4 class="subtitle text-center mb-4">Veja abaixo nossos principais produtos!</h4>
                 <div class="row">
-                    <%produtos.forEach(produto=>{%>
-                        <div class="col-lg-3 col-md-6 mb-4 mb-lg-0">
-                            <a href="/produto/<%=produto.id%>" class="destaque">
-                                <div class="img-container mb-3">
-                                    <%var imagem=imagens.find(imagem=> imagem.produtoId == produto.id)%>
-                                        <%if(imagem !=undefined){%>
-                                            <img src="<%=imagem.imagem%>" class="" alt="">
-                                            <%}else{%>
-                                                <img class="rounded mx-auto d-block" src="/img/null.png" width="220"
-                                                    height="220">
-                                                <%}%>
-
-                                </div>
-                                <h5 class="text-uppercase">
-                                    <%=produto.nome%>
-                                </h5>
-                                <%precos.forEach(preco=> {%>
-                                    <%if(preco.produtoId==produto.id){%>
-                                        <span class="form-control text-white fw-bold bg-primary bg-gradient">
-                                            <%if(preco.desconto> 0){%>
-                                                <s id="s" class="fs-6 text-danger">
-                                                    <%=preco.venda.toLocaleString('pt-br',{style: 'currency' ,
-                                                        currency: 'BRL' })%>
-                                                </s>
-                                                <strong id="strong" class="fs-4">
-                                                    <%=preco.desconto.toLocaleString('pt-br',{style: 'currency' ,
-                                                        currency: 'BRL' })%>
-                                                </strong>
+                    <%produtos.forEach((produto,index)=>{%>
+                        <%if(index < 8){%>
+                            <div class="col-lg-3 col-md-6 mb-4 mb-lg-0">
+                                <a href="/produto/<%=produto.id%>" class="destaque">
+                                    <div class="img-container mb-3">
+                                        <%var imagem=imagens.find(imagem=> imagem.produtoId == produto.id)%>
+                                            <%if(imagem !=undefined){%>
+                                                <img src="<%=imagem.imagem%>" class="" alt="">
                                                 <%}else{%>
-                                                    <strong id="strong" class="fs-4">
-                                                        <%=preco.venda.toLocaleString('pt-br',{style: 'currency' ,
-                                                            currency: 'BRL' })%>
-                                                    </strong>
+                                                    <img class="rounded mx-auto d-block" src="/img/null.png" width="220"
+                                                        height="220">
                                                     <%}%>
 
-                                        </span>
-                                        <%}%>
-                                            <%})%>
-                            </a>
-                        </div>
-                        <%})%>
+                                    </div>
+                                    <h5 class="text-uppercase">
+                                        <%=produto.nome%>
+                                    </h5>
+                                    <%precos.forEach(preco=> {%>
+                                        <%if(preco.produtoId==produto.id){%>
+                                            <span class="form-control text-white fw-bold bg-primary bg-gradient">
+                                                <%if(preco.desconto> 0){%>
+                                                    <s id="s" class="fs-6 text-danger">
+                                                        <%=preco.venda.toLocaleString('pt-br',{style: 'currency' ,
+                                                            currency: 'BRL' })%>
+                                                    </s>
+                                                    <strong id="strong" class="fs-4">
+                                                        <%=preco.desconto.toLocaleString('pt-br',{style: 'currency' ,
+                                                            currency: 'BRL' })%>
+                                                    </strong>
+                                                    <%}else{%>
+                                                        <strong id="strong" class="fs-4">
+                                                            <%=preco.venda.toLocaleString('pt-br',{style: 'currency' ,
+                                                                currency: 'BRL' })%>
+                                                        </strong>
+                                                        <%}%>
+
+                                            </span>
+                                            <%}%>
+                                                <%})%>
+                                </a>
+                            </div>
+                            <%}%>
+                                <%})%>
                 </div>
             </div>
-                <button class="form-control bg-primary text-white mt-5">Ver Todos</button>
+            <button class="form-control bg-primary text-white mt-5">Ver Todos</button>
         </div>
 
 

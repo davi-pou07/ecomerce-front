@@ -82,8 +82,8 @@ router.post("/carrinho/adicionar", auth, async (req, res) => {
 })
 
 router.get("/carrinho/caixa", async (req, res) => {
-    // var usuario = req.session.cli
-    var usuario = { id: 1 }
+    var usuario = req.session.cli
+    // var usuario = { id: 1 }
     if (usuario != undefined) {
         var cliente = await Cliente.findByPk(usuario.id)
         var carrinho = await Carrinho.findOne({ where: { clienteId: cliente.id, status: true } })
@@ -99,7 +99,7 @@ router.get("/carrinho/caixa", async (req, res) => {
         res.render("carrinho/carrinho", { cliente: cliente, carrinho: carrinho, codItens: codItens, produtos: produtos, imagens: imagens, precos: precos })
 
     } else {
-        res.redirect("/logar")
+        res.redirect("/login")
     }
 })
 
