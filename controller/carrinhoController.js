@@ -99,7 +99,7 @@ router.get("/carrinho/caixa", async (req, res) => {
         res.render("carrinho/carrinho", { cliente: cliente, carrinho: carrinho, codItens: codItens, produtos: produtos, imagens: imagens, precos: precos })
 
     } else {
-        res.redirect("/logar")
+        res.redirect("/login")
     }
 })
 
