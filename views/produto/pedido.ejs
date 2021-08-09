@@ -87,19 +87,32 @@
                                 <div class="mb-3 pt-2">
                                     <span class="form-control text-dark fw-bold">
                                         <%if(preco.desconto !=0){%>
-                                            <s id="s" class="fs-6 text-danger"><%=preco.venda.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})%></s>
-                                            <strong id="strong" class="fs-4"><%=preco.desconto.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})%></strong>
+                                            <s id="s" class="fs-6 text-danger">
+                                                <%=preco.venda.toLocaleString('pt-br',{style: 'currency' ,
+                                                    currency: 'BRL' })%>
+                                            </s>
+                                            <strong id="strong" class="fs-4">
+                                                <%=preco.desconto.toLocaleString('pt-br',{style: 'currency' ,
+                                                    currency: 'BRL' })%>
+                                            </strong>
                                             <%}else{%>
-                                                <strong id="strong" class="fs-4"><%=preco.venda.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})%></strong>
+                                                <strong id="strong" class="fs-4">
+                                                    <%=preco.venda.toLocaleString('pt-br',{style: 'currency' ,
+                                                        currency: 'BRL' })%>
+                                                </strong>
                                                 <%}%>
                                     </span>
                                 </div> <!-- price-detail-wrap .// -->
 
                                 <div class="mb-4">
                                     <input type="hidden" value="false" id="reditect">
-                                    <a href="#" class="btn btn-primary" data-bs-toggle="modal"  data-bs-target="#exampleModal" onclick="gradeColuna($('#reflinha').val());document.getElementById('reditect').value = true">Compre agora!</a>
+                                    <a href="#" class="btn btn-primary" data-bs-toggle="modal"
+                                        data-bs-target="#exampleModal"
+                                        onclick="gradeColuna($('#reflinha').val());document.getElementById('reditect').value = true">Compre
+                                        agora!</a>
                                     <a href="#" class="btn btn-light" data-bs-toggle="modal"
-                                        data-bs-target="#exampleModal" onclick="gradeColuna($('#reflinha').val())">Adicionar ao Carrinho</a>
+                                        data-bs-target="#exampleModal"
+                                        onclick="gradeColuna($('#reflinha').val())">Adicionar ao Carrinho</a>
                                 </div>
 
                                 <!-- Modal -->
@@ -111,7 +124,8 @@
                                                 <h5 class="modal-title" id="exampleModalLabel">Adicionar ao Carrinho
                                                 </h5>
                                                 <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                    aria-label="Close" onclick="document.getElementById('reditect').value = false"></button>
+                                                    aria-label="Close"
+                                                    onclick="document.getElementById('reditect').value = false"></button>
                                             </div>
                                             <div class="modal-body">
                                                 <div class="row">
@@ -172,7 +186,7 @@
                                                                 <div class="col-md-6">
                                                                     <select name="refcoluna" class="form-select"
                                                                         id="refcoluna">
-                                                                        
+
                                                                     </select>
                                                                 </div>
                                                                 <%}else{%>
@@ -188,8 +202,8 @@
                                                 </div>
                                             </div>
                                             <div class="modal-footer">
-                                                <button type="button" class="btn btn-secondary"
-                                                    data-bs-dismiss="modal">Cancelar</button>
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
+                                                    onclick="document.getElementById('reditect').value = false;">Cancelar</button>
                                                 <button type="button" data-bs-dismiss="modal" class="btn btn-primary"
                                                     onclick="AdicionarCarrinho()">Salvar</button>
                                             </div>
@@ -229,10 +243,19 @@
                                                             class="form-control text-white fw-bold bg-primary bg-gradient">
 
                                                             <%if(preco.desconto> 0){%>
-                                                                <s id="s" class="fs-6 text-danger"><%=preco.venda.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})%></s>
-                                                                <strong id="strong" class="fs-4"><%=preco.desconto.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})%></strong>
+                                                                <s id="s" class="fs-6 text-danger">
+                                                                    <%=preco.venda.toLocaleString('pt-br',{style: 'currency'
+                                                                        , currency: 'BRL' })%>
+                                                                </s>
+                                                                <strong id="strong" class="fs-4">
+                                                                    <%=preco.desconto.toLocaleString('pt-br',{style: 'currency'
+                                                                        , currency: 'BRL' })%>
+                                                                </strong>
                                                                 <%}else{%>
-                                                                    <strong id="strong" class="fs-4"><%=preco.venda.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})%></strong>
+                                                                    <strong id="strong" class="fs-4">
+                                                                        <%=preco.venda.toLocaleString('pt-br',{style: 'currency'
+                                                                            , currency: 'BRL' })%>
+                                                                    </strong>
                                                                     <%}%>
                                                         </span>
                                                         <%}%>
@@ -266,7 +289,7 @@
             </script>
             <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
             <script>
-                
+
                 function AdicionarCarrinho() {
                     var codItem = document.getElementById("codItem").value
                     var quantidadeItem = document.getElementById("btnValor").value
@@ -277,7 +300,7 @@
                     axios.post("https://ecomerce-front.herokuapp.com/carrinho/adicionar", { codItem: codItem, quantidadeItem: quantidadeItem, refcoluna: refcoluna, reflinha: reflinha }).then(resp => {
                         alert(resp.data.resp)
                         var redirect = document.getElementById('reditect').value
-                        if (redirect) {
+                        if (redirect == true) {
                             window.location.href = '/carrinho/caixa'
                         }
                     })
@@ -285,7 +308,7 @@
 
                 function gradeColuna(linha) {
                     var codItem = document.getElementById("codItem").value
-                    axios.get(`https://ecomerce-front.herokuapp.com/produto/${parseInt(codItem)}/${parseInt(linha)}/refcoluna`).then( resp => {
+                    axios.get(`https://ecomerce-front.herokuapp.com/produto/${parseInt(codItem)}/${parseInt(linha)}/refcoluna`).then(resp => {
                         var colunas = resp.data.colunas
                         if (colunas != undefined) {
                             var refcoluna = document.getElementById("refcoluna")
