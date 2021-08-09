@@ -111,7 +111,7 @@
                                                 <h5 class="modal-title" id="exampleModalLabel">Adicionar ao Carrinho
                                                 </h5>
                                                 <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                    aria-label="Close">Fechar</button>
+                                                    aria-label="Close" onclick="document.getElementById('reditect').value = false"></button>
                                             </div>
                                             <div class="modal-body">
                                                 <div class="row">
@@ -276,6 +276,10 @@
 
                     axios.post("https://ecomerce-front.herokuapp.com/carrinho/adicionar", { codItem: codItem, quantidadeItem: quantidadeItem, refcoluna: refcoluna, reflinha: reflinha }).then(resp => {
                         alert(resp.data.resp)
+                        var redirect = document.getElementById('reditect').value
+                        if (redirect) {
+                            window.location.href = '/carrinho/caixa'
+                        }
                     })
                 }
 
