@@ -126,7 +126,7 @@
 
 
                                 event.preventDefault();
-                                axios.post("https://ecomerce-front.herokuapp.com/usuario/editar", { nome: nome, email: email, numero: numero, senha: senha, senhaAtual: senhaAtual, confirm: confirm, foto: foto }).then(res => {
+                                axios.post("/usuario/editar", { nome: nome, email: email, numero: numero, senha: senha, senhaAtual: senhaAtual, confirm: confirm, foto: foto }).then(res => {
                                     if (res.data.erro != undefined) {
                                         alert(res.data.erro)
                                     } else {

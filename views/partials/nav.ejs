@@ -131,7 +131,7 @@
         var dropTogle = document.getElementById("dropTogle")
         dropTogle.innerHTML = ['<div class="spinner-border text-primary" role="status"><span class="visually-hidden"></span></div>'].join('');
 
-        axios.get('https://ecomerce-front.herokuapp.com/usuario/logado').then(resp => {
+        axios.get('/usuario/logado').then(resp => {
             var dados = resp.data
             if (dados.clienteId != undefined) {
 
@@ -158,7 +158,7 @@
             }
         })
 
-        axios.get('https://ecomerce-front.herokuapp.com/empresa').then(empresa => {
+        axios.get('/empresa').then(empresa => {
             if (empresa.data != undefined) {
                 var empresa = empresa.data[0]
                 var logo = document.getElementById("logo")

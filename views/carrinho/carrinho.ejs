@@ -285,9 +285,9 @@
                         numero.classList.add("is-valid")
                         numero.classList.remove("is-invalid")
 
-                        axios.post("https://ecomerce-front.herokuapp.com/entrega/adicionar/", { cep: cep.value, cidade: cidade.value, numero: numero.value, rua: rua.value, bairro: bairro.value, uf: uf.value }).then(resp => {
+                        axios.post("/entrega/adicionar/", { cep: cep.value, cidade: cidade.value, numero: numero.value, rua: rua.value, bairro: bairro.value, uf: uf.value }).then(resp => {
                             console.log(resp)
-                            location.href = 'https://ecomerce-front.herokuapp.com/carrinho/finalizarCompra/'
+                            location.href = '/carrinho/finalizarCompra/'
                         }).catch(err => {
                             console.log(err)
                         })
@@ -315,7 +315,7 @@
 
                     respostaEntrega.innerHTML = ['<div class="spinner-border" role="status"><span class="sr-only"></span></div>'].join('');
 
-                    var resp = await axios.get("https://ecomerce-front.herokuapp.com/entrega/locais")
+                    var resp = await axios.get("/entrega/locais")
                     var cidadesEntrega = resp.data
                     var cit = document.getElementById("cidade").value
                     var bai = document.getElementById("bairro").value
@@ -372,7 +372,7 @@
                     var btn = `btnValor${index}`
                     var novaQuantidade = document.getElementById(btn).value
                     var codItem = codItem
-                    axios.post("https://ecomerce-front.herokuapp.com/carrinho/alterarValores", { novaQuantidade: novaQuantidade, codItem: codItem }).then(resp => {
+                    axios.post("/carrinho/alterarValores", { novaQuantidade: novaQuantidade, codItem: codItem }).then(resp => {
                         if (resp.data.erro !== undefined) {
                             alert("Ocorreu um erro ao atualizar: " + resp.data.erro)
                         } else {
