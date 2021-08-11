@@ -176,7 +176,19 @@
                                         <dt>Envie mensagem via whatsapp</dt>
                                     </div>
                                     <div class="col-md-4">
-                                        
+                                        <%var text = `Codigo da venda: ${dadosVenda.dadosId} | Ordem: ${dadosTransicao.orderId} | Codigo de Rastreio: ${dadosEntrega.codigoRastreioInterno} %0D%0ADuvida: [DIGITE SUA DUVIDA REFERENTE A ESSA VENDA]`%>
+                                        <a href="mailto:poudeyvis007@gmail.com?Subject=Estou%20com%20dúvidas&body=<%=text%>&"
+                                            target="_blank">
+                                            <img src="/img/o-email.png" width="50" height="50" alt="">
+                                        </a>
+                                        <dt>Envie mensagem via E-mail</dt>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <button type="button" class="rounded-circle bg-primary me-3">
+                                            <img src="/img/clicker.png" width="50" height="50" alt="">
+                                            </button>
+                                        </a>
+                                        <dt>Click para abrir chat online</dt>
                                     </div>
                                 </div>
 
