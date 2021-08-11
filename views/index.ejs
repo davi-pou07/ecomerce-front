@@ -1,11 +1,11 @@
 <%- include("./partials/head.ejs")%>
 
     <%- include("./partials/nav.ejs")%>
-
+    <!-- Navegador do site para levar a algumas paginas-->
         <div id="navegador">
             <div class="container my-3">
-
                 <ul class="nav justify-content-center">
+                <!-- Lista as categorias principais do site -->
                     <li class="nav-item dropdown">
                         <div class="input-group" data-bs-toggle="dropdown">
                             <img src="/img/list.png" class="img-fluid mt-md-1" width="30px" height="30px">
@@ -22,25 +22,35 @@
                                         <%})%>
                         </ul>
                     </li>
+                <!-- fim da listagem das categorias principais do site -->
+
+                <!-- Opção para levar a aba de ofertas semanais -->
                     <li class="nav-item">
                         <div class="input-group">
                             <img src="/img/oferta.png" class="img-fluid mt-md-1" width="30px" height="30px">
                             <a class="nav-link" href="#">Ofertas</a>
                         </div>
-
                     </li>
+                <!-- Fim da opção para levar a aba de ofertas semanais -->
+
+                <!-- Demonstra historico de compra do cliente -->
                     <li class="nav-item">
                         <div class="input-group">
                             <img src="/img/historico.png" class="img-fluid mt-md-1" width="30px" height="30px">
                             <a class="nav-link" href="/usuario/historico/">Historico de Compra</a>
                         </div>
                     </li>
+                <!--Fim historico de compra do cliente -->
+
+                <!-- Leva ao carrinho do cliente -->
                     <li class="nav-item">
                         <div class="input-group">
                             <img src="/img/carrinho.png" class="img-fluid mt-md-1" width="30px" height="30px">
                             <a class="nav-link" href="/carrinho/caixa">Carrinho</a>
                         </div>
+                <!-- fim carrinho do cliente -->
 
+                <!--Lista os canais de atendimento ao cliente -->
                     </li>
                     <li class="nav-item">
                         <div class="input-group">
@@ -49,6 +59,7 @@
                         </div>
                     </li>
                 </ul>
+                <!--Fim da Lista os canais de atendimento ao cliente -->
 
             </div>
         </div>
@@ -75,6 +86,7 @@
             <!-- banners -->
 
             <br>
+            <!-- BOX PARA INFORMAR OS ATRIBUTOS DA EMPRESA -->
             <div class="row mt-5">
                 <div class="col-md-4 text-center text-md-start">
                     <figure class="itemside">
@@ -334,7 +346,10 @@
                 </div>
                 <!-- col // -->
             </div>
+            <!-- FIM BOX PARA INFORMAR OS ATRIBUTOS DA EMPRESA -->
             <br>
+
+            <!-- LISTAGEM DOS PRODUTOS -->
             <div id="produtos">
                 <h2 class="title text-center">Nossos produtos</h2>
                 <h4 class="subtitle text-center mb-4">Veja abaixo nossos principais produtos!</h4>
@@ -344,6 +359,7 @@
                             <div class="col-lg-3 col-md-6 mb-4 mb-lg-0">
                                 <a href="/produto/<%=produto.id%>" class="destaque">
                                     <div class="img-container mb-3">
+                                        <!-- Demonstra a imagem do produto -->
                                         <%var imagem=imagens.find(imagem=> imagem.produtoId == produto.id)%>
                                             <%if(imagem !=undefined){%>
                                                 <img src="<%=imagem.imagem%>" class="" alt="">
@@ -353,11 +369,13 @@
                                                     <%}%>
 
                                     </div>
+                                        <!-- Demonstra o nome do produto -->
                                     <h5 class="text-uppercase">
                                         <%=produto.nome%>
                                     </h5>
                                     <%precos.forEach(preco=> {%>
                                         <%if(preco.produtoId==produto.id){%>
+                                        <!-- Demonstra o preço do produto e se tem desconto -->
                                             <span class="form-control text-white fw-bold bg-primary bg-gradient">
                                                 <%if(preco.desconto> 0){%>
                                                     <s id="s" class="fs-6 text-danger">
@@ -383,7 +401,10 @@
                             <%}%>
                                 <%})%>
                 </div>
+            <!-- Fim da  LISTAGEM DOS PRODUTOS -->
+
             </div>
+
             <button class="form-control bg-primary text-white mt-5">Ver Todos</button>
         </div>
 

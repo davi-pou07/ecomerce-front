@@ -30,10 +30,12 @@
         </svg>
     </a>
     <!-- Fim do LINK DO WHATSAPP -->
-    
+
+    <!-- Inicio da NAV -->
     <div id="header">
         <nav class="navbar navbar-dark justify-content-between navbar-expand-lg bg-dark bg-gradient">
             <div class="container">
+                <!-- Imagem e nome da empresa -->
                 <div class="row">
                     <div class="col-6 p-0 ps-2">
                         <a href="/" class="navbar-brand">
@@ -57,7 +59,9 @@
                         </span>
                     </div>
                 </div>
+                <!-- Fim da imagem e nome da empresa -->
 
+                <!-- Input + botão de pesquisa -->
                 <div class="row">
                     <div class="col-md-12 p-0">
                         <div class="collapse navbar-collapse" id="navbarSupportedContent">
@@ -70,6 +74,7 @@
                         </div>
                     </div>
                 </div>
+                <!-- fim do Input + botão de pesquisa -->
 
                 <!-- Carrinho -->
                 <ul class=" mt-4 me-md-5 mx-1 mt-lg-2 me-md-0 mb-lg-0 text-white position-relative">
@@ -83,7 +88,9 @@
                             class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-secondary">0</span>
                     </a>
                 </ul>
-                <!-- Person -->
+                <!-- Fim do Carrinho -->
+
+                <!-- Usuario -->
                 <div class="me-4 personal-imageNav" role="navigation" id="divPerfil">
                     <label class="label">
                         <figure class="personal-figureNav">
@@ -120,21 +127,23 @@
                         </figure>
                     </label>
                 </div>
+                <!-- Fim do Usuario -->
+
             </div>
         </nav>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script>
-        //VERIFICA USUARIO LOGADO E COLOCA INFORMAÇÕES NA DIV
-
+        
+        //SUBISTITUE A TAG COM O ID = 'dropTogle' PELA BOLINHA DE CARREGANDO
         var dropTogle = document.getElementById("dropTogle")
         dropTogle.innerHTML = ['<div class="spinner-border text-primary" role="status"><span class="visually-hidden"></span></div>'].join('');
-
+        //Verifica se tem usuario logado
         axios.get('/usuario/logado').then(resp => {
             var dados = resp.data
             if (dados.clienteId != undefined) {
-
+                //Caso usuario logado subistitue a bolinha por a imagem de um avatar
                 dropTogle.innerHTML = ['<img src="/img/avatar.jpg" class="personal-avatarNav" id="imgCli" alt="avatar">'].join('');
                 dropTogle.classList.add('dropdown-toggle')
                 dropTogle.href = '#'
@@ -146,18 +155,18 @@
                     var imgCli = document.getElementById("imgCli")
                     imgCli.src = dados.clienteFoto
                 }
-                //droptogle
-
+                //Informa a quantidade de produtos do carrinho do cliente
                 var spanCarrin = document.getElementById("spanCarrin").innerHTML = dados.carrinho.quantidade
 
             } else {
+                //Caso usuario logado permanece a imagem do avatar para efetuar o login
                 dropTogle.innerHTML = ['<img src="/img/avatar.jpg" class="personal-avatarNav" id="imgCli" alt="avatar">'].join('');
                 dropTogle.classList.remove('dropdown-toggle')
                 dropTogle.href = '/login'
                 dropTogle.dataset.bsToggle = ''
             }
         })
-
+        //Verifica qual empresa cadastrada e substitue a logo e o nome da empresa
         axios.get('/empresa').then(empresa => {
             if (empresa.data != undefined) {
                 var empresa = empresa.data[0]
@@ -168,6 +177,7 @@
             }
         })
 
+        //OFF
         function busca() {
             var buscar = document.getElementById("pesquisa")
             if (buscar.value == '' || buscar.value == undefined) {
