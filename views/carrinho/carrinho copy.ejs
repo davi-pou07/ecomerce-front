@@ -7,113 +7,116 @@
                 <h1 class="mt-4">Finaliação da compra</h1>
                 <hr>
                 <div class="row">
-                    <main class="col-lg-9">
+                    <main class="col-md-9">
                         <div class="card">
-                            <div class="row ms-3 mt-2">
-                                <div class="col-4 m-0">
-                                    <dt>Produtos</dt>
-                                </div>
-                                <div class="col-4 text-md-center text-start">
-                                    <dt>Quantidade</dt>
-                                </div>
-                                <div class="col-4">
-                                    <dt>Preço</dt>
-                                </div>
-                            </div>
-                            <div class="row mt-3">
-                                <%codItens.forEach((codIten,index)=>{%>
-                                    <%produtos.forEach(produto=>{%>
-                                        <%if(produto.id==codIten.produtoId){%>
-                                            <div class="col-4">
-                                                <figure class="itemside">
-                                                    <div class="row">
-                                                        <%var imagem=imagens.find(imagem=> imagem.produtoId
-                                                            ==
-                                                            produto.id)%>
-                                                            <%if(imagem !=undefined){%>
-                                                                <div class="col-md-6"><img src="<%=imagem.imagem%>"
-                                                                        class="ps-0" width="100" height="100">
+                            <div class="table-responsive">
+                                <table class="table table-borderless table-shopping-cart">
+                                    <thead class="text-muted">
+                                        <tr class="small text-uppercase">
+                                            <th scope="col">Produtos</th>
+                                            <th scope="col" width="200">Quantidade</th>
+                                            <th scope="col" width="120">Preço</th>
+                                            <th scope="col" class="text-right" width="200"> </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <input type="hidden" id="quantidadeTotal" value="<%=produtos.length%>">
+                                        <%codItens.forEach((codIten,index)=>{%>
+                                            <%produtos.forEach(produto=>{%>
+                                                <%if(produto.id==codIten.produtoId){%>
+                                                    <tr>
+                                                        <td>
+                                                            <figure class="itemside">
+                                                                <div class="row">
+
+                                                                    <%var imagem=imagens.find(imagem=> imagem.produtoId
+                                                                        ==
+                                                                        produto.id)%>
+                                                                        <%if(imagem !=undefined){%>
+                                                                            <div class="col-md-6"><img
+                                                                                    src="<%=imagem.imagem%>"
+                                                                                    class="ps-4" width="100"
+                                                                                    height="100">
+                                                                            </div>
+                                                                            <div class="col-md-6">
+                                                                                <figcaption class="info">
+                                                                                    <a href="#" class="title text-dark">
+                                                                                        <%=produto.nome%>
+                                                                                    </a>
+                                                                                    <p class="text-muted small">Size:
+                                                                                        <%= codIten.reflinha%>, Color:
+                                                                                            <%= codIten.refcoluna%> <br>
+                                                                                                Brand: Gucci
+                                                                                    </p>
+                                                                                </figcaption>
+                                                                            </div>
+                                                                            <%}else{%>
+                                                                                <img class="img-thumbnail"
+                                                                                    src="/img/null.png">
+                                                                                <%}%>
                                                                 </div>
-                                                                <div class="col-md-6 text-start ms-3 ms-md-0">
-                                                                    <figcaption class="info">
-                                                                        <a href="#" class="title text-dark">
-                                                                            <%=produto.nome%>
-                                                                        </a>
-                                                                        <p class="text-muted small">Size:
-                                                                            <%= codIten.reflinha%>, <br> Color:
-                                                                                <%= codIten.refcoluna%> <br>
-                                                                                    Brand: Gucci
-                                                                        </p>
-                                                                    </figcaption>
+
+                                                            </figure>
+                                                        </td>
+                                                        <td>
+                                                            <input type="hidden" name="codIten" id="codIten<%=index%>"
+                                                                value="<%=codIten.id%>">
+                                                            <div class="col-md-12 mt-3">
+                                                                <button class="btn btn-danger" data-index="<%=index%>"
+                                                                    id="btnMenos"
+                                                                    onclick="diminuir(this.dataset.index)">-</button>
+                                                                <button class="btn btn-ligth" name="quantidade"
+                                                                    value="<%=codIten.quantidade%>"
+                                                                    id="btnValor<%=index%>">
+                                                                    <%=codIten.quantidade%>
+                                                                </button>
+                                                                <button class="btn btn-success" data-index="<%=index%>"
+                                                                    id="btnMais"
+                                                                    onclick="adicionar(this.dataset.index)">+</button>
+                                                            </div>
+
+                                                        </td>
+                                                        <td>
+                                                            <div class="price-wrap mt-3">
+                                                                <var class="fs-5" id="price<%=index%>"
+                                                                    data-total="<%=codIten.precoTotalItem%>">
+                                                                    <%=codIten.precoTotalItem.toLocaleString('pt-br',{style: 'currency'
+                                                                        , currency: 'BRL' })%>
+                                                                </var><br>
+                                                                <small class="text-muted fs-6" id="precoVenda<%=index%>"
+                                                                    data-valor="<%=codIten.precoUnit%>">
+                                                                    <%=codIten.precoUnit.toLocaleString('pt-br',{style: 'currency'
+                                                                        , currency: 'BRL' })%> cada
+                                                                </small>
+                                                            </div> <!-- price-wrap .// -->
+                                                        </td>
+                                                        <td class="text-right">
+
+                                                            <form action="/carrinho/remover/<%=codIten.id%>"
+                                                                id="deleteItem<%=index%>" method="POST">
+                                                                <div class="row">
+                                                                    <div class="col-md-12">
+                                                                        <button type="button" data-index="<%=index%>"
+                                                                            class="btn btn-info mt-4 text-white"
+                                                                            id="btnAtualizar<%=index%>"
+                                                                            value="<%=codIten.id%>"
+                                                                            onclick="atualizar(this.dataset.index,this.value)">Atualizar</button>
+                                                                        <button type="submit"
+                                                                            class="btn btn-warning mt-4"
+                                                                            onclick='return deleteItem();'>
+                                                                            Remove</button>
+                                                                    </div>
                                                                 </div>
-                                                                <%}else{%>
-                                                                    <img class="img-thumbnail" src="/img/null.png">
-                                                                    <%}%>
-                                                    </div>
+                                                            </form>
+                                                        </td>
+                                                        <%}%>
+                                                            <%})%>
+                                                                <%})%>
+                                                    </tr>
 
-                                                </figure>
-                                            </div>
-                                            <div class="col-4 text-center">
-                                                <input type="hidden" name="codIten" id="codIten<%=index%>"
-                                                    value="<%=codIten.id%>">
-                                                <div class="row mt-3 ms-4 ms-md-0">
-                                                    <div class="col-md-3 col-0"></div>
-                                                    <div class="col-md-2 p-md-0 m-md-0 text-md-end">
-                                                        <button class="btn btn-danger" data-index="<%=index%>"
-                                                            id="btnMenos"
-                                                            onclick="diminuir(this.dataset.index)">-</button>
-                                                    </div>
-                                                    <div class="col-md-2  p-md-0 m-md-0">
-                                                        <button class="btn btn-ligth" name="quantidade"
-                                                            value="<%=codIten.quantidade%>" id="btnValor<%=index%>">
-                                                            <%=codIten.quantidade%>
-                                                        </button>
-                                                    </div>
-                                                    <div class="col-md-2 p-md-0 m-md-0 text-md-start">
-                                                        <button class="btn btn-success" data-index="<%=index%>"
-                                                            id="btnMais"
-                                                            onclick="adicionar(this.dataset.index)">+</button>
-                                                    </div>
-
-                                                </div>
-                                            </div>
-                                            <div class="col-4">
-                                                <div class="price-wrap mt-3">
-                                                    <var class="fs-5" id="price<%=index%>"
-                                                        data-total="<%=codIten.precoTotalItem%>">
-                                                        <%=codIten.precoTotalItem.toLocaleString('pt-br',{style: 'currency'
-                                                            , currency: 'BRL' })%>
-                                                    </var><br>
-                                                    <small class="text-muted fs-6" id="precoVenda<%=index%>"
-                                                        data-valor="<%=codIten.precoUnit%>">
-                                                        <%=codIten.precoUnit.toLocaleString('pt-br',{style: 'currency' ,
-                                                            currency: 'BRL' })%> cada
-                                                    </small>
-                                                </div> <!-- price-wrap .// -->
-                                            </div>
-                                            <!-- <div class="col-3">
-                                                <form action="/carrinho/remover/<%=codIten.id%>"
-                                                    id="deleteItem<%=index%>" method="POST">
-                                                    <div class="row">
-                                                        <div class="col-md-12">
-                                                            <button type="button" data-index="<%=index%>"
-                                                                class="btn btn-info mt-4 text-white"
-                                                                id="btnAtualizar<%=index%>" value="<%=codIten.id%>"
-                                                                onclick="atualizar(this.dataset.index,this.value)">Atualizar</button>
-                                                            <button type="submit" class="btn btn-warning mt-4"
-                                                                onclick='return deleteItem();'>
-                                                                Remove</button>
-                                                        </div>
-                                                    </div>
-                                                </form>
-                                            </div> -->
-
-                                            <%}%>
-                                                <%})%>
-                                                    <%})%>
-
+                                    </tbody>
+                                </table>
                             </div>
-
                             <div class="card-body border-top">
                                 <a href="/" class="btn btn-light">Escolher mais Itens</a>
                             </div>
@@ -199,7 +202,7 @@
                         </div>
 
                     </main> <!-- col.// -->
-                    <aside class="col-lg-3">
+                    <aside class="col-md-3">
                         <div class="card mb-3">
                             <div class="card-body">
                                 <form>
