@@ -29,73 +29,75 @@
                     </div>
                 </div>
                 <div class="card-body mt-4">
-                    <table class="table table-striped">
-                        <thead class="text-muted">
-                            <tr class="small text-uppercase">
-                                <th scope="col" width="100" class="table-info">Codigo</th>
-                                <th scope="col" width="160">Descrição</th>
-                                <th scope="col" width="100">Quantidade</th>
-                                <th scope="col" width="120">Valor</th>
-                                <th scope="col" width="120">Data</th>
-                                <th scope="col" width="120">Status</th>
-                                <th scope="col" class="text-right" width="120"> </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <%dadosVendas.forEach((dadovenda,index)=>{%>
-                                <input type="hidden" id="index" value="<%=index%>">
-                                <tr>
-
-                                    <th scope="row" class="table-info">
-                                        <%=dadovenda.id%>
-                                    </th>
-                                    <td scope="row">
-                                        <%=dadovenda.descricao%>
-                                    </td>
-                                    <td scope="row" class="text-center">
-                                        <%carrinhos.forEach(carrinho=>{%>
-                                            <%if(carrinho.id==dadovenda.carrinhoId){%>
-                                                <%=carrinho.quantidade%>
-                                                    <%}%>
-                                                        <%})%>
-                                    </td>
-                                    <td scope="row">
-                                        <%=dadovenda.unit_price.toLocaleString('pt-br',{style: 'currency' ,
-                                            currency: 'BRL' })%>
-                                    </td>
-                                    <td scope="row">
-                                        <%var x=0%>
-
-                                            <%dadosTransicoes.forEach(dadostransicao=>{%>
-                                                <%datas.forEach(data=>{%>
-                                                    <%if(dadostransicao.dadosId==dadovenda.dadosId &&
-                                                        dadostransicao.id==data.id ){%>
-                                                        <%=data.createdAt%>
-                                                            <%}%>
-                                                                <%})%>
-                                                                    <%})%>
-                                    </td>
-                                    <td scope="row" id="row<%=index%>">
-                                        <%dadosTransicoes.forEach(dadostransicao=>{%>
-                                            <%if(dadostransicao.dadosId==dadovenda.dadosId){%>
-                                                <%=dadostransicao.collection_status%>
-                                                    <%}%>
-                                                        <%})%>
-                                    </td>
-
-                                    <td>
-                                        <%dadosTransicoes.forEach(dadostransicao=>{%>
-                                            <%if(dadostransicao.dadosId==dadovenda.dadosId){%>
-                                                <a href="/usuario/transicao/<%=dadostransicao.id%>"
-                                                    class="btn btn-info">Detalhes</a>
-                                                <%}%>
-                                                    <%})%>
-                                    </td>
-
+                    <div class="table-responsive">
+                        <table class="table  table-striped">
+                            <thead class="text-muted">
+                                <tr class="small text-uppercase">
+                                    <th scope="col" width="100" class="table-info">Codigo</th>
+                                    <th scope="col" width="160">Descrição</th>
+                                    <th scope="col" width="100">Quantidade</th>
+                                    <th scope="col" width="120">Valor</th>
+                                    <th scope="col" width="120">Data</th>
+                                    <th scope="col" width="120">Status</th>
+                                    <th scope="col" class="text-right" width="120"> </th>
                                 </tr>
-                                <%})%>
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody>
+                                <%dadosVendas.forEach((dadovenda,index)=>{%>
+                                    <input type="hidden" id="index" value="<%=index%>">
+                                    <tr>
+
+                                        <th scope="row" class="table-info">
+                                            <%=dadovenda.id%>
+                                        </th>
+                                        <td scope="row">
+                                            <%=dadovenda.descricao%>
+                                        </td>
+                                        <td scope="row" class="text-center">
+                                            <%carrinhos.forEach(carrinho=>{%>
+                                                <%if(carrinho.id==dadovenda.carrinhoId){%>
+                                                    <%=carrinho.quantidade%>
+                                                        <%}%>
+                                                            <%})%>
+                                        </td>
+                                        <td scope="row">
+                                            <%=dadovenda.unit_price.toLocaleString('pt-br',{style: 'currency' ,
+                                                currency: 'BRL' })%>
+                                        </td>
+                                        <td scope="row">
+                                            <%var x=0%>
+
+                                                <%dadosTransicoes.forEach(dadostransicao=>{%>
+                                                    <%datas.forEach(data=>{%>
+                                                        <%if(dadostransicao.dadosId==dadovenda.dadosId &&
+                                                            dadostransicao.id==data.id ){%>
+                                                            <%=data.createdAt%>
+                                                                <%}%>
+                                                                    <%})%>
+                                                                        <%})%>
+                                        </td>
+                                        <td scope="row" id="row<%=index%>">
+                                            <%dadosTransicoes.forEach(dadostransicao=>{%>
+                                                <%if(dadostransicao.dadosId==dadovenda.dadosId){%>
+                                                    <%=dadostransicao.collection_status%>
+                                                        <%}%>
+                                                            <%})%>
+                                        </td>
+
+                                        <td>
+                                            <%dadosTransicoes.forEach(dadostransicao=>{%>
+                                                <%if(dadostransicao.dadosId==dadovenda.dadosId){%>
+                                                    <a href="/usuario/transicao/<%=dadostransicao.id%>"
+                                                        class="btn btn-info">Detalhes</a>
+                                                    <%}%>
+                                                        <%})%>
+                                        </td>
+
+                                    </tr>
+                                    <%})%>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
