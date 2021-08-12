@@ -215,60 +215,57 @@
                     </div> <!-- row.// -->
                 </div> <!-- card-body.// -->
             </article>
+
             <br>
-            <div class="row mt-4 pt-5">
+            <div id="produtos">
                 <h3>Talvez lhe interesse:</h3>
-                <%produtos.forEach(prod=>{%>
-                    <%if(prod.categoriaId==categoria.id && prod.id !=produto.id){%>
-                        <div class="col-md-3">
-                            <figure class="card card-product-grid">
-                                <a class="btn btn-outline-primary" href="/produto/<%=prod.id%>">
-                                    <input type="hidden" id="produtoId" value="<%=prod.id%>">
-                                    <div class="img-wrap">
+                <div class="row mt-4 pt-5">
+                    <%produtos.forEach(prod=>{%>
+                        <%if(prod.categoriaId==categoria.id && prod.id !=produto.id){%>
+                            <div class="col-lg-3 col-md-6 mb-4 mb-lg-0">
+                                <a href="/produto/<%=prod.id%>" class="destaque">
+                                    <div class="img-container mb-3">
                                         <%var imagem=imagens.find(imagem=> imagem.produtoId == prod.id)%>
                                             <%if(imagem !=undefined){%>
-                                                <img class="rounded mx-auto d-block" src="<%=imagem.imagem%>"
-                                                    width="120" height="120">
+                                                <img src="<%=imagem.imagem%>" class="" alt="">
                                                 <%}else{%>
                                                     <img class="rounded mx-auto d-block" src="/img/null.png" width="120"
                                                         height="120">
                                                     <%}%>
                                     </div>
-                                    <figcaption class="info-wrap border-top">
-                                        <span class="form-control text-center fw-bold text-dark bg-gradient bg-white">
-                                            <%=prod.nome%>
-                                                <%precos.forEach(preco=> {%>
-                                                    <%if(preco.produtoId==prod.id){%>
-                                                        <span
-                                                            class="form-control text-white fw-bold bg-primary bg-gradient">
-
-                                                            <%if(preco.desconto> 0){%>
-                                                                <s id="s" class="fs-6 text-danger">
-                                                                    <%=preco.venda.toLocaleString('pt-br',{style: 'currency'
-                                                                        , currency: 'BRL' })%>
-                                                                </s>
-                                                                <strong id="strong" class="fs-4">
-                                                                    <%=preco.desconto.toLocaleString('pt-br',{style: 'currency'
-                                                                        , currency: 'BRL' })%>
-                                                                </strong>
-                                                                <%}else{%>
-                                                                    <strong id="strong" class="fs-4">
-                                                                        <%=preco.venda.toLocaleString('pt-br',{style: 'currency'
-                                                                            , currency: 'BRL' })%>
-                                                                    </strong>
-                                                                    <%}%>
-                                                        </span>
+                                    <h5 class="text-uppercase">
+                                        <%=prod.nome%>
+                                    </h5>
+                                    <%precos.forEach(preco=> {%>
+                                        <%if(preco.produtoId==prod.id){%>
+                                            <span class="form-control text-white fw-bold bg-primary bg-gradient">
+                                                <%if(preco.desconto> 0){%>
+                                                    <s id="s" class="fs-6 text-danger">
+                                                        <%=preco.venda.toLocaleString('pt-br',{style: 'currency' ,
+                                                            currency: 'BRL' })%>
+                                                    </s>
+                                                    <strong id="strong" class="fs-4">
+                                                        <%=preco.desconto.toLocaleString('pt-br',{style: 'currency' ,
+                                                            currency: 'BRL' })%>
+                                                    </strong>
+                                                    <%}else{%>
+                                                        <strong id="strong" class="fs-4">
+                                                            <%=preco.venda.toLocaleString('pt-br',{style: 'currency' ,
+                                                                currency: 'BRL' })%>
+                                                        </strong>
                                                         <%}%>
-                                                            <%})%>
-                                        </span>
-                                    </figcaption>
+                                            </span>
+                                            <%}%>
+                                                <%})%>
+
                                 </a>
-                            </figure>
-                        </div>
-                        <%}%>
-                            <%})%>
+                            </div>
+                            <%}%>
+                                <%})%>
+                </div>
             </div>
         </div>
+
 
         <%- include("./../partials/footer.ejs")%>
             <script>
