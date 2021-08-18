@@ -75,7 +75,9 @@ app.get("/", (req, res) => {
         knex("categorias").select().where('status', true).limit(6).then(categorias => {
             knex("precos").select().then(precos => {
                 knex("imagens").select().then(imagens => {
-                    res.render("index", { produtos: produtos, categorias: categorias, precos: precos, imagens: imagens })
+                    knex("banners").select().where({status:true,destaque:true}).then(banners => {
+                        res.render("index", { produtos: produtos, categorias: categorias, precos: precos, imagens: imagens,banners:banners })
+                    })
                 })
             })
         })
