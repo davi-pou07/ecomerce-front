@@ -146,8 +146,8 @@
                                     <div class="modal-body">
                                         <div class="row">
                                             <div class="col-md-4">
-                                                <div data-bs-target="#pixModal"
-                                                data-bs-toggle="modal" data-bs-dismiss="modal" class="card border-success">
+                                                <div data-bs-target="#pixModal" data-bs-toggle="modal"
+                                                    data-bs-dismiss="modal" class="card border-success">
                                                     <div class="card-header text-center text-success">
                                                         <dt>Transferencia PIX</dt>
                                                     </div>
@@ -159,7 +159,8 @@
                                             </div>
 
                                             <div class="col-md-4 mt-md-0 mt-2">
-                                                <div onclick="mercadopago(this.id)" id="div" class="card border-primary">
+                                                <div onclick="mercadopago(this.id)" id="div"
+                                                    class="card border-primary">
                                                     <div class="card-header text-center text-primary">
                                                         <dt>Mercado Pago</dt>
                                                     </div>
@@ -187,17 +188,22 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="modal fade" id="pixModal" aria-hidden="true"
-                            aria-labelledby="pixModalLabel" tabindex="-1">
+                        <div class="modal fade" id="pixModal" aria-hidden="true" aria-labelledby="pixModalLabel"
+                            tabindex="-1">
                             <div class="modal-dialog modal-dialog-centered">
                                 <div class="modal-content">
                                     <div class="modal-header">
-                                        <h5 class="modal-title" id="pixModalLabel">Modal 2</h5>
+                                        <h5 class="modal-title" id="pixModalLabel">Transferencia PIX</h5>
                                         <button type="button" class="btn-close" data-bs-dismiss="modal"
                                             aria-label="Close"></button>
                                     </div>
-                                    <div class="modal-body">
-                                        Hide this modal and show the first with the button below.
+                                    <div class="modal-body text-center">
+                                            <p class="text-muted">Escaneie o codigo abaixo para efetuar a transferencia</p>
+                                            <input type="hidden" id="link"
+                                                value="https://nubank.com.br/pagar/1kyr3m/VWHOFbtsho">
+                                            <div class="mx-auto" id="qrcode"
+                                                style="width:100px; height:100px; margin-top:15px;">
+                                            </div>
                                     </div>
                                     <div class="modal-footer">
                                         <button class="btn btn-primary" data-bs-target="#formasDePagamentos"
@@ -347,13 +353,45 @@
         </section>
 
         <%- include("./../partials/footer.ejs")%>
+            <script src="/js/qrcode.js"></script>
             <script src="/js/carrinho.js"></script>
             <script src="/js/pesquisaCep.js"></script>
 
             <script>
+                var qrcode = new QRCode(document.getElementById("qrcode"), {
+                    width: 100,
+                    height: 100
+                });
+
+                function makeCode() {
+                    var elText = document.getElementById("link");
+
+                    if (!elText.value) {
+                        alert("Input a text");
+                        elText.focus();
+                        return;
+                    }
+
+                    qrcode.makeCode(elText.value);
+                }
+
+                makeCode();
+
+                $("#link").
+                    on("blur", function () {
+                        makeCode();
+                    }).
+                    on("keydown", function (e) {
+                        if (e.keyCode == 13) {
+                            makeCode();
+                        }
+                    });
+            </script>
+
+            <script>
 
                 function mercadopago(div) {
-                    document.getElementById(div).setAttribute("onclick","")
+                    document.getElementById(div).setAttribute("onclick", "")
                     var mercadoPago = document.getElementById("mercadoPago")
                     mercadoPago.innerHTML = ['<div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status"><span class="visually-hidden"></span></div>'].join('')
                     axios.post("/entrega/adicionar/", { cep: cep.value, cidade: cidade.value, numero: numero.value, rua: rua.value, bairro: bairro.value, uf: uf.value }).then(resp => {
@@ -485,4 +523,3 @@
                     })
                 }
             </script>
-
