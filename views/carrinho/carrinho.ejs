@@ -147,7 +147,7 @@
                                         <div class="row">
                                             <div class="col-md-4">
                                                 <div data-bs-target="#pixModal" data-bs-toggle="modal"
-                                                    data-bs-dismiss="modal" class="card border-success">
+                                                    data-bs-dismiss="modal" class="card border-success formaPag">
                                                     <div class="card-header text-center text-success">
                                                         <dt>Transferencia PIX</dt>
                                                     </div>
@@ -160,7 +160,7 @@
 
                                             <div class="col-md-4 mt-md-0 mt-2">
                                                 <div onclick="mercadopago(this.id)" id="div"
-                                                    class="card border-primary">
+                                                    class="card border-primary formaPag">
                                                     <div class="card-header text-center text-primary">
                                                         <dt>Mercado Pago</dt>
                                                     </div>
@@ -172,7 +172,7 @@
                                             </div>
 
                                             <div class="col-md-4">
-                                                <div class="card border-warning">
+                                                <div class="card border-warning formaPag">
                                                     <div class="card-header text-center text-warning">
                                                         <dt>Pagar na Entrega</dt>
                                                     </div>
@@ -188,8 +188,8 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="modal fade" id="pixModal" data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true" aria-labelledby="pixModalLabel"
-                            tabindex="-1">
+                        <div class="modal fade" id="pixModal" data-bs-backdrop="static" data-bs-keyboard="false"
+                            aria-hidden="true" aria-labelledby="pixModalLabel" tabindex="-1">
                             <div class="modal-dialog modal-dialog-centered">
                                 <div class="modal-content">
                                     <div class="modal-header">
@@ -229,8 +229,8 @@
                             </div>
                         </div>
 
-                        <div class="modal fade"  data-bs-backdrop="static" data-bs-keyboard="false" id="comprovantePix" aria-hidden="true" aria-labelledby="comprovantePix"
-                            tabindex="-1">
+                        <div class="modal fade" data-bs-backdrop="static" data-bs-keyboard="false" id="comprovantePix"
+                            aria-hidden="true" aria-labelledby="comprovantePix" tabindex="-1">
                             <div class="modal-dialog modal-dialog-centered">
                                 <div class="modal-content">
                                     <div class="modal-header">
@@ -242,10 +242,11 @@
                                             entrega seja efetivada. Caso desejar o envio também pode ser feito nos
                                             nossos <a href="#"> canais de
                                                 atendimento ao cliente </a></p>
-                                        <input type="file" class="form-control">
+                                        <input type="file" id="comprovanteFile" class="form-control">
+                                        <input type="hidden" id="file">
                                     </div>
                                     <div class="modal-footer">
-                                        <button class="btn btn-success">Salvar</button>
+                                        <button class="btn btn-success" onclick="pix()">Salvar</button>
                                         <button class="btn btn-warning text-white" data-bs-target="#pixModal"
                                             data-bs-toggle="modal" data-bs-dismiss="modal">Voltar</button>
                                     </div>
@@ -368,7 +369,7 @@
                                     <dd class="text-right" id="valorFrete" data-valor="0">R$ 00,00</dd>
                                 </dl>
                                 <dl class="dlist-align">
-                                     <!-- Olá Dev, não adianta fazer a alteração por aqui ;) -->
+                                    <!-- Olá Dev, não adianta fazer a alteração por aqui ;) -->
                                     <dt>Valor Total:</dt>
                                     <dd class="text-right  h5" data-valor="<%=carrinho.precoTotal%>" id="valorTotal">
                                         <strong>
@@ -430,16 +431,59 @@
             </script>
 
             <script>
+                async function entregaAdicionar() {
+                    var resp = await axios.post("/entrega/adicionar/", { cep: cep.value, cidade: cidade.value, numero: numero.value, rua: rua.value, bairro: bairro.value, uf: uf.value })
+                    if (resp.data.erro != 0) {
+                        alert(resp.data.erro)
+                        return false
+                    }
+                    return true
+                }
 
-                function mercadopago(div) {
+                async function comprovantePix(file) {
+                    var resp = await axios.post("/comprovante/pix", { comprovante: file })
+                    if (resp.data.erro != 0) {
+                        alert(resp.data.erro)
+                        return false
+                    } else {
+                        return true
+                    }
+                }
+
+                async function pix() {
+                    var filesSelected = document.getElementById("comprovanteFile").files;
+                    var file = document.getElementById("file")
+
+                    if (filesSelected.length > 0) {
+                        var fileToLoad = filesSelected[0];
+                        var fileReader = new FileReader();
+                        fileReader.onload = function (fileLoadedEvent) {
+                            var srcData = fileLoadedEvent.target.result; // <--- data: base64
+                            file.value = srcData;
+                        }
+                        fileReader.readAsDataURL(fileToLoad);
+
+                        var entrega = await entregaAdicionar()
+
+                        if (entrega) {
+                            var comprovante = await comprovantePix(file.value)
+                            if (comprovante) {
+                                location.href = `/carrinho/finalizarCompra/1`
+                            }
+                        }
+                    } else {
+                        alert("Nenhum comprovante anexado!")
+                    }
+                }
+
+                async function mercadopago(div) {
                     document.getElementById(div).setAttribute("onclick", "")
                     var mercadoPago = document.getElementById("mercadoPago")
                     mercadoPago.innerHTML = ['<div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status"><span class="visually-hidden"></span></div>'].join('')
-                    axios.post("/entrega/adicionar/", { cep: cep.value, cidade: cidade.value, numero: numero.value, rua: rua.value, bairro: bairro.value, uf: uf.value }).then(resp => {
-                        location.href = '/carrinho/finalizarCompra/'
-                    }).catch(err => {
-                        console.log(err)
-                    })
+                    var entrega = await entregaAdicionar()
+                    if (entrega) {
+                        location.href = `/carrinho/finalizarCompra/2`
+                    }
                 }
 
                 function finalizaCompra() {
@@ -466,12 +510,6 @@
                         numero.classList.remove("is-invalid")
                         var formasDePagamentos = new bootstrap.Modal(document.getElementById("formasDePagamentos"), {});
                         formasDePagamentos.show();
-                        // axios.post("/entrega/adicionar/", { cep: cep.value, cidade: cidade.value, numero: numero.value, rua: rua.value, bairro: bairro.value, uf: uf.value }).then(resp => {
-
-
-                        // }).catch(err => {
-                        //     console.log(err)
-                        // })
                     }
                 }
             </script>

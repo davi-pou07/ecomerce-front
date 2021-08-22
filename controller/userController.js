@@ -106,7 +106,7 @@ router.get("/usuario/logado", async (req, res) => {
 
             var cliente = await Cliente.findByPk(usuario.id)
             if (cliente != undefined) {
-                var carrinho = await Carrinho.findOne({ where: { clienteId: cliente.id, status:true } })
+                var carrinho = await Carrinho.findOne({ where: { clienteId: cliente.id, status: true } })
                 if (carrinho != undefined && carrinho.status != false) {
 
                     var nome = cliente.nome.split(" ")[0]
@@ -123,7 +123,7 @@ router.get("/usuario/logado", async (req, res) => {
                         quantidade: 0,
                         status: true,
                         clienteId: cliente.id,
-                        precoTotal:0
+                        precoTotal: 0
                     }).then(() => {
                         res.send("Carrinho criado")
                     })
@@ -197,9 +197,9 @@ router.post("/usuario/editar", auth, async (req, res) => {
                                     numero: numero,
                                     email: email.toLowerCase(),
                                     foto: foto,
-                                    senha:hash
-                                },{where:{id:usuario}}).then(cliente =>{
-                                    res.json({resp : "Informações atualizadas"})
+                                    senha: hash
+                                }, { where: { id: usuario } }).then(cliente => {
+                                    res.json({ resp: "Informações atualizadas" })
                                 })
                             } else {
                                 res.json({ erro: "Ja existe um cliente cadastrado com esses dados" })
@@ -225,56 +225,63 @@ router.post("/usuario/editar", auth, async (req, res) => {
     }
 })
 
-router.get("/usuario/historico",async(req,res)=>{
+router.get("/usuario/historico", async (req, res) => {
     var usuario = req.session.cli
     //var usuario = {id:1}
     if (usuario != undefined) {
-        try{
-        var cliente = await Cliente.findByPk(usuario.id)
-        var carrinhos = await Carrinho.findAll({where:{clienteId:cliente.id}})
-        var dadosVendas = await knex("dadosvendas").select().where({clienteId:cliente.id})
-        var dadosTransicoes = await knex("dadostransicoes").select().where({clienteId:cliente.id})
-        var datas =[]
-        dadosTransicoes.forEach(dados =>{
-            var data = moment(dados.createdAt).format('Do MMMM YYYY, h:mm:ss a')
-            var dado = {id:dados.id,createdAt:data}
-            datas.push(dado)
-        })
-        res.render("usuario/historico",{nome:cliente.nome,id:cliente.id,foto:cliente.foto,carrinhos:carrinhos,dadosVendas:dadosVendas,dadosTransicoes:dadosTransicoes,datas:datas})
-        }catch(err){
+        try {
+            var cliente = await Cliente.findByPk(usuario.id)
+            var carrinhos = await Carrinho.findAll({ where: { clienteId: cliente.id } })
+            var dadosVendas = await knex("dadosvendas").select().where({ clienteId: cliente.id })
+            var dadosTransicoes = await knex("dadostransicoes").select().where({ clienteId: cliente.id })
+            var datas = []
+            dadosTransicoes.forEach(dados => {
+                var data = moment(dados.createdAt).format('Do MMMM YYYY, h:mm:ss a')
+                var dado = { id: dados.id, createdAt: data }
+                datas.push(dado)
+            })
+            res.render("usuario/historico", { nome: cliente.nome, id: cliente.id, foto: cliente.foto, carrinhos: carrinhos, dadosVendas: dadosVendas, dadosTransicoes: dadosTransicoes, datas: datas })
+        } catch (err) {
             console.log(err)
             res.redirect("/")
         }
     } else {
         res.redirect("/login")
     }
-    
+
 })
 
-router.get("/usuario/transicao/:transicaoId",async(req,res)=>{
+router.get("/usuario/transicao/:transicaoId", async (req, res) => {
     var usuario = req.session.cli
     var transicaoId = req.params.transicaoId
     //var usuario = {id:1}
     if (usuario != undefined) {
-        try{
-        var empresa = await knex("empresas").select()
-        var cliente = await Cliente.findByPk(usuario.id)
-        var dadosTransicao = await knex("dadostransicoes").select().where({clienteId:cliente.id,id:transicaoId})
-        var dadosVenda = await knex("dadosvendas").select().where({clienteId:cliente.id,dadosId:dadosTransicao[0].dadosId})
-        var dadosPagamento =  await knex("dadospagamentos").select().where({clienteId:cliente.id,dadosId:dadosTransicao[0].dadosId})
-        var carrinho = await Carrinho.findOne({where:{clienteId:cliente.id,id:dadosTransicao[0].carrinhoId}})
-        var dadosEntrega = await knex("dadosentregas").select().where({clienteId:cliente.id,carrinhoId:carrinho.id})
-        var data = moment(dadosTransicao[0].createdAt).format('DD/MM/YYYY, h:mm:ss a')
-        var dataExpiracao = moment(dadosPagamento[0].dataExpiracao).format('DD/MM/YYYY')
-        res.render("usuario/transicao",{nome:cliente.nome,id:cliente.id,foto:cliente.foto,carrinho:carrinho,dadosVenda:dadosVenda[0],dadosTransicao:dadosTransicao[0],data:data,dataExpiracao:dataExpiracao,dadosPagamento:dadosPagamento[0],dadosEntrega:dadosEntrega[0],empresa:empresa[0]})
-        }catch(err){
+        try {
+            var empresa = await knex("empresas").select()
+            var cliente = await Cliente.findByPk(usuario.id)
+            var dadosTransicao = await knex("dadostransicoes").select().where({ clienteId: cliente.id, id: transicaoId })
+            var dadosVenda = await knex("dadosvendas").select().where({ clienteId: cliente.id, dadosId: dadosTransicao[0].dadosId })
+            var carrinho = await Carrinho.findOne({ where: { clienteId: cliente.id, id: dadosTransicao[0].carrinhoId } })
+            var dadosEntrega = await knex("dadosentregas").select().where({ clienteId: cliente.id, carrinhoId: carrinho.id })
+            var data = moment(dadosTransicao[0].createdAt).format('DD/MM/YYYY, h:mm:ss a')
+
+            if (dadosVenda.opcaoDePagamento == 1) {
+                var dadosPagamento = await knex("dadospagamentospixes").select().where({ clienteId: cliente.id, dadosId: dadosTransicao[0].dadosId })
+                var dataExpiracao = moment(dadosPagamento[0].createdAt).add(2, 'days').format('DD/MM/YYYY')
+            } else if(dadosVenda.opcaoDePagamento == 2) {
+                var dadosPagamento = await knex("dadospagamentos").select().where({ clienteId: cliente.id, dadosId: dadosTransicao[0].dadosId })
+                var dataExpiracao = moment(dadosPagamento[0].dataExpiracao).format('DD/MM/YYYY')
+            }
+           
+            res.render("usuario/transicao", { nome: cliente.nome, id: cliente.id, foto: cliente.foto, carrinho: carrinho, dadosVenda: dadosVenda[0], dadosTransicao: dadosTransicao[0], data: data, dataExpiracao: dataExpiracao, dadosPagamento: dadosPagamento[0], dadosEntrega: dadosEntrega[0], empresa: empresa[0] })
+        } catch (err) {
             console.log(err)
             res.redirect("/")
         }
     } else {
         res.redirect("/login")
     }
-    
+
 })
 
 

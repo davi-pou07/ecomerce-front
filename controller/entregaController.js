@@ -63,10 +63,9 @@ router.post("/entrega/adicionar", async (req, res) => {
                     createdAt: moment().format(),
                     updatedAt: moment().format()
                 }).then(() => {
-                    console.log("Salvo dado da entrega")
+                    res.json({erro:0})
                 }).catch(err => {
-                    console.log(err)
-                    res.redirect('/')
+                    res.json({erro:1})
                 })
             } else {
                 knex("dadosentregas").update({
@@ -81,11 +80,9 @@ router.post("/entrega/adicionar", async (req, res) => {
                     codigoRastreioInterno: codigoRastreioInterno,
                     status: status
                 }).where({ id: dadosEntrega[0].id }).then(() => {
-                    console.log("Modificado o dado da entrega")
-                    res.json({resp:"Modificado o dado da entrega"})
+                    res.json({erro:0})
                 }).catch(err => {
-                    console.log(err)
-                    res.json({erro:"Ocorreu algum erro"})
+                    res.json({erro:1})
                 })
             }
         } catch (error) {
