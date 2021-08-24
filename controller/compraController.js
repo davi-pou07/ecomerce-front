@@ -161,8 +161,9 @@ router.get("/carrinho/finalizarCompra/:opcao", async (req, res) => {
                     carrinhoId: carrinho.id
                 },
                 "payment_methods": {
-                    "excluded_payment_types": [
-                        { "id": "atm" }
+                    "excluded_payment_methods": [
+                        { "id": "pec" },
+                        {"id":""}
                     ]
                 },
                 external_reference: idUnica,

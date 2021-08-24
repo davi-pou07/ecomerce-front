@@ -267,19 +267,17 @@ router.get("/usuario/transicao/:transicaoId", async (req, res) => {
 
             if (dadosVenda[0].opcaoDePagamento == 1) {
                 var dadosPagamento = await knex("dadospagamentospixes").select().where({ clienteId: cliente.id, dadosId: dadosTransicao[0].dadosId })
-                console.log("-----dadosPagamento----")
-                console.log(dadosPagamento)
                 var dataExpiracao = moment(dadosPagamento[0].createdAt).add(2, 'days').format('DD/MM/YYYY')
             } else if (dadosVenda[0].opcaoDePagamento == 2) {
                 var dadosPagamento = await knex("dadospagamentos").select().where({ clienteId: cliente.id, dadosId: dadosTransicao[0].dadosId })
                 var dataExpiracao = moment(dadosPagamento[0].dataExpiracao).format('DD/MM/YYYY')
             }
-            console.log("----dadosTransicao-----")
-            console.log(dadosTransicao)
-            console.log("----dadosVenda-----")
-            console.log(dadosVenda)
-            console.log("-----dadosPagamento----")
-            console.log(dadosPagamento)
+            // dadosTransicao[0].status = 'approved'
+            // dadosTransicao[0].statusColetado = 'Aprovado'
+
+            // dadosTransicao[0].status = 'refunded'
+            // dadosTransicao[0].statusColetado = 'Estornado'
+            
             res.render("usuario/transicao", { nome: cliente.nome, id: cliente.id, foto: cliente.foto, carrinho: carrinho, dadosVenda: dadosVenda[0], dadosTransicao: dadosTransicao[0], data: data, dataExpiracao: dataExpiracao, dadosPagamento: dadosPagamento[0], dadosEntrega: dadosEntrega[0], empresa: empresa[0] })
         } catch (err) {
             console.log(err)
