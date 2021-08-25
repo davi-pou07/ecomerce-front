@@ -162,7 +162,7 @@ router.get("/carrinho/finalizarCompra/:opcao", async (req, res) => {
                 },
                 "payment_methods": {
                     "excluded_payment_methods": [
-                        { "id": "pec" },
+                        { "id": "" },
                         {"id":""}
                     ]
                 },
