@@ -104,13 +104,13 @@
                                     </span>
                                 </div> <!-- price-detail-wrap .// -->
 
-                                <div class="mb-4">
+                                <div class="mb-4 text-center text-md-start">
                                     <input type="hidden" value="false" id="reditect">
                                     <a href="#" class="btn btn-primary" data-bs-toggle="modal"
                                         data-bs-target="#exampleModal"
                                         onclick="gradeColuna($('#reflinha').val());document.getElementById('reditect').value = true">Compre
                                         agora!</a>
-                                    <a href="#" class="btn btn-light" data-bs-toggle="modal"
+                                    <a href="#" class="btn btn-light mt-2 mt-md-0" data-bs-toggle="modal"
                                         data-bs-target="#exampleModal"
                                         onclick="gradeColuna($('#reflinha').val())">Adicionar ao Carrinho</a>
                                 </div>
@@ -129,7 +129,7 @@
                                             </div>
                                             <div class="modal-body">
                                                 <div class="row">
-                                                    <div class="col-md-4">
+                                                    <div class="col-md-4 text-center text-md-start">
                                                         <input type="hidden" id="codItem" name="codItem"
                                                             value="<%=produto.id%>">
                                                         <%imagems.forEach((imagem,index)=>{%>

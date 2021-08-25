@@ -61,14 +61,7 @@ router.get("/carrinho/finalizarCompra/:opcao", async (req, res) => {
             var precoTotal = parseFloat(carrinho.precoTotal) + parseFloat(dadoEntrega[0].valor)
             var data = moment().format()
 
-        } catch (err) {
-            res.json({ erro: "Ocorreu um erro, entre em contato com o suporte" })
-        }
-
-
-        if (opcaoPagamento.id == 1) {
-
-            try {
+            async function dadosVendasInsertUpdate() {
                 if (dadosVendas[0] == '' || dadosVendas[0] == undefined) {
                     knex('dadosvendas').insert({
                         dadosId: idUnica,
@@ -94,15 +87,26 @@ router.get("/carrinho/finalizarCompra/:opcao", async (req, res) => {
                         emailCliente: cliente.email,
                         unit_price: precoTotal,
                         opcaoDePagamento: opcaoPagamento.id
-                    }).where({ id: dadosVendas[0].id }).then(() => {
-                        // res.redirect("/finalizarCompra/pix")
+                    }).where({ id: dadosVendas[0].id }).catch(err => {
+                        console.log(err)
                     })
                 }
 
+            }
+
+        } catch (err) {
+            res.json({ erro: "Ocorreu um erro, entre em contato com o suporte" })
+        }
+
+
+        if (opcaoPagamento.id == 1) {
+
+            try {
+                await dadosVendasInsertUpdate();
                 try {
                     var dadosVendas = await knex("dadosvendas").select().where({ dadosId: idUnica })
                     var date = moment().format();
-                    var qDadosPagamentosPix = await knex("dadospagamentospixes").select()
+                    var qDadosTransicoes = await knex("dadostransicoes").select()
                     knex("dadostransicoes").insert({
                         dadosId: dadosVendas[0].dadosId,
                         status: "pending",
@@ -110,7 +114,7 @@ router.get("/carrinho/finalizarCompra/:opcao", async (req, res) => {
                         carrinhoId: dadosVendas[0].carrinhoId,
                         statusColetado: "Analise",
                         formaPagamento: "bank_transfer",
-                        orderId: '000' + parseInt(qDadosPagamentosPix.length + 1),
+                        orderId: '000' + parseInt(qDadosTransicoes.length + 1),
                         createdAt: date,
                         updatedAt: date
                     }).then(async () => {
@@ -118,11 +122,11 @@ router.get("/carrinho/finalizarCompra/:opcao", async (req, res) => {
                         var dadosPagamentosPix = await knex("dadospagamentospixes").select().where({ clienteId: cliente.id, carrinhoId: carrinho.id })
                         console.log(dadosVendas[0].dadosId)
                         console.log("----------")
-                        console.log('000' + parseInt(qDadosPagamentosPix.length + 1))
+                        console.log('000' + parseInt(qDadosTransicoes.length + 1))
 
                         var updateDadosPixes = await knex("dadospagamentospixes").update({
                             dadosId: dadosVendas[0].dadosId,
-                            ordeId: '000' + parseInt(qDadosPagamentosPix.length + 1)
+                            ordeId: '000' + parseInt(qDadosTransicoes.length + 1)
                         }).where({ id: dadosPagamentosPix[0].id })
 
                         console.log("passou update")
@@ -163,7 +167,7 @@ router.get("/carrinho/finalizarCompra/:opcao", async (req, res) => {
                 "payment_methods": {
                     "excluded_payment_methods": [
                         { "id": "" },
-                        {"id":""}
+                        { "id": "" }
                     ]
                 },
                 external_reference: idUnica,
@@ -217,8 +221,50 @@ router.get("/carrinho/finalizarCompra/:opcao", async (req, res) => {
             catch (err) {
                 return res.send(err.message)
             }
-        } else {
+        } else if (opcaoPagamento.id == 3) {
+            try {
+                await dadosVendasInsertUpdate();
 
+                try {
+                    var dadosVendas = await knex("dadosvendas").select().where({ dadosId: idUnica })
+                    var date = moment().format();
+
+                    var qDadosTransicoes = await knex("dadostransicoes").select()
+                    knex("dadostransicoes").insert({
+                        dadosId: dadosVendas[0].dadosId,
+                        status: "pending",
+                        clienteId: dadosVendas[0].clienteId,
+                        carrinhoId: dadosVendas[0].carrinhoId,
+                        statusColetado: "Analise",
+                        formaPagamento: "pagar_na_entrega",
+                        orderId: '000' + parseInt(qDadosTransicoes.length + 1),
+                        createdAt: date,
+                        updatedAt: date
+                    }).then(async () => {
+
+                        var DadosPagamentosEntrega = await knex("dadospagamentosentregas").select().where({ clienteId: cliente.id, carrinhoId: carrinho.id })
+
+                        var updatePagamentosEntrega = await knex("dadospagamentosentregas").update({
+                            dadosId: dadosVendas[0].dadosId,
+                            ordeId: '000' + parseInt(qDadosTransicoes.length + 1)
+                        }).where({ id: DadosPagamentosEntrega[0].id })
+
+                        Carrinho.update({ status: false }, { where: { id: dadosVendas[0].carrinhoId } }).then(async () => {
+                            var dadosTransicoes = await knex("dadostransicoes").select().where({ dadosId: dadosVendas[0].dadosId })
+
+                            res.redirect("/usuario/transicao/" + dadosTransicoes[0].id)
+                        })
+                    })
+                } catch (error) {
+                    console.log(error)
+                }
+
+            } catch (error) {
+                console.log(error)
+            }
+
+        } else {
+            res.redirect("/")
         }
     } else {
         res.redirect("/login")
@@ -528,6 +574,83 @@ router.post("/comprovante/pix", auth, async (req, res) => {
     }
 })
 
+// Pagar na entrega
+router.post("/solicitar/entrega", auth, async (req, res) => {
+    var usuario = req.session.cli
+    var {nome,numero,cpf} = req.body
+    if (usuario != undefined) {
+        try {
+            var cliente = await Cliente.findByPk(usuario.id)
+            var carrinho = await Carrinho.findOne({ where: { clienteId: cliente.id, status: true } })
+            var dadosEntrega = await knex("dadosentregas").select().where({clienteId:cliente.id,carrinhoId:carrinho.id})
 
+            var dadosPagamentosEntrega = await knex("dadospagamentosentregas").select().where({ clienteId: cliente.id, carrinhoId: carrinho.id })
+            if (dadosPagamentosEntrega[0] == undefined) {
+                // statusId: 1 - ANALISE. 2 - APROVADO. 3 - REJEITADO. 4- ESTORNADO
+                knex("dadospagamentosentregas").insert({
+                    status: 'Analise',
+                    statusId: 1,
+                    clienteId: cliente.id,
+                    carrinhoId: carrinho.id,
+                    cpf: cpf,
+                    nome:nome,
+                    numero:numero,
+                    dadosEntragaId:dadosEntrega[0].id,
+                    createdAt: moment().format(),
+                    updatedAt: moment().format()
+                }).then(() => {
+                    res.json({ erro: 0 })
+                }).catch(err => {
+                    console.log(err)
+                    res.json({ erro: "Erro ao solicitar entrega" })
+                })
+            } else {
+                knex("dadospagamentosentregas").update({
+                    status: 'Analise',
+                    statusId: 1,
+                    clienteId: cliente.id,
+                    carrinhoId: carrinho.id,
+                    cpf: cpf,
+                    nome:nome,
+                    numero:numero,
+                    dadosEntragaId:dadosEntrega[0].id,
+                    updatedAt: moment().format()
+                }).where({ id: dadosPagamentosEntrega[0].id }).then(() => {
+
+                    try {
+                        var emailASerEnviado = {
+                            from: 'poudeyvis007@gmail.com',
+                            to: cliente.email,
+                            subject: `Compra dos produtos: ${results.description}`,
+                            text: 'Prezado ' + nome + ", recebemos sua solicitação para pagamentos na entrega. Nossa equipe preza muito pela segurança de nosso produto e de nossos entregadores, entraremos em contato para verificar se é possivel realizar a entrega com pagamento presencial na sua região. Temos um prazo de no maximo 48hr para esta lhe respondendo. Para mais duvidas acesse um de nossos canais de atendimento disponibilizados no SITE. Codigo: " + external_reference
+                        };
+
+                        remetente.sendMail(emailASerEnviado, function (error) {
+                            if (error) {
+                                console.log(error);
+                            } else {
+                                console.log("Email enviado com sucesso");
+                            }
+                        });
+                    } catch (err) {
+                        console.log(err)
+                    } finally {
+                        res.json({ erro: 0 })
+                    }
+
+                }).catch(err => {
+                    console.log(err)
+                    res.json({ erro: "Erro ao solicitar entrega" })
+                })
+            }
+
+        } catch (error) {
+            console.log(error)
+            res.json({ erro: "Erro ao solicitar entrega, efetue login novamente!" })
+        }
+    } else {
+        res.redirect("/login")
+    }
+})
 
 module.exports = router

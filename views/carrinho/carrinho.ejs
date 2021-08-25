@@ -146,6 +146,7 @@
                                     <div class="modal-body">
                                         <div class="row">
                                             <div class="col-md-4">
+
                                                 <div data-bs-target="#pixModal" data-bs-toggle="modal"
                                                     data-bs-dismiss="modal" class="card border-success formaPag">
                                                     <div class="card-header text-center text-success">
@@ -158,7 +159,7 @@
                                                 </div>
                                             </div>
 
-                                            <div class="col-md-4 mt-md-0 mt-2">
+                                            <div class="col-md-4 my-md-0 my-3">
                                                 <div onclick="mercadopago(this.id)" id="div"
                                                     class="card border-primary formaPag">
                                                     <div class="card-header text-center text-primary">
@@ -172,7 +173,8 @@
                                             </div>
 
                                             <div class="col-md-4">
-                                                <div class="card border-warning formaPag">
+                                                <div data-bs-target="#entregaModal" data-bs-toggle="modal"
+                                                    data-bs-dismiss="modal" class="card border-warning formaPag">
                                                     <div class="card-header text-center text-warning">
                                                         <dt>Pagar na Entrega</dt>
                                                     </div>
@@ -190,7 +192,7 @@
                         </div>
                         <div class="modal fade" id="pixModal" data-bs-backdrop="static" data-bs-keyboard="false"
                             aria-hidden="true" aria-labelledby="pixModalLabel" tabindex="-1">
-                            <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
                                 <div class="modal-content">
                                     <div class="modal-header">
                                         <h5 class="modal-title" id="pixModalLabel">Transferencia PIX</h5>
@@ -254,6 +256,48 @@
                             </div>
                         </div>
 
+                        <!--  <div class="modal fade" id="entregaModal" data-bs-backdrop="static" data-bs-keyboard="false"
+                            aria-hidden="true" aria-labelledby="entregaModalLabel" tabindex="-1">
+                            <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="entregaModalLabel">Pagar na entrega</h5>
+                                    </div>
+                                    <div class="modal-body text-center">
+                                        <p class="text-muted">Para nossa segurança será necessario que seja anexado
+                                            algumas informações. Para mais duvidas acesse um de nossos <a href="#">
+                                                canais de
+                                                atendimento ao cliente </a> para que seja efetivado mais rapido a sua
+                                            entrega.</p>
+
+                                        <p class="text-muted">Informe abaixo os dados solicitados</p>
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <label class="form-label" for="nome">Nome Complemento</label>
+                                                <input type="text" value="nome" id="nome" class="form-control"
+                                                    placeholder="Insira seu nome completo">
+                                            </div>
+                                            <div class="col-md-6 my-2">
+                                                <label class="form-label" for="cpf">CPF</label>
+                                                <input type="number" value="cpf" value="0" id="cpf" class="form-control">
+                                            </div>
+                                            <div class="col-md-6 my-2">
+                                                <label class="form-label" for="numero">Numero (Preferencia Whatsapp)</label>
+                                                <input type="number" value="numero" id="numero" class="form-control"
+                                                    placeholder="Insira seu numero para contato">
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button class="btn btn-primary" data-bs-target="#comprovantePix"
+                                            data-bs-toggle="modal" data-bs-dismiss="modal">Anexar comprovante</button>
+                                        <button class="btn btn-warning text-white" data-bs-target="#formasDePagamentos"
+                                            data-bs-toggle="modal" data-bs-dismiss="modal">Voltar</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>-->
 
                         <div class="card mt-3">
                             <div class="card-body">
@@ -398,6 +442,7 @@
             <script src="/js/qrcode.js"></script>
             <script src="/js/carrinho.js"></script>
             <script src="/js/pesquisaCep.js"></script>
+            
 
             <script>
                 var qrcode = new QRCode(document.getElementById("qrcode"), {
@@ -475,6 +520,7 @@
                         alert("Nenhum comprovante anexado!")
                     }
                 }
+               
 
                 async function mercadopago(div) {
                     document.getElementById(div).setAttribute("onclick", "")
