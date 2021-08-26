@@ -5,3 +5,66 @@
 .nav{
     background-color: var(--cor)
 }
+
+    html, body {
+        height: 100%;
+        margin: 0;
+        background:#f7f7f7;
+    
+    }
+    header{
+        background: #041a2fe6;
+        color: white;
+    }
+    nav{
+        padding: 70px;
+        background: #041a2fe6;
+        color: white;
+    }
+    .pesquisa{
+        height: 39px;
+        margin-top: 30px;
+        border-radius: 10 0 10 0px;
+
+    }
+
+    /*teste */
+ 
+    input[type=search]:focus {
+        background-color: lightblue;
+      }
+    
+       /*uma hora sai
+
+   a.nav-link:hover:before {
+     opacity: 1;
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+    }
+    a.nav-link::before{
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #cd0114;
+    z-index: -1;
+    opacity: 0;
+    -webkit-transform: scaleX(.1);
+    -ms-transform: scaleX(.1);
+    transform: scaleX(.1);
+    transition: all .7s ease-in-out;
+    transition-timing-function: ease-in-out;
+}*/
+.efeito:hover{
+    background-color: #061c30;
+    border-radius: 10px;
+    border-bottom: 7px double #242f46;
+    padding-bottom: 10px;
+    color: white;
+}
+.efeitodetalhe:hover{
+    color: white;
+    
+}

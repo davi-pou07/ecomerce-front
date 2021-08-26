@@ -2,20 +2,20 @@
 
     <%- include("./partials/nav.ejs")%>
     <!-- Navegador do site para levar a algumas paginas-->
-        <div id="navegador">
-            <div class="container my-3">
-                <ul class="nav justify-content-center">
+        <div id="navegador" style="background: #061c30;">
+            <div class="container" style="background: #061c30;">
+                <ul class="nav justify-content-between" style="background-color: #041a2fe6; padding-right: 30px;padding-left: 30px;border: none;padding-bottom: 4px; padding-top: 10px;">
                 <!-- Lista as categorias principais do site -->
                     <li class="nav-item dropdown">
                         <div class="input-group" data-bs-toggle="dropdown">
                             <img src="/img/list.png" class="img-fluid mt-md-1" width="30px" height="30px">
-                            <a class="nav-link dropdown-toggle" href="#" role="button"
+                            <a class="nav-link dropdown-toggle text-white" href="#" role="button"
                                 aria-expanded="false">Categorias</a>
                         </div>
                         <ul class="dropdown-menu">
                             <%categorias.forEach(categoria=>{%>
                                 <%if(categoria.destaque==true){%>
-                                    <li><a class="dropdown-item" href="/categoria/<%=categoria.id%>">
+                                    <li><a class="dropdown-item text-white" href="/categoria/<%=categoria.id%>">
                                             <%=categoria.titulo%>
                                         </a></li>
                                     <%}%>
@@ -28,7 +28,7 @@
                     <li class="nav-item">
                         <div class="input-group">
                             <img src="/img/oferta.png" class="img-fluid mt-md-1" width="30px" height="30px">
-                            <a class="nav-link" href="#">Ofertas</a>
+                            <a class="nav-link text-white" href="#">Ofertas</a>
                         </div>
                     </li>
                 <!-- Fim da opção para levar a aba de ofertas semanais -->
@@ -37,7 +37,7 @@
                     <li class="nav-item">
                         <div class="input-group">
                             <img src="/img/historico.png" class="img-fluid mt-md-1" width="30px" height="30px">
-                            <a class="nav-link" href="/usuario/historico/">Historico de Compra</a>
+                            <a class="nav-link text-white" href="/usuario/historico/">Historico de Compra</a>
                         </div>
                     </li>
                 <!--Fim historico de compra do cliente -->
@@ -46,7 +46,7 @@
                     <li class="nav-item">
                         <div class="input-group">
                             <img src="/img/carrinho.png" class="img-fluid mt-md-1" width="30px" height="30px">
-                            <a class="nav-link" href="/carrinho/caixa">Carrinho</a>
+                            <a class="nav-link text-white" href="/carrinho/caixa">Carrinho</a>
                         </div>
                 <!-- fim carrinho do cliente -->
 
@@ -55,7 +55,7 @@
                     <li class="nav-item">
                         <div class="input-group">
                             <img src="/img/central.png" class="img-fluid mt-md-1" width="30px" height="30px">
-                            <a class="nav-link" href="#">Central de Atendimento</a>
+                            <a class="nav-link text-white" href="#">Central de Atendimento</a>
                         </div>
                     </li>
                 </ul>
@@ -85,10 +85,13 @@
 
             <br>
             <!-- BOX PARA INFORMAR OS ATRIBUTOS DA EMPRESA -->
-            <div class="row mt-5">
-                <div class="col-md-4 text-center text-md-start">
+            <div class="row mt-3">
+                <div class="col-md-4 text-center text-md-start efeito" style="
+                box-shadow: -7px 0px 1em 1px #72757773;
+                /* margin-block: 10px; */
+                padding: 10px;">
                     <figure class="itemside">
-                        <div class="aside">
+                        <div class="aside text-center">
                             <span class="icon-sm">
                                 <svg id="Capa_1" enable-background="new 0 0 512 512" height="70" viewBox="0 0 512 512"
                                     width="70" xmlns="http://www.w3.org/2000/svg">
@@ -126,18 +129,22 @@
                                 </svg>
                             </span>
                         </div>
-                        <figcaption class="info">
-                            <h5 class="title">Melhores Preços</h5>
+                        <figcaption class="info text-center">
+                            <h5 class="title text-uppercase" style="border-bottom: 7px double #a0e5a5;padding-bottom: 10px;">Melhores Preços</h5>
                             <p class="text-muted text-white">Encontre aqui o melhor preço do mercado! Preços que
-                                cabem no seu bolso com descontos imprerdiveis</p>
+                                cabem no seu bolso e com descontos imprerdíveis</p>
                         </figcaption>
                     </figure>
                     <!-- iconbox // -->
                 </div>
                 <!-- col // -->
-                <div class="col-md-4 text-center text-md-start">
-                    <figure class="itemside">
-                        <div class="aside">
+                <div class="col-md-4 text-center text-md-start efeito" style="
+                box-shadow: 0 0 1em 1px #72757773;
+                /* margin-block: 10px; */
+                padding: 10px; ">
+                    <figure class="itemside" style="
+                    margin: 5px; ">
+                        <div class="aside text-center">
                             <span class="icon-sm">
                                 <svg height="70" viewBox="0 -15 512 512" width="70" xmlns="http://www.w3.org/2000/svg">
                                     <path d="m206.964844 406.355469h98.070312v54.226562h-98.070312zm0 0"
@@ -221,8 +228,11 @@
                                 </svg>
                             </span>
                         </div>
-                        <figcaption class="info">
-                            <h5 class="title">Canais de Atendimento</h5>
+                        <figcaption class="info text-center">
+                            <h5 class="title text-uppercase" style="
+                            border-bottom: 7px double #a0e5a5;
+                            padding-bottom: 10px;
+                        ">Canais de Atendimento</h5>
                             <p class="text-muted">Caso desejar pode entrar em contato em nossa central de
                                 atendimento ao cliente. No canto inferior do site você vai ver um caixa de texto
                                 onde pode ser atendido</p>
@@ -231,9 +241,14 @@
                     <!-- iconbox // -->
                 </div>
                 <!-- col // -->
-                <div class="col-md-4 text-center text-md-start">
-                    <figure class="itemside">
-                        <div class="aside">
+                <div class="col-md-4 text-center text-md-start efeito" style="
+                box-shadow: 0 0 1em 1px #72757773;
+                /* margin-block: 10px; */
+                padding: 10px;
+            ">
+                    <figure class="itemside" style="
+                    margin: 5px; ">
+                        <div class="aside text-center">
                             <span class="icon-sm rounded-circle bg-success">
                                 <svg id="Layer_1" enable-background="new 0 0 256 256" height="70" viewBox="0 0 256 256"
                                     width="70" xmlns="http://www.w3.org/2000/svg">
@@ -333,10 +348,12 @@
                                 </svg>
                             </span>
                         </div>
-                        <figcaption class="info">
-                            <h5 class="title">Rapida Entrega</h5>
+                        <figcaption class="info text-center">
+                            <h5 class="title text-uppercase" style="
+                            border-bottom: 7px double #a0e5a5;
+                            padding-bottom: 10px;">Rápida Entrega</h5>
                             <p class="text-muted">Nossa equipe trabalha de maneira eficaz para que a entrega seja
-                                feita o mais rapido possivel. Nosso foco é a satisfação do cliente em obter o
+                                feita o mais rápido possível. Nosso foco é a satisfação do cliente em obter o
                                 produto em mãos.</p>
                         </figcaption>
                     </figure>
@@ -349,8 +366,11 @@
 
             <!-- LISTAGEM DOS PRODUTOS -->
             <div id="produtos">
-                <h2 class="title text-center">Nossos produtos</h2>
-                <h4 class="subtitle text-center mb-4">Veja abaixo nossos principais produtos!</h4>
+                <h2 class="title text-center" style="
+                background: #061d3014;
+            ">Nossos produtos</h2>
+                <h4 class="subtitle text-center mb-4" style="
+                background: #dee1e333;">Veja abaixo nossos principais produtos!</h4>
                 <div class="row">
                     <%produtos.forEach((produto,index)=>{%>
                         <%if(index < 12){%>
