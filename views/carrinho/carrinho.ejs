@@ -17,9 +17,8 @@
                                             <div class="col-4">
                                                 <figure class="itemside">
                                                     <div class="row">
-                                                        <%var imagem=imagens.find(imagem=> imagem.produtoId
-                                                            ==
-                                                            produto.id)%>
+                                                        <%var imagem=imagens.find(imagem=>
+                                                            imagem.produtoId==produto.id)%>
                                                             <%if(imagem !=undefined){%>
                                                                 <div class="col-md-6 pe-0">
                                                                     <img src="<%=imagem.imagem%>" class="ps-0"
@@ -135,6 +134,171 @@
                             </div>
                         </div> <!-- card.// -->
 
+                        <div class="modal fade" id="formasDePagamentos" aria-hidden="true"
+                            aria-labelledby="formasDePagamentosLabel" tabindex="-1">
+                            <div class="modal-dialog modal-dialog-centered">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="formasDePagamentosLabel">Formas de pagamento</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="row">
+                                            <div class="col-md-4">
+
+                                                <div data-bs-target="#pixModal" data-bs-toggle="modal"
+                                                    data-bs-dismiss="modal" class="card border-success formaPag">
+                                                    <div class="card-header text-center text-success">
+                                                        <dt>Transferencia PIX</dt>
+                                                    </div>
+                                                    <div class="card-body text-center">
+                                                        <img src="/img/pix.png" class="img-fluid" width="60px"
+                                                            height="60px" alt="">
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-4 my-md-0 my-3">
+                                                <div onclick="mercadopago(this.id)" id="div"
+                                                    class="card border-primary formaPag">
+                                                    <div class="card-header text-center text-primary">
+                                                        <dt>Mercado Pago</dt>
+                                                    </div>
+                                                    <div class="card-body text-center" id="mercadoPago">
+                                                        <img src="/img/mercadopago.png" class="img-fluid" width="60px"
+                                                            height="60px" alt="">
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-4">
+                                                <div data-bs-target="#entregaModal" data-bs-toggle="modal"
+                                                    data-bs-dismiss="modal" class="card border-warning formaPag">
+                                                    <div class="card-header text-center text-warning">
+                                                        <dt>Pagar na Entrega</dt>
+                                                    </div>
+                                                    <div class="card-body text-center">
+                                                        <img src="/img/delivery.png" class="img-fluid" width="60px"
+                                                            height="60px" alt="">
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal fade" id="pixModal" data-bs-backdrop="static" data-bs-keyboard="false"
+                            aria-hidden="true" aria-labelledby="pixModalLabel" tabindex="-1">
+                            <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="pixModalLabel">Transferencia PIX</h5>
+                                    </div>
+                                    <div class="modal-body text-center">
+                                        <p class="text-muted">Apos efetuar o pagamento será necessario anexar o
+                                            comprovante ou encaminhar para um de nossos <a href="#"> canais de
+                                                atendimento ao cliente </a> para que seja efetivado mais rapido a sua
+                                            entrega.</p>
+                                        <div class="card border-success">
+                                            <div class="card-header fs-3 fs-md-4 bg-transparent border-success">
+                                                Davi Henrique de Almeida Reis
+                                            </div>
+                                            <div class="card-body">
+                                                <h5>Tipo de Chave: <span class="badge bg-success">CPF</span></h5>
+                                                <h5>Chave: <span class="badge bg-success">06210580335</span> </h5>
+                                            </div>
+                                        </div>
+                                        <p class="text-muted">Escaneie o codigo abaixo para efetuar a transferencia</p>
+                                        <input type="hidden" id="link"
+                                            value="https://nubank.com.br/pagar/1kyr3m/VWHOFbtsho">
+                                        <div class="mx-auto" id="qrcode"
+                                            style="width:100px; height:100px; margin-top:15px;">
+                                        </div>
+                                        <!-- Olá Dev, não adianta fazer a alteração por aqui ;) -->
+                                        <h4 class="mt-3">Valor Total: <span class="fw-bold text-decoration-underline"
+                                                id="valorTotalPix"></span></h4>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button class="btn btn-primary" data-bs-target="#comprovantePix"
+                                            data-bs-toggle="modal" data-bs-dismiss="modal">Anexar comprovante</button>
+                                        <button class="btn btn-warning text-white" data-bs-target="#formasDePagamentos"
+                                            data-bs-toggle="modal" data-bs-dismiss="modal">Voltar</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="modal fade" data-bs-backdrop="static" data-bs-keyboard="false" id="comprovantePix"
+                            aria-hidden="true" aria-labelledby="comprovantePix" tabindex="-1">
+                            <div class="modal-dialog modal-dialog-centered">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="pixModalLabel">Anexar Comprovante de Transferencia
+                                        </h5>
+                                    </div>
+                                    <div class="modal-body text-center">
+                                        <p class="text-muted">Anexar abaixo o comprovante de transferência para que sua
+                                            entrega seja efetivada. Caso desejar o envio também pode ser feito nos
+                                            nossos <a href="#"> canais de
+                                                atendimento ao cliente </a></p>
+                                        <input type="file" id="comprovanteFile" class="form-control">
+                                        <input type="hidden" id="file">
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button class="btn btn-success" onclick="pix()">Salvar</button>
+                                        <button class="btn btn-warning text-white" data-bs-target="#pixModal"
+                                            data-bs-toggle="modal" data-bs-dismiss="modal">Voltar</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!--  <div class="modal fade" id="entregaModal" data-bs-backdrop="static" data-bs-keyboard="false"
+                            aria-hidden="true" aria-labelledby="entregaModalLabel" tabindex="-1">
+                            <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="entregaModalLabel">Pagar na entrega</h5>
+                                    </div>
+                                    <div class="modal-body text-center">
+                                        <p class="text-muted">Para nossa segurança será necessario que seja anexado
+                                            algumas informações. Para mais duvidas acesse um de nossos <a href="#">
+                                                canais de
+                                                atendimento ao cliente </a> para que seja efetivado mais rapido a sua
+                                            entrega.</p>
+
+                                        <p class="text-muted">Informe abaixo os dados solicitados</p>
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <label class="form-label" for="nome">Nome Complemento</label>
+                                                <input type="text" value="nome" id="nome" class="form-control"
+                                                    placeholder="Insira seu nome completo">
+                                            </div>
+                                            <div class="col-md-6 my-2">
+                                                <label class="form-label" for="cpf">CPF</label>
+                                                <input type="number" value="cpf" value="0" id="cpf" class="form-control">
+                                            </div>
+                                            <div class="col-md-6 my-2">
+                                                <label class="form-label" for="numero">Numero (Preferencia Whatsapp)</label>
+                                                <input type="number" value="numero" id="numero" class="form-control"
+                                                    placeholder="Insira seu numero para contato">
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button class="btn btn-primary" data-bs-target="#comprovantePix"
+                                            data-bs-toggle="modal" data-bs-dismiss="modal">Anexar comprovante</button>
+                                        <button class="btn btn-warning text-white" data-bs-target="#formasDePagamentos"
+                                            data-bs-toggle="modal" data-bs-dismiss="modal">Voltar</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>-->
+
                         <div class="card mt-3">
                             <div class="card-body">
                                 <div class="row">
@@ -249,6 +413,7 @@
                                     <dd class="text-right" id="valorFrete" data-valor="0">R$ 00,00</dd>
                                 </dl>
                                 <dl class="dlist-align">
+                                    <!-- Olá Dev, não adianta fazer a alteração por aqui ;) -->
                                     <dt>Valor Total:</dt>
                                     <dd class="text-right  h5" data-valor="<%=carrinho.precoTotal%>" id="valorTotal">
                                         <strong>
@@ -274,12 +439,100 @@
         </section>
 
         <%- include("./../partials/footer.ejs")%>
+            <script src="/js/qrcode.js"></script>
             <script src="/js/carrinho.js"></script>
             <script src="/js/pesquisaCep.js"></script>
+            
 
             <script>
-                function finalizaCompra() {
+                var qrcode = new QRCode(document.getElementById("qrcode"), {
+                    width: 100,
+                    height: 100
+                });
 
+                function makeCode() {
+                    var elText = document.getElementById("link");
+
+                    if (!elText.value) {
+                        alert("Input a text");
+                        elText.focus();
+                        return;
+                    }
+
+                    qrcode.makeCode(elText.value);
+                }
+
+                makeCode();
+
+                $("#link").
+                    on("blur", function () {
+                        makeCode();
+                    }).
+                    on("keydown", function (e) {
+                        if (e.keyCode == 13) {
+                            makeCode();
+                        }
+                    });
+            </script>
+
+            <script>
+                async function entregaAdicionar() {
+                    var resp = await axios.post("/entrega/adicionar/", { cep: cep.value, cidade: cidade.value, numero: numero.value, rua: rua.value, bairro: bairro.value, uf: uf.value })
+                    if (resp.data.erro != 0) {
+                        alert(resp.data.erro)
+                        return false
+                    }
+                    return true
+                }
+
+                async function comprovantePix(file) {
+                    var resp = await axios.post("/comprovante/pix", { comprovante: file })
+                    if (resp.data.erro != 0) {
+                        alert(resp.data.erro)
+                        return false
+                    } else {
+                        return true
+                    }
+                }
+
+                async function pix() {
+                    var filesSelected = document.getElementById("comprovanteFile").files;
+                    var file = document.getElementById("file")
+
+                    if (filesSelected.length > 0) {
+                        var fileToLoad = filesSelected[0];
+                        var fileReader = new FileReader();
+                        fileReader.onload = function (fileLoadedEvent) {
+                            var srcData = fileLoadedEvent.target.result; // <--- data: base64
+                            file.value = srcData;
+                        }
+                        fileReader.readAsDataURL(fileToLoad);
+
+                        var entrega = await entregaAdicionar()
+
+                        if (entrega) {
+                            var comprovante = await comprovantePix(file.value)
+                            if (comprovante) {
+                                location.href = `/carrinho/finalizarCompra/1`
+                            }
+                        }
+                    } else {
+                        alert("Nenhum comprovante anexado!")
+                    }
+                }
+               
+
+                async function mercadopago(div) {
+                    document.getElementById(div).setAttribute("onclick", "")
+                    var mercadoPago = document.getElementById("mercadoPago")
+                    mercadoPago.innerHTML = ['<div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status"><span class="visually-hidden"></span></div>'].join('')
+                    var entrega = await entregaAdicionar()
+                    if (entrega) {
+                        location.href = `/carrinho/finalizarCompra/2`
+                    }
+                }
+
+                function finalizaCompra() {
                     var cep = document.getElementById('cep')
                     var cidade = document.getElementById('cidade')
                     var numero = document.getElementById("numero")
@@ -301,13 +554,8 @@
                     } else {
                         numero.classList.add("is-valid")
                         numero.classList.remove("is-invalid")
-
-                        axios.post("/entrega/adicionar/", { cep: cep.value, cidade: cidade.value, numero: numero.value, rua: rua.value, bairro: bairro.value, uf: uf.value }).then(resp => {
-                            console.log(resp)
-                            location.href = '/carrinho/finalizarCompra/'
-                        }).catch(err => {
-                            console.log(err)
-                        })
+                        var formasDePagamentos = new bootstrap.Modal(document.getElementById("formasDePagamentos"), {});
+                        formasDePagamentos.show();
                     }
                 }
             </script>

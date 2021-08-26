@@ -18,6 +18,7 @@ function somarTotais() {
     var precoTotal = (parseFloat(precoTot) + parseFloat(valorFrete)) - parseFloat(valorDesconto)
     document.getElementById("valorTotal").innerHTML = precoTotal.toLocaleString('pt-br', { style: 'currency', currency: 'BRL' })
     document.getElementById("valorTotal").dataset.valor = precoTotal
+    document.getElementById("valorTotalPix").innerHTML = precoTotal.toLocaleString('pt-br', { style: 'currency', currency: 'BRL' })
 }
 
 function diminuir(x) {
