@@ -71,12 +71,12 @@ app.use("/", entregaControler)
 
 
 app.get("/", (req, res) => {
-    knex("produtos").select().where('status', true).then(produtos => {
-        knex("categorias").select().where('status', true).limit(6).then(categorias => {
-            knex("precos").select().then(precos => {
-                knex("imagens").select().then(imagens => {
-                    knex("banners").select().where({status:true,destaque:true}).then(banners => {
-                        res.render("index", { produtos: produtos, categorias: categorias, precos: precos, imagens: imagens,banners:banners })
+    knex("produtos").select("id", "nome").where('status', true).then(produtos => {
+        knex("categorias").select("destaque", "status", "titulo", "id").where('status', true).limit(6).then(categorias => {
+            knex("precos").select("produtoId", "desconto", "venda",).then(precos => {
+                knex("imagens").select("produtoId", "imagem").then(imagens => {
+                    knex("banners").select("img").where({ status: true, destaque: true }).then(banners => {
+                        res.render("index", { produtos: produtos, categorias: categorias, precos: precos, imagens: imagens, banners: banners })
                     })
                 })
             })
@@ -84,22 +84,6 @@ app.get("/", (req, res) => {
     })
 })
 
-app.get("/enviarEmail", (req, res) => {
-    var emailASerEnviado = {
-        from: 'poudeyvis007@gmail.com',
-        to: 'davihareis@gmail.com',
-        subject: 'Enviando Email com Node.js',
-        text: 'Tinha errado o e-mail',
-    };
-
-    remetente.sendMail(emailASerEnviado, function (error) {
-        if (error) {
-            console.log(error);
-        } else {
-            res.send('Email enviado com sucesso.');
-        }
-    });
-})
 
 app.listen(process.env.PORT || 3000, () => {
     console.log("Conexão ok")
