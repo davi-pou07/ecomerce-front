@@ -8,9 +8,7 @@
 
     html, body {
         height: 100%;
-        margin: 0;
-        background:#f7f7f7;
-    
+        margin: 0;    
     }
     header{
         background: #041a2fe6;
@@ -68,3 +66,11 @@
     color: white;
     
 }
+/*
+a.testenav:hover{
+    
+    border-bottom: 2px solid white;
+     padding-bottom: 1px;
+     -webkit-transition: opacity 0.35s,-webkit-transform .35s;
+      transition: opacity 0.35s,transform .35s;
+}*/
