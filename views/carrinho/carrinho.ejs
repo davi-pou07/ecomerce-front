@@ -174,7 +174,7 @@
 
                                             <div class="col-md-4">
                                                 <div data-bs-target="#entregaModal" data-bs-toggle="modal"
-                                                    data-bs-dismiss="modal" class="card border-warning formaPag">
+                                                    data-bs-dismiss="modal" class="card border-warning formaPag" onclick="enderecoDeEntrega()">
                                                     <div class="card-header text-center text-warning">
                                                         <dt>Pagar na Entrega</dt>
                                                     </div>
@@ -285,6 +285,7 @@
                                                 <input type="text" name="" id="nome" class="form-control">
                                             </div>
                                             <div class="col-12  mt-2">
+                                                <dt id="endereco"></dt>
                                                 <div class="form-check form-switch">
                                                     <input class="form-check-input" type="checkbox"
                                                         id="flexSwitchCheckDefault">
@@ -563,6 +564,11 @@
                         formasDePagamentos.show();
                     }
                 }
+
+                function enderecoDeEntrega(){
+                    alert("Teste")
+                }
+
             </script>
 
             <script>
