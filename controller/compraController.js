@@ -9,6 +9,8 @@ const CodItens = require("../Databases/client/CodItens")
 const Carrinho = require("../Databases/client/Carrinho");
 const nodemailer = require("nodemailer");
 const MercadoPago = require("mercadopago");
+const validator = require('validator')
+const validCpf = require("cpf")
 
 var opcaoDePagamentos = [{ id: 1, opcao: "PIX" }, { id: 2, opcao: "MERCADO PAGO" }, { id: 3, opcao: "PAGAR NA ENTREGA" }]
 
@@ -574,83 +576,98 @@ router.post("/comprovante/pix", auth, async (req, res) => {
     }
 })
 
+
 // Pagar na entrega
 router.post("/solicitar/entrega", auth, async (req, res) => {
     var usuario = req.session.cli
-    var {nome,numero,cpf} = req.body
+    var { nome, numero, cpf } = req.body
     if (usuario != undefined) {
-        try {
-            var cliente = await Cliente.findByPk(usuario.id)
-            var carrinho = await Carrinho.findOne({ where: { clienteId: cliente.id, status: true } })
-            var dadosEntrega = await knex("dadosentregas").select().where({clienteId:cliente.id,carrinhoId:carrinho.id})
-
-            var dadosPagamentosEntrega = await knex("dadospagamentosentregas").select().where({ clienteId: cliente.id, carrinhoId: carrinho.id })
-            if (dadosPagamentosEntrega[0] == undefined) {
-                // statusId: 1 - ANALISE. 2 - APROVADO. 3 - REJEITADO. 4- ESTORNADO
-                knex("dadospagamentosentregas").insert({
-                    status: 'Analise',
-                    statusId: 1,
-                    clienteId: cliente.id,
-                    carrinhoId: carrinho.id,
-                    cpf: cpf,
-                    nome:nome,
-                    numero:numero,
-                    dadosEntragaId:dadosEntrega[0].id,
-                    createdAt: moment().format(),
-                    updatedAt: moment().format()
-                }).then(() => {
-                    res.json({ erro: 0 })
-                }).catch(err => {
-                    console.log(err)
-                    res.json({ erro: "Erro ao solicitar entrega" })
-                })
-            } else {
-                knex("dadospagamentosentregas").update({
-                    status: 'Analise',
-                    statusId: 1,
-                    clienteId: cliente.id,
-                    carrinhoId: carrinho.id,
-                    cpf: cpf,
-                    nome:nome,
-                    numero:numero,
-                    dadosEntragaId:dadosEntrega[0].id,
-                    updatedAt: moment().format()
-                }).where({ id: dadosPagamentosEntrega[0].id }).then(() => {
-
+        if (nome.value.split(" ").length > 0 && nome.value != '') {
+            if (validator.isMobilePhone(numero, 'pt-BR', false) == true) {
+                if (validCpf.isValid(cpf) == true) {
                     try {
-                        var emailASerEnviado = {
-                            from: 'poudeyvis007@gmail.com',
-                            to: cliente.email,
-                            subject: `Compra dos produtos: ${results.description}`,
-                            text: 'Prezado ' + nome + ", recebemos sua solicitação para pagamentos na entrega. Nossa equipe preza muito pela segurança de nosso produto e de nossos entregadores, entraremos em contato para verificar se é possivel realizar a entrega com pagamento presencial na sua região. Temos um prazo de no maximo 48hr para esta lhe respondendo. Para mais duvidas acesse um de nossos canais de atendimento disponibilizados no SITE. Codigo: " + external_reference
-                        };
+                        var cliente = await Cliente.findByPk(usuario.id)
+                        var carrinho = await Carrinho.findOne({ where: { clienteId: cliente.id, status: true } })
+                        var dadosEntrega = await knex("dadosentregas").select().where({ clienteId: cliente.id, carrinhoId: carrinho.id })
 
-                        remetente.sendMail(emailASerEnviado, function (error) {
-                            if (error) {
-                                console.log(error);
-                            } else {
-                                console.log("Email enviado com sucesso");
-                            }
-                        });
-                    } catch (err) {
-                        console.log(err)
-                    } finally {
-                        res.json({ erro: 0 })
+                        var dadosPagamentosEntrega = await knex("dadospagamentosentregas").select().where({ clienteId: cliente.id, carrinhoId: carrinho.id })
+                        if (dadosPagamentosEntrega[0] == undefined) {
+                            // statusId: 1 - ANALISE. 2 - APROVADO. 3 - REJEITADO. 4- ESTORNADO
+                            knex("dadospagamentosentregas").insert({
+                                status: 'Analise',
+                                statusId: 1,
+                                clienteId: cliente.id,
+                                carrinhoId: carrinho.id,
+                                cpf: cpf,
+                                nome: nome,
+                                numero: numero,
+                                dadosEntragaId: dadosEntrega[0].id,
+                                createdAt: moment().format(),
+                                updatedAt: moment().format()
+                            }).then(() => {
+                                res.json({ erro: 0 })
+                            }).catch(err => {
+                                console.log(err)
+                                res.json({ erro: "Erro ao solicitar entrega" })
+                            })
+                        } else {
+                            knex("dadospagamentosentregas").update({
+                                status: 'Analise',
+                                statusId: 1,
+                                clienteId: cliente.id,
+                                carrinhoId: carrinho.id,
+                                cpf: cpf,
+                                nome: nome,
+                                numero: numero,
+                                dadosEntragaId: dadosEntrega[0].id,
+                                updatedAt: moment().format()
+                            }).where({ id: dadosPagamentosEntrega[0].id }).then(() => {
+
+                                try {
+                                    var emailASerEnviado = {
+                                        from: 'poudeyvis007@gmail.com',
+                                        to: cliente.email,
+                                        subject: `Compra dos produtos: ${results.description}`,
+                                        text: 'Prezado ' + nome + ", recebemos sua solicitação para pagamentos na entrega. Nossa equipe preza muito pela segurança de nosso produto e de nossos entregadores, entraremos em contato para verificar se é possivel realizar a entrega com pagamento presencial na sua região. Temos um prazo de no maximo 48hr para esta lhe respondendo. Para mais duvidas acesse um de nossos canais de atendimento disponibilizados no SITE. Codigo: " + external_reference
+                                    };
+
+                                    remetente.sendMail(emailASerEnviado, function (error) {
+                                        if (error) {
+                                            console.log(error);
+                                        } else {
+                                            console.log("Email enviado com sucesso");
+                                        }
+                                    });
+                                } catch (err) {
+                                    console.log(err)
+                                } finally {
+                                    res.json({ resp: "Solicitação aberta com sucesso!" })
+                                }
+
+                            }).catch(err => {
+                                console.log(err)
+                                res.json({ erro: "Erro ao solicitar entrega" })
+                            })
+                        }
+
+                    } catch (error) {
+                        console.log(error)
+                        res.json({ erro: "Erro ao solicitar entrega, efetue login novamente!" })
                     }
 
-                }).catch(err => {
-                    console.log(err)
-                    res.json({ erro: "Erro ao solicitar entrega" })
-                })
+                } else {
+                    res.json({ erro: 'Numero de CPF inválido', codErro: 3 })
+                }
+            } else {
+                res.json({ erro: 'Numero de telefone invalido', codErro: 2 })
             }
-
-        } catch (error) {
-            console.log(error)
-            res.json({ erro: "Erro ao solicitar entrega, efetue login novamente!" })
+        } else {
+            res.json({ erro: 'Nome informado inválido', codErro: 1 })
         }
     } else {
         res.redirect("/login")
     }
+
 })
 
 module.exports = router
