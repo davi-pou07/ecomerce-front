@@ -230,12 +230,157 @@
                                                                             </div>
 
                                                                             <% } %>
+                                                                                <!--Fim pagamento mercado pago -->
 
-                                                                                <% } %>
-                                                                                    <!--Fim pagamento mercado pago -->
+                                                                                <% }else
+                                                                                    if(dadosVenda.opcaoDePagamento==3){%>
+                                                                                    <%if(dadosTransicao.status=='approved'){%>
+
+                                                                                        <div
+                                                                                            class="col-md-12 text-center">
+                                                                                            <img src="/img/aprovado.png"
+                                                                                                class="mx-auto d-block"
+                                                                                                width="60px"
+                                                                                                height="60px">
+                                                                                            <button
+                                                                                                class="btn btn-success text-white fs-4 mt-2">
+                                                                                                Pagamento
+                                                                                                Aprovado!!</button>
+                                                                                            <p>Veja abaixo como esta o
+                                                                                                andamento da entrega do
+                                                                                                seu pedido
+                                                                                            </p>
+                                                                                        </div>
+
+                                                                                        <%}else if(dadosTransicao.status=='pending'){%>
+
+                                                                                            <div
+                                                                                                class="col-md-12 text-center">
+                                                                                                <img src="/img/analise.png"
+                                                                                                    class="mx-auto d-block">
+                                                                                                <button
+                                                                                                    class="btn btn-success text-white fs-4 mt-2">
+                                                                                                    Pagamento
+                                                                                                    em
+                                                                                                    analise!!</button>
+                                                                                                <%if(dadosPagamento.statusId == 1){%>
+                                                                                                    <p
+                                                                                                        class="mb-0 mt-1">
+                                                                                                        Estamos
+                                                                                                        analisando sua solicitação
+                                                                                                        enviado para
+                                                                                                        nossa <a
+                                                                                                            href="">equipe</a>,
+                                                                                                        prezamos a segurança e entraremos em contato!
+                                                                                                    </p>
+                                                                                                    <p class="my-0">Peço
+                                                                                                        por gentileza
+                                                                                                        que aguarde um
+                                                                                                        retorno de
+                                                                                                        nossos
+                                                                                                        colaboradores.
+                                                                                                    </p>
+                                                                                                    <p class="mb-1">Em
+                                                                                                        um prazo de
+                                                                                                        <strong>48hr</strong>
+                                                                                                        iremos lhe
+                                                                                                        atualizar
+                                                                                                        referente a seu pedido para
+                                                                                                        efetivar de vez
+                                                                                                        a sua entrega!
+                                                                                                    </p>
+
+                                                                                                    <h5>Nosso foco é ver
+                                                                                                        você satisfeito
+                                                                                                        com seus produtos
+                                                                                                        em mãos</h5>
+                                                                                                    <%}else if(dadosPagamento.comprovante == undefined){%>
+                                                                                                        <p>Infelizmente
+                                                                                                            nosso
+                                                                                                            sistema não
+                                                                                                            conseguiu
+                                                                                                            ainda
+                                                                                                            identificar
+                                                                                                            nenhum
+                                                                                                            comprovante
+                                                                                                            anexado no
+                                                                                                            site.</p>
+                                                                                                        <p>Caso ja tenha
+                                                                                                            enviado em
+                                                                                                            um de nossos
+                                                                                                            <a href="">canais
+                                                                                                                de
+                                                                                                                atendimento</a>
+                                                                                                            basta
+                                                                                                            aguardar que
+                                                                                                            logo iremos
+                                                                                                            retornar o
+                                                                                                            contato</p>
+                                                                                                        <%}%>
+                                                                                            </div>
+
+                                                                                            <%}else if(dadosTransicao.status=='refunded' ){%>
+                                                                                                <div
+                                                                                                    class="col-md-12 text-center">
+                                                                                                    <img src="/img/estorno.png"
+                                                                                                        class="mx-auto d-block">
+                                                                                                    <button
+                                                                                                        class="btn btn-danger text-white fs-4 mt-3">
+                                                                                                        Pagamento
+                                                                                                        estornado!!</button>
+                                                                                                    <p>O status de
+                                                                                                        pagamento dessa
+                                                                                                        compra esta como
+                                                                                                        estornado!</p>
+                                                                                                    <p>Recomendo
+                                                                                                        fortemente que
+                                                                                                        entre em contato
+                                                                                                        em um de nossos
+                                                                                                        <a href="#">canais
+                                                                                                            de
+                                                                                                            atendimento
+                                                                                                            ao
+                                                                                                            cliente</a>caso
+                                                                                                        desconheça essa
+                                                                                                        informação de
+                                                                                                        estorno.</p>
+                                                                                                </div>
+                                                                                                <%}else{%>
+                                                                                                    <div
+                                                                                                        class="col-md-12 text-center">
+                                                                                                        <img src="/img/triste.png"
+                                                                                                            width="60px"
+                                                                                                            height="60px"
+                                                                                                            class="mx-auto d-block">
+                                                                                                        <button
+                                                                                                            class="btn btn-danger text-white fs-4 mt-2">
+                                                                                                            Pagamento
+                                                                                                            não
+                                                                                                            identificado!!</button>
+                                                                                                        <h4
+                                                                                                            class="mt-2">
+                                                                                                            Pagamento
+                                                                                                            não
+                                                                                                            identificado
+                                                                                                            ou cancelado
+                                                                                                        </h4>
+                                                                                                        <p>Para mais
+                                                                                                            duvidas
+                                                                                                            acesse
+                                                                                                            nossos <a
+                                                                                                                href="">canais
+                                                                                                                de
+                                                                                                                atendimento
+                                                                                                                ao
+                                                                                                                Cliente</a>
+                                                                                                        </p>
+                                                                                                    </div>
+                                                                                                    <%}%>
+                                                                                                        <%}%>
                     </div>
                     <br>
-                    <%if((dadosTransicao.status=='pending' && dadosPagamento.codigoDeBarras !=0 ) || dadosTransicao.status=='approved' ){%>
+                    <%if((dadosTransicao.status=='pending' && dadosPagamento.codigoDeBarras !=0 && dadosPagamento.codigoDeBarras != undefined ) ||
+                        dadosTransicao.status=='approved' ){%>
                         <div class="row mt-4">
                             <div class="col-md-5 ms-3 text-end">
                                 <img src="/img/mapas.png" height="30px" width="30px">

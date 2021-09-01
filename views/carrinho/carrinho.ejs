@@ -603,32 +603,54 @@
                     }
                 }
 
-                function pagarNaEntrega(button) {
+                async function pagarNaEntrega(button) {
                     button.disabled = true
-                    var cpf = document.getElementById("cpf").value
+                    var cpf = document.getElementById("cpf")
                     var nome = document.getElementById("nome")
                     var numero = document.getElementById("phone")
-                    var confirmaEndereco = document.getElementById(confirmaEndereco).dataset.valor
+                    var confirmaEndereco = document.getElementById('confirmaEndereco').dataset.valor
 
                     if (nome.value.split(" ").length > 0 && nome.value != '') {
                         nome.classList.add("is-valid")
                         nome.classList.remove("is-invalid")
 
-                        if (numero.value != '' && numero.value.length > 14) {
-                            numero.classList.remove("is-invalid")
-                            numero.classList.add("is-valid")
+                        if (cpf.value != '' && cpf.value.length == 14) {
+                            cpf.classList.remove("is-invalid")
+                            cpf.classList.add("is-valid")
 
-                            if (confirmaEndereco.dataset.valor == 'true') {
-                                axios.post('/solicitar/entrega', { nome: nome.value, numero: numero.value, cpf: cpf.value })
+                            if (numero.value != '' && numero.value.length > 14) {
+                                numero.classList.remove("is-invalid")
+                                numero.classList.add("is-valid")
+
+                                if (confirmaEndereco == 'true') {
+
+                                    var entrega = await entregaAdicionar()
+                                    if (entrega) {
+                                        axios.post('/solicitar/entrega', { nome: nome.value, numero: numero.value, cpf: cpf.value }).then(resp => {
+                                            var resposta = resp.data
+                                            if (resposta.erro == undefined && resposta.resp != undefined) {
+                                                alert(resposta.resp)
+                                                location.href = `/carrinho/finalizarCompra/3`
+                                            } else {
+                                                alert(resposta.erro)
+                                            }
+                                        })
+                                    }
+                                } else {
+                                    alert("Confirme o endereço de entrega informado!")
+                                    button.disabled = false
+
+                                }
                             } else {
-                                alert("Confirme o endereço de entrega informado!")
+                                alert("Numero de celular menor que 14 digitos")
+                                numero.classList.remove("is-valid")
+                                numero.classList.add("is-invalid")
                                 button.disabled = false
-
                             }
                         } else {
-                            alert("Numero de celular menor que 14 digitos")
-                            numero.classList.remove("is-valid")
-                            numero.classList.add("is-invalid")
+                            alert("CPF vazio ou invalido")
+                            cpf.classList.add("is-invalid")
+                            cpf.classList.remove("is-valid")
                             button.disabled = false
                         }
 
