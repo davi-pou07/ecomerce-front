@@ -96,7 +96,8 @@ router.get("/carrinho/finalizarCompra/:opcao", async (req, res) => {
                         descricao: descricao,
                         emailCliente: cliente.email,
                         unit_price: precoTotal,
-                        opcaoDePagamento: opcaoPagamento.id
+                        opcaoDePagamento: opcaoPagamento.id,
+                        updatedAt:moment().format()
                     }).where({ id: dadosVendas[0].id }).catch(err => {
                         console.log(err)
                     })
@@ -124,13 +125,14 @@ router.get("/carrinho/finalizarCompra/:opcao", async (req, res) => {
 
                         var updateDadosPixes = await knex("dadospagamentospixes").update({
                             dadosId: dadosVendas[0].dadosId,
-                            ordeId: '000' + parseInt(qDadosTransicoes.length + 1)
+                            ordeId: '000' + parseInt(qDadosTransicoes.length + 1),
+                            updatedAt:moment().format()
                         }).where({ id: dadosPagamentosPix[0].id })
 
                         console.log("passou update")
                         console.log(updateDadosPixes)
 
-                        Carrinho.update({ status: false }, { where: { id: dadosVendas[0].carrinhoId } }).then(async () => {
+                        Carrinho.update({ status: false,updatedAt:moment().format() }, { where: { id: dadosVendas[0].carrinhoId } }).then(async () => {
                             var dadosTransicoes = await knex("dadostransicoes").select().where({ dadosId: dadosVendas[0].dadosId })
                             console.log("passou update carrinho")
 
@@ -210,7 +212,8 @@ router.get("/carrinho/finalizarCompra/:opcao", async (req, res) => {
                         descricao: descricao,
                         emailCliente: cliente.email,
                         unit_price: precoTotal,
-                        opcaoDePagamento: opcaoPagamento.id
+                        opcaoDePagamento: opcaoPagamento.id,
+                        updatedAt:moment().format()
                     }).where({ id: dadosVendas[0].id }).then(() => {
                         return res.redirect(pag.body.init_point)
                     })
@@ -245,7 +248,8 @@ router.get("/carrinho/finalizarCompra/:opcao", async (req, res) => {
                         descricao: descricao,
                         emailCliente: cliente.email,
                         unit_price: precoTotal,
-                        opcaoDePagamento: opcaoPagamento.id
+                        opcaoDePagamento: opcaoPagamento.id,
+                        updatedAt:moment().format()
                     }).where({ id: dadosVendas[0].id }).catch(err => {
                         console.log(err)
                     })
@@ -274,10 +278,11 @@ router.get("/carrinho/finalizarCompra/:opcao", async (req, res) => {
 
                         var updatePagamentosEntrega = await knex("dadospagamentosentregas").update({
                             dadosId: dadosVendas[0].dadosId,
-                            ordeId: '000' + parseInt(qDadosTransicoes.length + 1)
+                            ordeId: '000' + parseInt(qDadosTransicoes.length + 1),
+                            updatedAt:moment().format()
                         }).where({ id: DadosPagamentosEntrega[0].id })
 
-                        Carrinho.update({ status: false }, { where: { id: dadosVendas[0].carrinhoId } }).then(async () => {
+                        Carrinho.update({ status: false,updatedAt:moment().format() }, { where: { id: dadosVendas[0].carrinhoId } }).then(async () => {
                             var dadosTransicoes = await knex("dadostransicoes").select().where({ dadosId: dadosVendas[0].dadosId })
 
                             res.redirect("/usuario/transicao/" + dadosTransicoes[0].id)
@@ -317,9 +322,9 @@ router.get("/success/", async (req, res) => {
         }).then(async () => {
             //parametros.dataprevistaentrega
             var dataPrevista = moment().add(10, "days").format("DD/MM/YYYY")
-            await knex("dadosentregas").update({ status: 'Entrega em andamento', dataPrevista: dataPrevista }).where({ clienteId: dadosVendas[0].clienteId, carrinhoId: dadosVendas[0].carrinhoId })
-            await knex("dadosvendas").update({ status: 'A' }).where({ dadosId: dadosVendas[0].dadosId })
-            await Carrinho.update({ status: false }, { where: { id: dadosVendas[0].carrinhoId } })
+            await knex("dadosentregas").update({ status: 'Entrega em andamento', dataPrevista: dataPrevista,updatedAt:moment().format() }).where({ clienteId: dadosVendas[0].clienteId, carrinhoId: dadosVendas[0].carrinhoId })
+            await knex("dadosvendas").update({ status: 'A',updatedAt:moment().format() }).where({ dadosId: dadosVendas[0].dadosId })
+            await Carrinho.update({ status: false,updatedAt:moment().format() }, { where: { id: dadosVendas[0].carrinhoId } })
             var dadosTransicoes = await knex("dadostransicoes").select().where({ dadosId: dadosVendas[0].dadosId })
 
             res.redirect("/usuario/transicao/" + dadosTransicoes[0].id)
@@ -346,8 +351,8 @@ router.get("/pending/", async (req, res) => {
             createdAt: date,
             updatedAt: date
         }).then(() => {
-            knex("dadosvendas").update({ status: 'P' }).where({ dadosId: dadosVendas[0].dadosId })
-            Carrinho.update({ status: false }, { where: { id: dadosVendas[0].carrinhoId } }).then(async () => {
+            knex("dadosvendas").update({ status: 'P',updatedAt:moment().format() }).where({ dadosId: dadosVendas[0].dadosId })
+            Carrinho.update({ status: false,updatedAt:moment().format() }, { where: { id: dadosVendas[0].carrinhoId } }).then(async () => {
                 var dadosTransicoes = await knex("dadostransicoes").select().where({ dadosId: dadosVendas[0].dadosId })
                 res.redirect("/usuario/transicao/" + dadosTransicoes[0].id)
             })
@@ -374,7 +379,7 @@ router.get("/failure/", async (req, res) => {
             createdAt: date,
             updatedAt: date
         }).then(async () => {
-            knex("dadosvendas").update({ status: 'F' }).where({ dadosId: dadosVendas[0].dadosId })
+            knex("dadosvendas").update({ status: 'F',updatedAt:moment().format() }).where({ dadosId: dadosVendas[0].dadosId })
             var dadosTransicoes = await knex("dadostransicoes").select().where({ dadosId: dadosVendas[0].dadosId })
             res.redirect("/usuario/transicao/" + dadosTransicoes[0].id)
         })
@@ -477,7 +482,8 @@ router.post("/statusPagamento", async (req, res) => {
                                     updatedAt: results.date_created
                                 }).then(() => {
                                     Carrinho.update({
-                                        status: false
+                                        status: false,
+                                        updatedAt:moment().format()
                                     }, { where: { id: dadosVendas[0].carrinhoId } }).then(() => {
                                         console.log("Carrinho inativado")
                                     })
@@ -563,7 +569,8 @@ router.post("/comprovante/pix", auth, async (req, res) => {
                     statusId: 1,
                     clienteId: cliente.id,
                     carrinhoId: carrinho.id,
-                    comprovante: comprovante
+                    comprovante: comprovante,
+                    updatedAt:moment().format()
                 }).where({ id: dadosPagamentosPix[0].id }).then(() => {
 
                     try {

@@ -197,7 +197,8 @@ router.post("/usuario/editar", auth, async (req, res) => {
                                     numero: numero,
                                     email: email.toLowerCase(),
                                     foto: foto,
-                                    senha: hash
+                                    senha: hash,
+                                    updatedAt:moment().format()
                                 }, { where: { id: usuario } }).then(cliente => {
                                     res.json({ resp: "Informações atualizadas" })
                                 })

@@ -5,6 +5,7 @@ const Carrinho = require("../Databases/client/Carrinho")
 const Cliente = require("../Databases/client/Cliente")
 const CodItens = require("../Databases/client/CodItens")
 const auth = require("../middlewares/adminAuth")
+var moment = require('moment');
 
 router.post("/carrinho/adicionar", auth, async (req, res) => {
     var usuario = req.session.cli
@@ -47,7 +48,8 @@ router.post("/carrinho/adicionar", auth, async (req, res) => {
         CodItens.update({
             quantidade: quantidadeItem,
             precoTotalItem: precoTotalItem,
-            precoUnit: parseFloat(precoUnit)
+            precoUnit: parseFloat(precoUnit),
+            updatedAt:moment().format()
         }, { where: { id: codItems.id } }).then(resp => {
             console.log({ resp: "Foi realizado o ajuste" })
         })
@@ -72,7 +74,8 @@ router.post("/carrinho/adicionar", auth, async (req, res) => {
 
     Carrinho.update({
         quantidade: quantidadeTotalCarrinho,
-        precoTotal: precoTotalCarrinho
+        precoTotal: precoTotalCarrinho,
+        updatedAt:moment().format()
     }, { where: { id: carrinho.id } }).then(() => {
         res.json({ resp: "Foi adicionado " + quantidadeItem + " Itens ao seu Carrinho" })
     }).catch(() => {
@@ -124,11 +127,13 @@ router.post("/carrinho/alterarValores",auth, async (req, res) => {
 
             CodItens.update({
                 quantidade: novaQuantidade,
-                precoTotalItem: precoTotalItem
+                precoTotalItem: precoTotalItem,
+                updatedAt:moment().format()
             }, { where: { id: codIten.id } }).then(() => {
                 Carrinho.update({
                     quantidade: quantidadeTotalCarrinho,
-                    precoTotal: precoTotalCarrinho
+                    precoTotal: precoTotalCarrinho,
+                    updatedAt:moment().format()
                 }, { where: { id: carrinho.id } }).then(() => {
                     res.json({ resp: "Atualização de valores realizada" })
                 }).catch(err => {
@@ -162,7 +167,8 @@ router.post("/carrinho/remover/:codIten", auth, async (req, res) => {
                     var precoTotalCarrinho = parseFloat(carrinho.precoTotal) - parseFloat(codIten.precoTotalItem)
                     Carrinho.update({
                         quantidade: quantidadeTotalCarrinho,
-                        precoTotal: precoTotalCarrinho
+                        precoTotal: precoTotalCarrinho,
+                        updatedAt:moment().format()
                     }, { where: { id: carrinho.id } }).then(
                         res.redirect("/carrinho/caixa")
                     ).catch(err => {

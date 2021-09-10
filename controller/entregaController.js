@@ -78,7 +78,8 @@ router.post("/entrega/adicionar", async (req, res) => {
                     complemento: complemento,
                     valor: entrega.preco,
                     codigoRastreioInterno: codigoRastreioInterno,
-                    status: status
+                    status: status,
+                    updatedAt:moment().format()
                 }).where({ id: dadosEntrega[0].id }).then(() => {
                     res.json({erro:0})
                 }).catch(err => {
