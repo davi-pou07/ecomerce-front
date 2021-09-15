@@ -166,8 +166,8 @@ router.get("/carrinho/finalizarCompra/:opcao", async (req, res) => {
                 },
                 "payment_methods": {
                     "excluded_payment_methods": [
-                        { "id": "" },
-                        { "id": "" }
+                        { "id": "pec" },
+                        { "id": "bolbradesco" }
                     ]
                 },
                 external_reference: idUnica,
@@ -220,6 +220,7 @@ router.get("/carrinho/finalizarCompra/:opcao", async (req, res) => {
                 }
             }
             catch (err) {
+                console.log(err)
                 return res.send(err.message)
             }
         } else if (opcaoPagamento.id == 3) {
