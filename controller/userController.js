@@ -266,6 +266,8 @@ router.get("/usuario/transicao/:transicaoId", async (req, res) => {
             var dadosEntrega = await knex("dadosentregas").select().where({ clienteId: cliente.id, carrinhoId: carrinho.id })
             var data = moment(dadosTransicao[0].createdAt).format('DD/MM/YYYY, h:mm:ss a')
 
+            var statusEntrega = await knex("statusentregas").select().where({statusId:dadosEntrega[0].status})
+            dadosEntrega[0].status = statusEntrega[0].status
             if (dadosVenda[0].opcaoDePagamento == 1) {
                 var dadosPagamento = await knex("dadospagamentospixes").select().where({ clienteId: cliente.id, dadosId: dadosTransicao[0].dadosId })
                 var dataExpiracao = moment(dadosPagamento[0].createdAt).add(2, 'days').format('DD/MM/YYYY')

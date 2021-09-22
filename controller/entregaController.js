@@ -16,6 +16,7 @@ router.get("/entrega/locais", (req, res) => {
 router.post("/entrega/adicionar", async (req, res) => {
     var usuario = req.session.cli
     //var usuario = { id: 1 }
+    var statusEntrega = await knex("statusentregas").select().where({statusId:1})
     var cep = req.body.cep
     var rua = req.body.rua
     var numero = req.body.numero
@@ -24,7 +25,7 @@ router.post("/entrega/adicionar", async (req, res) => {
     var cidade = req.body.cidade
     var complemento = req.body.complemento
     var codigoRastreioInterno = uniqid("Ras-")
-    var status = 'Pagamento Pendente'
+    // var status = 'Pagamento Pendente'
 
     var locaisdeliveries = await knex("locaisdeliveries").select()
     var bai = bairro.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "")
@@ -58,13 +59,14 @@ router.post("/entrega/adicionar", async (req, res) => {
                     clienteId: cliente.id,
                     carrinhoId: carrinho.id,
                     codigoRastreioInterno: codigoRastreioInterno,
-                    status: status,
+                    status: statusEntrega[0].statusId,
                     valor: entrega.preco,
                     createdAt: moment().format(),
                     updatedAt: moment().format()
                 }).then(() => {
                     res.json({erro:0})
                 }).catch(err => {
+                    console.log(err)
                     res.json({erro:1})
                 })
             } else {
@@ -78,7 +80,7 @@ router.post("/entrega/adicionar", async (req, res) => {
                     complemento: complemento,
                     valor: entrega.preco,
                     codigoRastreioInterno: codigoRastreioInterno,
-                    status: status,
+                    status:  statusEntrega[0].statusId,
                     updatedAt:moment().format()
                 }).where({ id: dadosEntrega[0].id }).then(() => {
                     res.json({erro:0})

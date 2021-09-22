@@ -502,11 +502,15 @@
                 }
 
                 async function comprovantePix(file) {
+                    console.log("Chamou")
                     var resp = await axios.post("/comprovante/pix", { comprovante: file })
+                    console.log(resp)
                     if (resp.data.erro != 0) {
+                        console.log(resp.data)
                         alert(resp.data.erro)
                         return false
                     } else {
+                        console.log(resp.data)
                         return true
                     }
                 }
