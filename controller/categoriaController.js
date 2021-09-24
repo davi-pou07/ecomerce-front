@@ -3,6 +3,11 @@ const router = express.Router()
 const knex = require("../Databases/admin/databases")
 const auth = require("../middlewares/adminAuth")
 
+router.get("/categorias",async(req,res)=>{
+    var categorias = await knex("categorias").select()
+    res.json({categorias:categorias})
+})
+
 router.get("/categoria/:id", async (req, res) => {
     var categoriaId = req.params.id
 
