@@ -14,8 +14,11 @@ router.get("/produto/:id",auth,async (req, res) => {
     var imagens = await knex("imagens").select()
     var preco = await knex("precos").select().where({ produtoId: produto[0].id })
     var precos = await knex("precos").select()
-    var grades = await knex.from("estoques").innerJoin("g_linhas","estoques.reflinha","g_linhas.id").innerJoin("g_colunas","estoques.refcoluna","g_colunas.id").where({"estoques.produtoId":produtoId,"estoques.status":true})
+    var grades = await knex.from("estoques").innerJoin("g_linhas","estoques.reflinha","g_linhas.id").innerJoin("g_colunas","estoques.refcoluna","g_colunas.id").where("estoques.produtoId","=",produto[0].id)
     console.log(grades)
+    var estoque = await knex.from("estoques").select().where({produtoId:produto[0].id}).innerJoin("g_linhas","estoques.reflinha","g_linhas.id").innerJoin("g_colunas","estoques.refcoluna","g_colunas.id")
+    console.log("111''''''''''''estoque")
+    console.log(estoque)
     var marca = await knex("marcas").select().where({id:produto[0].marcaId})
     if (marca[0] == undefined) {
         marca[0] = {id:0} 
@@ -24,6 +27,7 @@ router.get("/produto/:id",auth,async (req, res) => {
     }
     res.render("produto/pedido", { produto: produto[0], categoria: categoria[0], imagems: imagems, preco: preco[0], produtos: produtos, precos: precos, imagens:imagens,grades:grades,marca:marca[0]})
     }catch (error) {
+        console.log(error)
         res.json(error)
     }
 })
