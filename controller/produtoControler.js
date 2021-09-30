@@ -7,6 +7,7 @@ router.get("/produto/:id",auth,async (req, res) => {
     produtoId = req.params.id
     try {
     var produto = await knex("produtos").select().where({ id: produtoId })
+    console.log(produto[0])
     var produtos = await knex("produtos").select()
     var categoria = await knex("categorias").select().where({ id: produto[0].categoriaId })
     var imagems = await knex("imagens").select().where({ produtoId: produto[0].id })
@@ -14,7 +15,14 @@ router.get("/produto/:id",auth,async (req, res) => {
     var preco = await knex("precos").select().where({ produtoId: produto[0].id })
     var precos = await knex("precos").select()
     var grades = await knex.from("estoques").innerJoin("g_linhas","estoques.reflinha","g_linhas.id").innerJoin("g_colunas","estoques.refcoluna","g_colunas.id").where({"estoques.produtoId":produtoId,"estoques.status":true})
-    res.render("produto/pedido", { produto: produto[0], categoria: categoria[0], imagems: imagems, preco: preco[0], produtos: produtos, precos: precos, imagens:imagens,grades:grades})
+    console.log(grades)
+    var marca = await knex("marcas").select().where({id:produto[0].marcaId})
+    if (marca[0] == undefined) {
+        marca[0] = {id:0} 
+    } else {
+        
+    }
+    res.render("produto/pedido", { produto: produto[0], categoria: categoria[0], imagems: imagems, preco: preco[0], produtos: produtos, precos: precos, imagens:imagens,grades:grades,marca:marca[0]})
     }catch (error) {
         res.json(error)
     }

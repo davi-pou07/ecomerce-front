@@ -59,10 +59,20 @@
                                 <hr>
 
                                 <div class="mb-3">
-                                    <h6>Pequena Descrição</h6>
+                                    <h6>Descrição</h6>
                                     <ul class="list-dots mb-0">
-                                        <li>Criado por </li>
-                                        <li>Status: Ativo</li>
+                                        <%if(marca.id != 0){%>
+                                        <li>Marca: <%=marca.marca%></li>
+                                        <%}%>
+                                        <%if(produto.gradeId == 0){%>
+                                        <li>Status: Disponivel</li>
+                                        <%}else{%>
+                                            <%grades.forEach(grade =>{%>
+                                                <li>
+                                                    <%=grade.linha%> / <%=grade.coluna%> - Disponivel
+                                                </li>
+                                                <%})%>
+                                        <%}%>
                                         <li>Material: </li>
                                     </ul>
                                 </div>
