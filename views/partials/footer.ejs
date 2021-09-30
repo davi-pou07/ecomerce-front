@@ -44,9 +44,9 @@
           <!-- Grid column -->
           <div class="col-md-3 col-lg-4 col-xl-3 mx-auto mb-4">
             <!-- Content -->
-            <h6 class="text-uppercase fw-bold">Ican</h6>
+            <h6 class="text-uppercase fw-bold" id="empresaFooter">Ican</h6>
             <hr class="mb-4 mt-0 d-inline-block mx-auto" style="width: 60px; background-color: #7c4dff; height: 2px" />
-            <p>
+            <p id="descricaoFooter">
               Estamos acima dos seus limites, eu posso! Sua empresa pode.
             </p>
           </div>
@@ -58,16 +58,16 @@
             <h6 class="text-uppercase fw-bold">Produtos</h6>
             <hr class="mb-4 mt-0 d-inline-block mx-auto" style="width: 60px; background-color: #7c4dff; height: 2px" />
             <p>
-              <a href="#!" class="text-white">Ver Todos</a>
+              <a href="/" class="text-white">Ver Todos</a>
             </p>
             <p>
-              <a href="#!" class="text-white">Categoria 1</a>
+              <a href="/" class="text-white" id="categoriaFooter0">Categoria 1</a>
             </p>
             <p>
-              <a href="#!" class="text-white">Categoria 2</a>
+              <a href="/" class="text-white" id="categoriaFooter1">Categoria 2</a>
             </p>
             <p>
-              <a href="#!" class="text-white">Categoria 3</a>
+              <a href="/" class="text-white" id="categoriaFooter2">Categoria 3</a>
             </p>
           </div>
           <!-- Grid column -->
@@ -94,10 +94,10 @@
             <!-- Links -->
             <h6 class="text-uppercase fw-bold">Contatos</h6>
             <hr class="mb-4 mt-0 d-inline-block mx-auto" style="width: 60px; background-color: #7c4dff; height: 2px" />
-            <p><i class="fas fa-home mr-3"></i> ENDEREÇO</p>
-            <p><i class="fas fa-envelope mr-3"></i> poudeyvis007@gmail.com</p>
-            <p><i class="fas fa-phone mr-3"></i>+55 (86) 9 9472-6085</p>
-            <p><i class="fas fa-print mr-3"></i>+55 (86) 9 8807-1127</p>
+            <p id="enderecoFooter">ENDEREÇO</p>
+            <p id="emailFooter">email@gmail.com</p>
+            <p id="telefoneFooter">+55 (86) 9 9472-6085</p>
+            <p id="celularFooter">+55 (86) 9 8807-1127</p>
           </div>
           <!-- Grid column -->
         </div>
@@ -115,7 +115,32 @@
   </footer>
   <!-- Footer -->
 </div>
+<script>
 
+  window.onload = ()=>{
+    axios.get("/empresa").then(resp => {
+      var empresa = resp.data[0]
+      document.getElementById('empresaFooter').innerHtlm = empresa.nome
+      document.getElementById("descricaoFooter").innerHTML =  empresa.descricao
+      var endereco = `${empresa.cep}, ${empresa.rua}, Nº${empresa.numero} ${empresa.bairro}, ${empresa.cidade} - ${empresa.estado}`
+      document.getElementById("enderecoFooter").innerHTML = endereco
+      document.getElementById("emailFooter").innerHTML = empresa.email
+      document.getElementById("telefoneFooter").innerHTML = empresa.telefone
+      document.getElementById("celularFooter").innerHTML = empresa.celular
+    })
+    axios.get("/categorias").then(resp =>{
+      var categorias = resp.data.categorias
+      categorias.forEach((categoria,index)=>{
+        if (index < 3) {
+          var cat =  document.getElementById(`categoriaFooter${index}`)
+          cat.innerHTML = categoria.titulo
+          cat.href = `/categoria/${categoria.id}`
+        }
+      })
+    })
+  }
+  
+</script>
 </body>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"
