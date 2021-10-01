@@ -16,7 +16,7 @@ router.get("/produto/:id", async (req, res) => {
         var precos = await knex("precos").select()
         var grade = await knex("grades").select().where({id:produto[0].gradeId})
         console.log(grade)
-        var grades = await knex.from("estoques").innerJoin("g_linhas", "estoques.reflinha", "g_linhas.id").innerJoin("g_colunas", "estoques.refcoluna", "g_colunas.id").where("estoques.produtoId", "=", produto[0].id)
+        var grades = await knex.from("estoques").innerJoin("g_linhas", "estoques.reflinha", "g_linhas.id").innerJoin("g_colunas", "estoques.refcoluna", "g_colunas.id").where("estoques.produtoId", "=", produto[0].id).andWhere({"estoques.status":true})
 
 
         var marca = await knex("marcas").select().where({ id: produto[0].marcaId })
@@ -36,7 +36,7 @@ router.get("/produto/:produtoId/:reflinha/refcoluna", async (req, res) => {
     var produtoId = req.params.produtoId
     var reflinha = req.params.reflinha
     try {
-        var colunas = await knex.from("estoques").innerJoin("g_colunas", "estoques.refcoluna", "g_colunas.id").where({ "estoques.produtoId": produtoId, "estoques.reflinha": reflinha })
+        var colunas = await knex.from("estoques").innerJoin("g_colunas", "estoques.refcoluna", "g_colunas.id").where({ "estoques.produtoId": produtoId, "estoques.reflinha": reflinha,"estoques.status":true })
         res.json({ colunas: colunas })
     } catch {
         res.json({ erro: "Ocorreu um erro ao identificar as colunas" })
