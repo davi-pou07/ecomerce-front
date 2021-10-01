@@ -59,21 +59,66 @@
                                 <hr>
 
                                 <div class="mb-3">
-                                    <h6>Descrição</h6>
+                                    <h5>Descrição</h5>
                                     <ul class="list-dots mb-0">
-                                        <%if(marca.id != 0){%>
-                                        <li>Marca: <%=marca.marca%></li>
-                                        <%}%>
-                                        <%if(produto.gradeId == 0){%>
-                                        <li>Status: Disponivel</li>
-                                        <%}else{%>
-                                            <%grades.forEach(grade =>{%>
-                                                <li>
-                                                    <%=grade.linha%> / <%=grade.coluna%> - Disponivel
-                                                </li>
-                                                <%})%>
-                                        <%}%>
-                                        <li>Material: </li>
+                                        <%if(marca.id !=0){%>
+                                            <li>Marca: <%=marca.marca%>
+                                            </li>
+                                            <%}%>
+                                                <li>Material: Porcelana </li>
+                                                <%if(produto.gradeId==0){%>
+                                                    <li>Status: Disponivel</li>
+                                                    <%}else{%>
+                                                        <h5 class="mt-2">Disponiveis</h5>
+                                                        <ul class="list-group list-group-horizontal">
+                                                            <li class="dropdown">
+                                                                <a class="dropdown-toggle me-5" href="#" id="dropLinha"
+                                                                    role="button" data-bs-toggle="dropdown"
+                                                                    aria-expanded="false">
+                                                                    <%=grade.linha%>
+                                                                </a>
+                                                                <ul class="dropdown-menu dropdown-menu-dark"
+                                                                    aria-labelledby="dropLinha">
+                                                                    <%var linhasAdicionada=[]%>
+                                                                        <%grades.forEach(grade=>{%>
+                                                                            <%var
+                                                                                idx=linhasAdicionada.indexOf(grade.linha)
+                                                                                %>
+                                                                                <%if(idx==-1){%>
+                                                                                    <li><a class="dropdown-item"
+                                                                                            href="#">
+                                                                                            <%=grade.linha%>
+                                                                                        </a></li>
+                                                                                    <%linhasAdicionada.push(grade.linha)%>
+                                                                                        <%}%>
+                                                                                            <%})%>
+                                                                </ul>
+                                                            </li>
+                                                            <li class="dropdown">
+                                                                <a class="dropdown-toggle" href="#" id="dropColuna"
+                                                                    role="button" data-bs-toggle="dropdown"
+                                                                    aria-expanded="false">
+                                                                    <%=grade.coluna%>
+                                                                </a>
+                                                                <ul class="dropdown-menu dropdown-menu-dark"
+                                                                    aria-labelledby="dropColuna">
+                                                                    <%var colunaAdicionada=[]%>
+                                                                        <%grades.forEach(grade=>{%>
+                                                                            <%var
+                                                                                idx=colunaAdicionada.indexOf(grade.coluna)
+                                                                                %>
+                                                                                <%if(idx==-1){%>
+                                                                                    <li><a class="dropdown-item"
+                                                                                            href="#">
+                                                                                            <%=grade.coluna%>
+                                                                                        </a></li>
+                                                                                    <%colunaAdicionada.push(grade.coluna)%>
+                                                                                        <%}%>
+                                                                                            <%})%>
+                                                                </ul>
+                                                            </li>
+                                                        </ul>
+                                                        <%}%>
                                     </ul>
                                 </div>
 
