@@ -102,12 +102,14 @@ router.get("/carrinho/caixa", async (req, res) => {
         var produtos = await knex("produtos").select().whereIn('id', idsProdutos).andWhere({ status: true })
         
         var grades = await knex("grades").select().whereIn('id',function(){
-            this.select('id').from("produtos").whereIn('id', idsProdutos).andWhere({ status: true })
+            this.select('gradeId').from("produtos").whereIn('id', idsProdutos).andWhere({ status: true })
         })
+        console.log("grades")
         console.log(grades)
 
         var referencias = await knex("g_linhas").select().whereIn('g_linhas.id',idsRefLinhas).innerJoin("g_colunas",'g_linhas.gradeId',"g_colunas.gradeId").whereIn('g_colunas.id',idsRefColunas)
 
+        console.log("referencias")
         console.log(referencias)
 
         var imagens = await knex("imagens").select().whereIn("produtoId", idsProdutos)
