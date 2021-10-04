@@ -85,17 +85,31 @@ router.post("/carrinho/adicionar", auth, async (req, res) => {
 })
 
 router.get("/carrinho/caixa", async (req, res) => {
-    var usuario = req.session.cli
-    // var usuario = { id: 1 }
+    // var usuario = req.session.cli
+    var usuario = { id: 1 }
     if (usuario != undefined) {
         var cliente = await Cliente.findByPk(usuario.id)
         var carrinho = await Carrinho.findOne({ where: { clienteId: cliente.id, status: true } })
         var codItens = await CodItens.findAll({ where: { carrinhoId: carrinho.id } })
         var idsProdutos = []
+        var idsRefLinhas = []
+        var idsRefColunas = []
         codItens.forEach(codItem => {
             idsProdutos.push(codItem.produtoId)
+            idsRefLinhas.push(codItem.reflinha)
+            idsRefColunas.push(codItem.refcoluna)
         })
         var produtos = await knex("produtos").select().whereIn('id', idsProdutos).andWhere({ status: true })
+        
+        var grades = await knex("grades").select().whereIn('id',function(){
+            this.select('id').from("produtos").whereIn('id', idsProdutos).andWhere({ status: true })
+        })
+        console.log(grades)
+
+        var referencias = await knex("g_linhas").select().whereIn('g_linhas.id',idsRefLinhas).innerJoin("g_colunas",'g_linhas.gradeId',"g_colunas.gradeId").whereIn('g_colunas.id',idsRefColunas)
+
+        console.log(referencias)
+
         var imagens = await knex("imagens").select().whereIn("produtoId", idsProdutos)
         var precos = await knex("precos").select("desconto", "venda", "id", "produtoId").whereIn("produtoId", idsProdutos)
         // var grades = await knex("grades").select().whereIn('id',).innerJoin()
