@@ -38,7 +38,6 @@ function diminuir(x) {
         document.getElementById(`price${x}`).innerHTML = preco.toLocaleString('pt-br', { style: 'currency', currency: 'BRL' })
         document.getElementById(`price${x}`).dataset.total = parseFloat(preco)
     }
-    somarTotais()
 }
 
 function adicionar(x) {
@@ -57,5 +56,4 @@ function adicionar(x) {
         document.getElementById(`price${x}`).innerHTML = preco.toLocaleString('pt-br', { style: 'currency', currency: 'BRL' })
         document.getElementById(`price${x}`).dataset.total = preco
     }
-    somarTotais()
 }

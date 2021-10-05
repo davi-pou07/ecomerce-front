@@ -14,71 +14,86 @@
                                 <%codItens.forEach((codIten,index)=>{%>
                                     <%produtos.forEach(produto=>{%>
                                         <%if(produto.id==codIten.produtoId){%>
-                                            <div class="col-4">
-                                                <figure class="itemside">
+
+                                            <div class="col-5">
+                                                <figure>
                                                     <div class="row">
                                                         <%var imagem=imagens.find(imagem=>
                                                             imagem.produtoId==produto.id)%>
                                                             <%if(imagem !=undefined){%>
-                                                                <div class="col-md-6 pe-0">
+                                                                <div class="col-md-6 ms-md-1 pe-0">
                                                                     <img src="<%=imagem.imagem%>" class="ps-0"
                                                                         width="100" height="100">
-                                                                </div>
-                                                                <div
-                                                                    class="col-md-6 p-md-0 p-1 text-start ms-3 ms-md-0">
-                                                                    <figcaption class="ms-2">
-                                                                        <a href="#" class="title text-dark">
-                                                                            <%=produto.nome%>
-                                                                        </a>
-                                                                        <p class="text-muted small">Size:
-                                                                            <%= codIten.reflinha%>, <br> Color:
-                                                                                <%= codIten.refcoluna%> <br>
-                                                                        </p>
-                                                                    </figcaption>
                                                                 </div>
                                                                 <%}else{%>
                                                                     <img class="img-thumbnail" src="/img/null.png">
                                                                     <%}%>
+                                                                <div
+                                                                    class="col-md-5 p-md-0 p-1 text-start ms-3 ms-md-0">
+                                                                    <figcaption class="ms-2">
+                                                                        <a href="#" class="title text-dark">
+                                                                            <%=produto.nome%>
+                                                                        </a>
+                                                                        <%var grade=grades.find(g=> g.id ==
+                                                                            produto.gradeId)%>
+                                                                            <%if(grade != undefined){%>
+                                                                                <%var refLinha=refLinhas.find(rl=> rl.id
+                                                                                    == codIten.reflinha) %>
+                                                                                    <%var refColuna=refColunas.find(rc=>
+                                                                                        rc.id == codIten.refcoluna) %>
+                                                                                        <p class="text-muted small">
+                                                                                            <%=grade.linha%>:
+                                                                                                <%= refLinha.linha%>
+                                                                                                    <br>
+                                                                                                    <%=grade.coluna%>:
+                                                                                                        <%=
+                                                                                                            refColuna.coluna%>
+                                                                                                            <br>
+                                                                                        </p>
+
+                                                                                        <%}else{%>
+                                                                                                <%var marca = marcas.find(m =>
+                                                                                                    m.id ==
+                                                                                                    produto.marcaId)%>
+                                                                                                    <%if(marca != undefined){%>
+                                                                                                    <p
+                                                                                                        class="text-muted small">
+                                                                                                        Marca:
+                                                                                                        <%=marca.marca%>
+                                                                                                            <br>Material:
+                                                                                                            Argila <br>
+                                                                                                    </p>
+                                                                                                    <%}%>
+                                                                                        <%}%>
+
+                                                                    </figcaption>
+                                                                </div>
                                                     </div>
 
                                                 </figure>
                                             </div>
-                                            <div class="col-5">
+                                            <div class="col-md-5 col-4">
                                                 <div class="row">
-                                                    <div class="col-md-6 text-center">
-                                                        <input type="hidden" name="codIten" id="codIten<%=index%>"
-                                                            value="<%=codIten.id%>">
-                                                        <div class="row mt-3 ms-4 ms-md-0">
-                                                            <div class="col-md-3 col-0"></div>
-                                                            <div class="col-2 p-md-0 m-md-0 text-md-end">
-                                                                <button class="btn btn-danger" data-index="<%=index%>"
-                                                                    id="btnMenos"
-                                                                    onclick="diminuir(this.dataset.index)">-</button>
-                                                            </div>
-                                                            <div class="col-4 p-md-0 m-md-0">
-                                                                <button class="btn btn-ligth" name="quantidade"
-                                                                    value="<%=codIten.quantidade%>"
-                                                                    id="btnValor<%=index%>">
+                                                    <div class="col-md-4 text-center">
+                                                        <div class="row mt-1 ms-4 ms-md-0">
+                                                            <div class="col-12 text-center">
+                                                                <button class="btn btn-ligth" name="quantidade">
                                                                     <%=codIten.quantidade%>
                                                                 </button>
-                                                            </div>
-                                                            <div class="col-2 p-md-0 m-md-0 text-md-start">
-                                                                <button class="btn btn-success" data-index="<%=index%>"
-                                                                    id="btnMais"
-                                                                    onclick="adicionar(this.dataset.index)">+</button>
+                                                                <button class="btn btn-success rounded-pill"
+                                                                    data-bs-toggle="modal"
+                                                                    data-bs-target="#alterarQtd<%=index%>">Alterar</button>
                                                             </div>
                                                         </div>
                                                     </div>
                                                     <div class="col-md-6 text-center">
 
                                                         <div class="price-wrap mt-md-3 mt-5">
-                                                            <var class="fs-md-5 fs-5" id="price<%=index%>"
-                                                                data-total="<%=codIten.precoTotalItem%>">
+                                                            <var class="fs-md-5 fs-5">
                                                                 <%=codIten.precoTotalItem.toLocaleString('pt-br',{style: 'currency'
                                                                     , currency: 'BRL' })%>
                                                             </var><br>
-                                                            <small class="text-muted" id="precoVenda<%=index%>"
-                                                                data-valor="<%=codIten.precoUnit%>">
+                                                            <small class="text-muted">
                                                                 <%=codIten.precoUnit.toLocaleString('pt-br',{style: 'currency'
                                                                     , currency: 'BRL' })%> UN
                                                             </small>
@@ -87,40 +102,98 @@
 
                                                 </div>
                                             </div>
-                                            <div class="col-3">
+                                            <div class="col-md-2 col-3">
                                                 <form action="/carrinho/remover/<%=codIten.id%>"
                                                     id="deleteItem<%=index%>" method="POST">
-                                                    <div class="row">
-                                                        <div class="col-md-12">
-                                                            <button type="button" data-index="<%=index%>"
-                                                                class="btn btn-success mt-4 text-white order-2 order-md-1"
-                                                                id="btnAtualizar<%=index%>" value="<%=codIten.id%>"
-                                                                onclick="atualizar(this.dataset.index,this.value)">
-                                                                <svg xmlns="http://www.w3.org/2000/svg" width="16"
-                                                                    height="16" fill="currentColor"
-                                                                    class="bi bi-check-circle" viewBox="0 0 16 16">
-                                                                    <path
-                                                                        d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
-                                                                    <path
-                                                                        d="M10.97 4.97a.235.235 0 0 0-.02.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-1.071-1.05z" />
-                                                                </svg>
-                                                            </button>
+                                                    <button type="submit" class="btn btn-outline-danger mt-4"
+                                                        onclick='return deleteItem();'>
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                                            fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                                                            <path
+                                                                d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z" />
+                                                            <path fill-rule="evenodd"
+                                                                d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z" />
+                                                        </svg>
+                                                    </button>
+                                                </form>
+                                            </div>
 
-                                                            <button type="submit"
-                                                                class="btn btn-outline-danger mt-4 order-1 order-md-2"
-                                                                onclick='return deleteItem();'>
-                                                                <svg xmlns="http://www.w3.org/2000/svg" width="16"
-                                                                    height="16" fill="currentColor" class="bi bi-trash"
-                                                                    viewBox="0 0 16 16">
-                                                                    <path
-                                                                        d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z" />
-                                                                    <path fill-rule="evenodd"
-                                                                        d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z" />
-                                                                </svg>
-                                                            </button>
+
+
+                                            <!-- Modal Alterar quantidade -->
+                                            <div class="modal fade" data-bs-backdrop="static" data-bs-keyboard="false"
+                                                id="alterarQtd<%=index%>" tabindex="-1"
+                                                aria-labelledby="alterarQtd<%=index%>Label" aria-hidden="true">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title" id="alterarQtd<%=index%>Label">
+                                                                <%=produto.nome%>
+                                                            </h5>
+                                                            <button type="button" class="btn-close"
+                                                                data-bs-dismiss="modal" aria-label="Close"></button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <input type="hidden" name="codIten" id="codIten<%=index%>"
+                                                                value="<%=codIten.id%>">
+                                                            <div class="row mt-3">
+                                                                <label class="form-label text-center">
+                                                                    <dt>Quantidade
+                                                                </label>
+                                                                <div class="col-12 my-3 text-center">
+                                                                    <button class="btn btn-danger"
+                                                                        data-index="<%=index%>" id="btnMenos"
+                                                                        onclick="diminuir(this.dataset.index)">-</button>
+                                                                    <button class="btn btn-ligth" name="quantidade"
+                                                                        value="<%=codIten.quantidade%>"
+                                                                        id="btnValor<%=index%>">
+                                                                        <%=codIten.quantidade%>
+                                                                    </button>
+                                                                    <button class="btn btn-success"
+                                                                        data-index="<%=index%>" id="btnMais"
+                                                                        onclick="adicionar(this.dataset.index)">+</button>
+                                                                </div>
+                                                            </div>
+                                                            <hr>
+                                                            <div class="row">
+                                                                <div class="col-6 my-2 text-center border-end">
+                                                                    <label class="form-label">Valor Unitario</label>
+                                                                    <div class="row">
+                                                                        <div class="col-12">
+                                                                            <dt id="precoVenda<%=index%>"
+                                                                                data-valor="<%=codIten.precoUnit%>">
+                                                                                <%=codIten.precoUnit.toLocaleString('pt-br',{style: 'currency'
+                                                                                    , currency: 'BRL' })%> UN
+                                                                            </dt>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-6 my-2 text-center border-end">
+                                                                    <label class="form-label">Valor Total</label>
+                                                                    <div class="row">
+                                                                        <div class="col-12 fw-4">
+                                                                            <var class="fs-5" id="price<%=index%>"
+                                                                                data-total="<%=codIten.precoTotalItem%>">
+                                                                                <%=codIten.precoTotalItem.toLocaleString('pt-br',{style: 'currency'
+                                                                                    , currency: 'BRL' })%>
+                                                                            </var>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-secondary"
+                                                                    data-bs-dismiss="modal">Fechar</button>
+                                                                <button type="button" data-index="<%=index%>"
+                                                                    class="btn btn-success text-white"
+                                                                    id="btnAtualizar<%=index%>" value="<%=codIten.id%>"
+                                                                    onclick="atualizar(this.dataset.index,this.value)">Salvar
+                                                                    Alterações</button>
+                                                            </div>
                                                         </div>
                                                     </div>
-                                                </form>
+                                                </div>
                                             </div>
 
                                             <%}%>
@@ -132,13 +205,19 @@
                             <div class="card-body border-top">
                                 <a href="/" class="btn btn-light">Escolher mais Itens</a>
                             </div>
-                        </div> <!-- card.// -->
+                        </div> <!-- card  -->
+
+
+
+
+
                         <div class="modal fade" id="formasDePagamentos" aria-hidden="true"
                             aria-labelledby="formasDePagamentosLabel" tabindex="-1">
                             <div class="modal-dialog modal-dialog-centered">
                                 <div class="modal-content">
                                     <div class="modal-header">
-                                        <h5 class="modal-title" id="formasDePagamentosLabel">Formas de pagamento</h5>
+                                        <h5 class="modal-title" id="formasDePagamentosLabel">Formas de pagamento
+                                        </h5>
                                         <button type="button" class="btn-close" data-bs-dismiss="modal"
                                             aria-label="Close"></button>
                                     </div>
@@ -200,7 +279,8 @@
                                     <div class="modal-body text-center">
                                         <p class="text-muted">Apos efetuar o pagamento será necessario anexar o
                                             comprovante ou encaminhar para um de nossos <a href="#"> canais de
-                                                atendimento ao cliente </a> para que seja efetivado mais rapido a sua
+                                                atendimento ao cliente </a> para que seja efetivado mais rapido a
+                                            sua
                                             entrega.</p>
                                         <div class="card border-success">
                                             <div class="card-header fs-3 fs-md-4 bg-transparent border-success">
@@ -211,7 +291,8 @@
                                                 <h5>Chave: <span class="badge bg-success">06210580335</span> </h5>
                                             </div>
                                         </div>
-                                        <p class="text-muted">Escaneie o codigo abaixo para efetuar a transferencia</p>
+                                        <p class="text-muted">Escaneie o codigo abaixo para efetuar a transferencia
+                                        </p>
                                         <input type="hidden" id="link"
                                             value="https://nubank.com.br/pagar/1kyr3m/VWHOFbtsho">
                                         <div class="mx-auto" id="qrcode"
@@ -219,11 +300,13 @@
                                         </div>
                                         <!-- Olá Dev, não adianta fazer a alteração por aqui ;) -->
                                         <h4 class="mt-3">Valor Total: <span class="fw-bold text-decoration-underline"
-                                                id="valorTotalPix"></span></h4>
+                                                id="valorTotalPix"></span>
+                                        </h4>
                                     </div>
                                     <div class="modal-footer">
                                         <button class="btn btn-primary" data-bs-target="#comprovantePix"
-                                            data-bs-toggle="modal" data-bs-dismiss="modal">Anexar comprovante</button>
+                                            data-bs-toggle="modal" data-bs-dismiss="modal">Anexar
+                                            comprovante</button>
                                         <button class="btn btn-warning text-white" data-bs-target="#formasDePagamentos"
                                             data-bs-toggle="modal" data-bs-dismiss="modal">Voltar</button>
                                     </div>
@@ -236,11 +319,13 @@
                             <div class="modal-dialog modal-dialog-centered">
                                 <div class="modal-content">
                                     <div class="modal-header">
-                                        <h5 class="modal-title" id="pixModalLabel">Anexar Comprovante de Transferencia
+                                        <h5 class="modal-title" id="pixModalLabel">Anexar Comprovante de
+                                            Transferencia
                                         </h5>
                                     </div>
                                     <div class="modal-body text-center">
-                                        <p class="text-muted">Anexar abaixo o comprovante de transferência para que sua
+                                        <p class="text-muted">Anexar abaixo o comprovante de transferência para que
+                                            sua
                                             entrega seja efetivada. Caso desejar o envio também pode ser feito nos
                                             nossos <a href="#"> canais de
                                                 atendimento ao cliente </a></p>
@@ -264,7 +349,8 @@
                                         <h5 class="modal-title" id="entregaModalLabel">Pagar na entrega</h5>
                                     </div>
                                     <div class="modal-body ">
-                                        <p class="text-muted text-center">Para nossa segurança será necessario que seja
+                                        <p class="text-muted text-center">Para nossa segurança será necessario que
+                                            seja
                                             anexado
                                             algumas informações. Para mais duvidas acesse um de nossos <a href="#">
                                                 canais de
@@ -400,9 +486,10 @@
                                     <div class="form-group">
                                         <label>Tem coupom de desconto?</label>
                                         <div class="input-group">
-                                            <input type="text" class="form-control" name="" placeholder="Coupon code">
+                                            <input type="text" class="form-control" disabled name=""
+                                                placeholder="Coupon code">
                                             <span class="input-group-append">
-                                                <button class="btn btn-primary">Aplicar</button>
+                                                <button class="btn btn-primary disabled">Aplicar</button>
                                             </span>
                                         </div>
                                     </div>
@@ -750,6 +837,7 @@
                             alert("Ocorreu um erro ao atualizar: " + resp.data.erro)
                         } else {
                             alert(resp.data.resp)
+                            window.location.reload()
                         }
                     }).catch(err => {
                         console.log(err)

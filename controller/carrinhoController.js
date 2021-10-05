@@ -85,8 +85,8 @@ router.post("/carrinho/adicionar", auth, async (req, res) => {
 })
 
 router.get("/carrinho/caixa", async (req, res) => {
-    // var usuario = req.session.cli
-    var usuario = { id: 1 }
+    var usuario = req.session.cli
+    // var usuario = { id: 1 }
     if (usuario != undefined) {
         var cliente = await Cliente.findByPk(usuario.id)
         var carrinho = await Carrinho.findOne({ where: { clienteId: cliente.id, status: true } })
@@ -104,18 +104,20 @@ router.get("/carrinho/caixa", async (req, res) => {
         var grades = await knex("grades").select().whereIn('id',function(){
             this.select('gradeId').from("produtos").whereIn('id', idsProdutos).andWhere({ status: true })
         })
-        console.log("grades")
-        console.log(grades)
 
-        var referencias = await knex("g_linhas").select().whereIn('g_linhas.id',idsRefLinhas).innerJoin("g_colunas",'g_linhas.gradeId',"g_colunas.gradeId").whereIn('g_colunas.id',idsRefColunas)
+        var refLinhas = await knex("g_linhas").select().whereIn('id',idsRefLinhas)
+        var refColunas = await knex("g_colunas").select().whereIn('id',idsRefColunas)
+        // var referencias = await knex("g_linhas").select().whereIn('g_linhas.id',idsRefLinhas).innerJoin("g_colunas",'g_linhas.gradeId',"g_colunas.gradeId").whereIn('g_colunas.id',idsRefColunas)
+        var marcas = await knex("marcas").select().whereIn("id",function(){
+            this.select('marcaId').from('produtos').whereIn('id',idsProdutos)
+        })
 
-        console.log("referencias")
-        console.log(referencias)
+        console.log(marcas)
 
         var imagens = await knex("imagens").select().whereIn("produtoId", idsProdutos)
         var precos = await knex("precos").select("desconto", "venda", "id", "produtoId").whereIn("produtoId", idsProdutos)
         // var grades = await knex("grades").select().whereIn('id',).innerJoin()
-        res.render("carrinho/carrinho", { cliente: cliente, carrinho: carrinho, codItens: codItens, produtos: produtos, imagens: imagens, precos: precos })
+        res.render("carrinho/carrinho", { cliente: cliente, carrinho: carrinho, codItens: codItens, produtos: produtos, imagens: imagens, precos: precos,grades:grades,refLinhas:refLinhas,refColunas:refColunas,marcas:marcas })
 
     } else {
         res.redirect("/login")
