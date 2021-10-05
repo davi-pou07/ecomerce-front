@@ -112,8 +112,6 @@ router.get("/carrinho/caixa", async (req, res) => {
             this.select('marcaId').from('produtos').whereIn('id',idsProdutos)
         })
 
-        console.log(marcas)
-
         var imagens = await knex("imagens").select().whereIn("produtoId", idsProdutos)
         var precos = await knex("precos").select("desconto", "venda", "id", "produtoId").whereIn("produtoId", idsProdutos)
         // var grades = await knex("grades").select().whereIn('id',).innerJoin()
