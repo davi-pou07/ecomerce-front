@@ -9,78 +9,84 @@ var moment = require('moment');
 
 router.post("/carrinho/adicionar", auth, async (req, res) => {
     var usuario = req.session.cli
-    var codItem = req.body.codItem
-    var quantidadeItem = req.body.quantidadeItem
-    var refcoluna = req.body.refcoluna
-    var reflinha = req.body.reflinha
+    if (usuario != undefined) {
 
-    if (refcoluna == '') {
-        refcoluna = 0
-    }
-    if (reflinha == '') {
-        reflinha = 0
-    }
 
-    var produto = await knex("produtos").select().where({ "produtos.id": codItem }).innerJoin("precos", "produtos.id", "precos.produtoId")
-    if (produto[0].desconto > 0) {
-    var precoUnit = produto[0].desconto
-    } else {
-    var precoUnit = produto[0].venda
-    }
+        var codItem = req.body.codItem
+        var quantidadeItem = req.body.quantidadeItem
+        var refcoluna = req.body.refcoluna
+        var reflinha = req.body.reflinha
 
-    var carrinho = await Carrinho.findOne({ where: { clienteId: usuario.id, status: true } })
-    if (carrinho.quantidade == undefined) {
-        carrinho.quantidade = 0
-    }
+        if (refcoluna == '') {
+            refcoluna = 0
+        }
+        if (reflinha == '') {
+            reflinha = 0
+        }
 
-    var codItems = await CodItens.findOne({ where: { produtoId: codItem, refcoluna: refcoluna, reflinha: reflinha, carrinhoId: carrinho.id } })
+        var produto = await knex("produtos").select().where({ "produtos.id": codItem }).innerJoin("precos", "produtos.id", "precos.produtoId")
+        if (produto[0].desconto > 0) {
+            var precoUnit = produto[0].desconto
+        } else {
+            var precoUnit = produto[0].venda
+        }
 
-    if (codItems != undefined) {
+        var carrinho = await Carrinho.findOne({ where: { clienteId: usuario.id, status: true } })
+        if (carrinho.quantidade == undefined) {
+            carrinho.quantidade = 0
+        }
 
-        var quantidadeTotalCarrinho = parseInt(carrinho.quantidade) - parseInt(codItems.quantidade)
+        var codItems = await CodItens.findOne({ where: { produtoId: codItem, refcoluna: refcoluna, reflinha: reflinha, carrinhoId: carrinho.id } })
 
-        quantidadeItem = parseInt(quantidadeItem) + parseInt(codItems.quantidade)
-        quantidadeTotalCarrinho = parseInt(quantidadeTotalCarrinho) + parseInt(quantidadeItem)
+        if (codItems != undefined) {
 
-        var precoTotalItem = parseFloat(precoUnit) * parseInt(quantidadeItem)
-        
-        var precoTotalCarrinho = (parseFloat(carrinho.precoTotal) - parseInt(codItems.precoTotalItem)) + parseFloat(precoTotalItem)
-        CodItens.update({
-            quantidade: quantidadeItem,
-            precoTotalItem: precoTotalItem,
-            precoUnit: parseFloat(precoUnit),
-            updatedAt:moment().format()
-        }, { where: { id: codItems.id } }).then(resp => {
-            console.log({ resp: "Foi realizado o ajuste" })
+            var quantidadeTotalCarrinho = parseInt(carrinho.quantidade) - parseInt(codItems.quantidade)
+
+            quantidadeItem = parseInt(quantidadeItem) + parseInt(codItems.quantidade)
+            quantidadeTotalCarrinho = parseInt(quantidadeTotalCarrinho) + parseInt(quantidadeItem)
+
+            var precoTotalItem = parseFloat(precoUnit) * parseInt(quantidadeItem)
+
+            var precoTotalCarrinho = (parseFloat(carrinho.precoTotal) - parseInt(codItems.precoTotalItem)) + parseFloat(precoTotalItem)
+            CodItens.update({
+                quantidade: quantidadeItem,
+                precoTotalItem: precoTotalItem,
+                precoUnit: parseFloat(precoUnit),
+                updatedAt: moment().format()
+            }, { where: { id: codItems.id } }).then(resp => {
+                console.log({ resp: "Foi realizado o ajuste" })
+            })
+
+        } else {
+            var precoTotalItem = parseFloat(precoUnit) * parseInt(quantidadeItem)
+
+            CodItens.create({
+                produtoId: codItem,
+                quantidade: quantidadeItem,
+                refcoluna: refcoluna,
+                reflinha: reflinha,
+                carrinhoId: carrinho.id,
+                precoUnit: parseFloat(precoUnit),
+                precoTotalItem: precoTotalItem
+            }).then(resp => {
+                console.log({ resp: "Foi realizado a adição" })
+            })
+            var quantidadeTotalCarrinho = parseInt(carrinho.quantidade) + parseInt(quantidadeItem)
+            var precoTotalCarrinho = parseFloat(carrinho.precoTotal) + parseFloat(precoTotalItem)
+        }
+
+        Carrinho.update({
+            quantidade: quantidadeTotalCarrinho,
+            precoTotal: precoTotalCarrinho,
+            updatedAt: moment().format()
+        }, { where: { id: carrinho.id } }).then(() => {
+            res.json({ resp: "Foi adicionado " + quantidadeItem + " Itens ao seu Carrinho" })
+        }).catch(() => {
+            res.json({ resp: "Erro: Não poi possivel adicionar os itens ao carrinho, Tente novamente" })
         })
-
     } else {
-        var precoTotalItem = parseFloat(precoUnit) * parseInt(quantidadeItem)
-
-        CodItens.create({
-            produtoId: codItem,
-            quantidade: quantidadeItem,
-            refcoluna: refcoluna,
-            reflinha: reflinha,
-            carrinhoId: carrinho.id,
-            precoUnit: parseFloat(precoUnit),
-            precoTotalItem: precoTotalItem
-        }).then(resp => {
-            console.log({ resp: "Foi realizado a adição" })
-        })
-        var quantidadeTotalCarrinho = parseInt(carrinho.quantidade) + parseInt(quantidadeItem)
-        var precoTotalCarrinho = parseFloat(carrinho.precoTotal) + parseFloat(precoTotalItem)
+        res.json({ resp: "Erro: Gentileza efetuar login" })
     }
-
-    Carrinho.update({
-        quantidade: quantidadeTotalCarrinho,
-        precoTotal: precoTotalCarrinho,
-        updatedAt:moment().format()
-    }, { where: { id: carrinho.id } }).then(() => {
-        res.json({ resp: "Foi adicionado " + quantidadeItem + " Itens ao seu Carrinho" })
-    }).catch(() => {
-        res.json({ resp: "Erro: Não poi possivel adicionar os itens ao carrinho, Tente novamente" })
-    })
 
 })
 
@@ -100,29 +106,29 @@ router.get("/carrinho/caixa", async (req, res) => {
             idsRefColunas.push(codItem.refcoluna)
         })
         var produtos = await knex("produtos").select().whereIn('id', idsProdutos).andWhere({ status: true })
-        
-        var grades = await knex("grades").select().whereIn('id',function(){
+
+        var grades = await knex("grades").select().whereIn('id', function () {
             this.select('gradeId').from("produtos").whereIn('id', idsProdutos).andWhere({ status: true })
         })
 
-        var refLinhas = await knex("g_linhas").select().whereIn('id',idsRefLinhas)
-        var refColunas = await knex("g_colunas").select().whereIn('id',idsRefColunas)
+        var refLinhas = await knex("g_linhas").select().whereIn('id', idsRefLinhas)
+        var refColunas = await knex("g_colunas").select().whereIn('id', idsRefColunas)
         // var referencias = await knex("g_linhas").select().whereIn('g_linhas.id',idsRefLinhas).innerJoin("g_colunas",'g_linhas.gradeId',"g_colunas.gradeId").whereIn('g_colunas.id',idsRefColunas)
-        var marcas = await knex("marcas").select().whereIn("id",function(){
-            this.select('marcaId').from('produtos').whereIn('id',idsProdutos)
+        var marcas = await knex("marcas").select().whereIn("id", function () {
+            this.select('marcaId').from('produtos').whereIn('id', idsProdutos)
         })
 
         var imagens = await knex("imagens").select().whereIn("produtoId", idsProdutos)
         var precos = await knex("precos").select("desconto", "venda", "id", "produtoId").whereIn("produtoId", idsProdutos)
         // var grades = await knex("grades").select().whereIn('id',).innerJoin()
-        res.render("carrinho/carrinho", { cliente: cliente, carrinho: carrinho, codItens: codItens, produtos: produtos, imagens: imagens, precos: precos,grades:grades,refLinhas:refLinhas,refColunas:refColunas,marcas:marcas })
+        res.render("carrinho/carrinho", { cliente: cliente, carrinho: carrinho, codItens: codItens, produtos: produtos, imagens: imagens, precos: precos, grades: grades, refLinhas: refLinhas, refColunas: refColunas, marcas: marcas })
 
     } else {
         res.redirect("/login")
     }
 })
 
-router.post("/carrinho/alterarValores",auth, async (req, res) => {
+router.post("/carrinho/alterarValores", auth, async (req, res) => {
     var usuario = req.session.cli
     // var usuario = { id: 1 }
     var novaQuantidade = req.body.novaQuantidade
@@ -144,12 +150,12 @@ router.post("/carrinho/alterarValores",auth, async (req, res) => {
             CodItens.update({
                 quantidade: novaQuantidade,
                 precoTotalItem: precoTotalItem,
-                updatedAt:moment().format()
+                updatedAt: moment().format()
             }, { where: { id: codIten.id } }).then(() => {
                 Carrinho.update({
                     quantidade: quantidadeTotalCarrinho,
                     precoTotal: precoTotalCarrinho,
-                    updatedAt:moment().format()
+                    updatedAt: moment().format()
                 }, { where: { id: carrinho.id } }).then(() => {
                     res.json({ resp: "Atualização de valores realizada" })
                 }).catch(err => {
@@ -184,7 +190,7 @@ router.post("/carrinho/remover/:codIten", auth, async (req, res) => {
                     Carrinho.update({
                         quantidade: quantidadeTotalCarrinho,
                         precoTotal: precoTotalCarrinho,
-                        updatedAt:moment().format()
+                        updatedAt: moment().format()
                     }, { where: { id: carrinho.id } }).then(
                         res.redirect("/carrinho/caixa")
                     ).catch(err => {
