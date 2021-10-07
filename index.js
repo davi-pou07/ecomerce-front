@@ -70,7 +70,7 @@ app.use("/", entregaControler)
 
 
 
-app.get("/", (req, res) => {
+app.get("/", async(req, res) => {
     knex("produtos").select("id", "nome").where('status', true).orderBy('categoriaId').then(produtos => {
         knex("categorias").select("destaque", "status", "titulo", "id").where('status', true).limit(6).then(categorias => {
             knex("precos").select("produtoId", "desconto", "venda",).then(precos => {

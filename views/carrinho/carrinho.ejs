@@ -14,7 +14,6 @@
                                 <%codItens.forEach((codIten,index)=>{%>
                                     <%produtos.forEach(produto=>{%>
                                         <%if(produto.id==codIten.produtoId){%>
-
                                             <div class="col-5">
                                                 <figure>
                                                     <div class="row">
@@ -25,59 +24,48 @@
                                                                     <img src="<%=imagem.imagem%>" class="ps-0"
                                                                         width="100" height="100">
                                                                 </div>
-                                                                <%}else{%>
-                                                                    <img class="img-thumbnail" src="/img/null.png">
-                                                                    <%}%>
-                                                                        <div
-                                                                            class="col-md-5 p-md-0 p-1 text-start ms-3 ms-md-0">
-                                                                            <figcaption class="ms-2">
-                                                                                <a href="#" class="title text-dark">
+                                                            <%}else{%>
+                                                                <img class="img-thumbnail" src="/img/null.png">
+                                                            <%}%>
+                                                                    <div class="col-md-5 p-md-0 p-1 text-start ms-3 ms-md-0">
+                                                                        <figcaption class="ms-2">
+                                                                            <a href="#" class="title text-dark">
                                                                                     <%=produto.nome%>
-                                                                                </a>
-                                                                                <%var grade=grades.find(g=> g.id ==
-                                                                                    produto.gradeId)%>
+                                                                            </a>
+                                                                                <%var grade=grades.find(g => g.id == produto.gradeId)%>
                                                                                     <%if(grade != undefined){%>
-                                                                                        <%var
-                                                                                            refLinha=refLinhas.find(rl=>
-                                                                                            rl.id
-                                                                                            == codIten.reflinha) %>
-                                                                                            <%var
-                                                                                                refColuna=refColunas.find(rc=>
-                                                                                                rc.id ==
-                                                                                                codIten.refcoluna) %>
-                                                                                                <p
-                                                                                                    class="text-muted small">
-                                                                                                    <%=grade.linha%>:
-                                                                                                        <%=
-                                                                                                            refLinha.linha%>
-                                                                                                            <br>
-                                                                                                            <%=grade.coluna%>
-                                                                                                                :
-                                                                                                                <%=
-                                                                                                                    refColuna.coluna%>
-                                                                                                                    <br>
+                                                                                        <%if(codIten.reflinha != 0 ){%>
+                                                                                            <%var refLinha = refLinhas.find(rl =>
+                                                                                                rl.id == codIten.reflinha)%>
+                                                                                        <%}else{%>
+                                                                                            <%var refLinha = {linha:'Padrão'} %>
+                                                                                        <%}%>
+
+                                                                                            <%if(codIten.refcoluna != 0 ){%>
+                                                                                                <%var refColuna = refColunas.find(rc => rc.id == codIten.refcoluna)%>
+                                                                                            <%}else{%>
+                                                                                                <%var refColuna = {coluna:'Padrão'} %>
+                                                                                            <%}%>
+
+                                                                                                <p class="text-muted small"> <%=grade.linha%>:<%=refLinha.linha%>
+                                                                                                    <br>
+                                                                                                        <%=grade.coluna%>:<%=refColuna.coluna%>
+                                                                                                    <br>
                                                                                                 </p>
 
-                                                                                                <%}else{%>
-                                                                                                    <%var
-                                                                                                        marca=marcas.find(m=>
-                                                                                                        m.id ==
-                                                                                                        produto.marcaId)%>
-                                                                                                        <%if(marca
-                                                                                                            !=undefined){%>
-                                                                                                            <p
-                                                                                                                class="text-muted small">
-                                                                                                                Marca:
-                                                                                                                <%=marca.marca%>
-                                                                                                                    <br>Material:
-                                                                                                                    Argila
-                                                                                                                    <br>
-                                                                                                            </p>
-                                                                                                            <%}%>
-                                                                                                                <%}%>
+                                                                                    <%}else{%>
+                                                                                        <%var marca=marcas.find(m => m.id == produto.marcaId)%>
+                                                                                            <%if(marca !=undefined){%>
+                                                                                                <p class="text-muted small"> Marca:<%=marca.marca%>
+                                                                                                    <br>
+                                                                                                Material: Argila
+                                                                                                    <br>
+                                                                                                </p>
+                                                                                            <%}%>
+                                                                                    <%}%>
 
-                                                                            </figcaption>
-                                                                        </div>
+                                                                        </figcaption>
+                                                                    </div>
                                                     </div>
 
                                                 </figure>
@@ -164,7 +152,8 @@
                                                             <hr>
                                                             <div class="row">
                                                                 <div class="col-6 my-2 text-center border-end">
-                                                                    <label class="form-label">Valor Unitario</label>
+                                                                    <label class="form-label">Valor
+                                                                        Unitario</label>
                                                                     <div class="row">
                                                                         <div class="col-12">
                                                                             <dt id="precoVenda<%=index%>"
@@ -176,7 +165,8 @@
                                                                     </div>
                                                                 </div>
                                                                 <div class="col-6 my-2 text-center border-end">
-                                                                    <label class="form-label">Valor Total</label>
+                                                                    <label class="form-label">Valor
+                                                                        Total</label>
                                                                     <div class="row">
                                                                         <div class="col-12 fw-4">
                                                                             <var class="fs-5" id="price<%=index%>"
