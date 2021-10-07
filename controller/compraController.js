@@ -231,7 +231,7 @@ router.get("/carrinho/finalizarCompra/:opcao", async (req, res) => {
                 console.log("Chegou aqui no dadospagamentos 3")
                 console.log(idUnica)
                 if (dadosVendas[0] == '' || dadosVendas[0] == undefined) {
-                    knex('dadosvendas').insert({
+                    await knex('dadosvendas').insert({
                         dadosId: idUnica,
                         descricao: descricao,
                         quantidade: 1,
@@ -245,23 +245,16 @@ router.get("/carrinho/finalizarCompra/:opcao", async (req, res) => {
                         createdAt: data,
                         updatedAt: data,
                         opcaoDePagamento: opcaoPagamento.id
-                    }).then(pag => {
-                        console.log("----pag-----")
-                        console.log(pag)
-                    }).catch(err => {
-                        console.log(err)
                     })
                 } else {
-                    knex('dadosvendas').update({
+                    await knex('dadosvendas').update({
                         tentativas: parseInt(dadosVendas[0].tentativas) + 1,
                         descricao: descricao,
                         emailCliente: cliente.email,
                         unit_price: precoTotal,
                         opcaoDePagamento: opcaoPagamento.id,
                         updatedAt: moment().format()
-                    }).where({ id: dadosVendas[0].id }).catch(err => {
-                        console.log(err)
-                    })
+                    }).where({ id: dadosVendas[0].id })
                 }
             } catch (error) {
                 console.log(error)
