@@ -229,6 +229,7 @@ router.get("/carrinho/finalizarCompra/:opcao", async (req, res) => {
         } else if (opcaoPagamento.id == 3) {
             try {
                 console.log("Chegou aqui no dadospagamentos 3")
+                console.log(idUnica)
                 if (dadosVendas[0] == '' || dadosVendas[0] == undefined) {
                     knex('dadosvendas').insert({
                         dadosId: idUnica,
@@ -265,44 +266,39 @@ router.get("/carrinho/finalizarCompra/:opcao", async (req, res) => {
             } catch (error) {
                 console.log(error)
             }
-            try {
+            var dadosVendas = await knex("dadosvendas").select().where({ dadosId: idUnica })
+            console.log("--------------dadosVendas-----------")
+            console.log(dadosVendas)
 
-                var dadosVendas = await knex("dadosvendas").select().where({ dadosId: idUnica })
-                console.log("--------------dadosVendas-----------")
-                console.log(dadosVendas)
+            var date = moment().format();
 
-                var date = moment().format();
+            var qDadosTransicoes = await knex("dadostransicoes").select()
+            knex("dadostransicoes").insert({
+                dadosId: dadosVendas[0].dadosId,
+                status: "pending",
+                clienteId: dadosVendas[0].clienteId,
+                carrinhoId: dadosVendas[0].carrinhoId,
+                statusColetado: "Analise",
+                formaPagamento: "pagar_na_entrega",
+                orderId: '000' + parseInt(qDadosTransicoes.length + 1),
+                createdAt: date,
+                updatedAt: date
+            }).then(async () => {
 
-                var qDadosTransicoes = await knex("dadostransicoes").select()
-                knex("dadostransicoes").insert({
+                var DadosPagamentosEntrega = await knex("dadospagamentosentregas").select().where({ clienteId: cliente.id, carrinhoId: carrinho.id })
+
+                var updatePagamentosEntrega = await knex("dadospagamentosentregas").update({
                     dadosId: dadosVendas[0].dadosId,
-                    status: "pending",
-                    clienteId: dadosVendas[0].clienteId,
-                    carrinhoId: dadosVendas[0].carrinhoId,
-                    statusColetado: "Analise",
-                    formaPagamento: "pagar_na_entrega",
-                    orderId: '000' + parseInt(qDadosTransicoes.length + 1),
-                    createdAt: date,
-                    updatedAt: date
-                }).then(async () => {
+                    ordeId: '000' + parseInt(qDadosTransicoes.length + 1),
+                    updatedAt: moment().format()
+                }).where({ id: DadosPagamentosEntrega[0].id })
 
-                    var DadosPagamentosEntrega = await knex("dadospagamentosentregas").select().where({ clienteId: cliente.id, carrinhoId: carrinho.id })
+                Carrinho.update({ status: false, updatedAt: moment().format() }, { where: { id: dadosVendas[0].carrinhoId } }).then(async () => {
+                    var dadosTransicoes = await knex("dadostransicoes").select().where({ dadosId: dadosVendas[0].dadosId })
 
-                    var updatePagamentosEntrega = await knex("dadospagamentosentregas").update({
-                        dadosId: dadosVendas[0].dadosId,
-                        ordeId: '000' + parseInt(qDadosTransicoes.length + 1),
-                        updatedAt: moment().format()
-                    }).where({ id: DadosPagamentosEntrega[0].id })
-
-                    Carrinho.update({ status: false, updatedAt: moment().format() }, { where: { id: dadosVendas[0].carrinhoId } }).then(async () => {
-                        var dadosTransicoes = await knex("dadostransicoes").select().where({ dadosId: dadosVendas[0].dadosId })
-
-                        res.redirect("/usuario/transicao/" + dadosTransicoes[0].id)
-                    })
+                    res.redirect("/usuario/transicao/" + dadosTransicoes[0].id)
                 })
-            } catch (error) {
-                console.log(error)
-            }
+            })
         } else {
             res.redirect("/")
         }
