@@ -64,59 +64,12 @@
                                             </li>
                                             <%}%>
                                                 <li>Material: Porcelana </li>
-                                                <%if(produto.gradeId==0){%>
+                                                <%if(produto.status==true){%>
                                                     <li>Status: Disponivel</li>
                                                     <%}else{%>
-                                                        <h5 class="mt-2">Disponiveis</h5>
-                                                        <ul class="list-group list-group-horizontal">
-                                                            <li class="dropdown">
-                                                                <a class="dropdown-toggle me-5" href="#" id="dropLinha"
-                                                                    role="button" data-bs-toggle="dropdown"
-                                                                    aria-expanded="false">
-                                                                    <%=grade.linha%>
-                                                                </a>
-                                                                <ul class="dropdown-menu dropdown-menu-dark"
-                                                                    aria-labelledby="dropLinha">
-                                                                    <%var linhasAdicionada=[]%>
-                                                                        <%grades.forEach(grade=>{%>
-                                                                            <%var
-                                                                                idx=linhasAdicionada.indexOf(grade.linha)
-                                                                                %>
-                                                                                <%if(idx==-1){%>
-                                                                                    <li><a class="dropdown-item"
-                                                                                            href="#">
-                                                                                            <%=grade.linha%>
-                                                                                        </a></li>
-                                                                                    <%linhasAdicionada.push(grade.linha)%>
-                                                                                        <%}%>
-                                                                                            <%})%>
-                                                                </ul>
-                                                            </li>
-                                                            <li class="dropdown">
-                                                                <a class="dropdown-toggle" href="#" id="dropColuna"
-                                                                    role="button" data-bs-toggle="dropdown"
-                                                                    aria-expanded="false">
-                                                                    <%=grade.coluna%>
-                                                                </a>
-                                                                <ul class="dropdown-menu dropdown-menu-dark"
-                                                                    aria-labelledby="dropColuna">
-                                                                    <%var colunaAdicionada=[]%>
-                                                                        <%grades.forEach(grade=>{%>
-                                                                            <%var
-                                                                                idx=colunaAdicionada.indexOf(grade.coluna)
-                                                                                %>
-                                                                                <%if(idx==-1){%>
-                                                                                    <li><a class="dropdown-item"
-                                                                                            href="#">
-                                                                                            <%=grade.coluna%>
-                                                                                        </a></li>
-                                                                                    <%colunaAdicionada.push(grade.coluna)%>
-                                                                                        <%}%>
-                                                                                            <%})%>
-                                                                </ul>
-                                                            </li>
-                                                        </ul>
+                                                        <li>Status: Indisponivel</li>
                                                         <%}%>
+
                                     </ul>
                                 </div>
 
@@ -156,113 +109,128 @@
                                                 <%}%>
                                     </span>
                                 </div> <!-- price-detail-wrap .// -->
+                                <%if(produto.status==true){%>
+                                    <div class="mb-4 text-center text-md-start">
+                                        <input type="hidden" value="false" id="reditect">
+                                        <a href="#" class="btn btn-primary" data-bs-toggle="modal"
+                                            data-bs-target="#exampleModal"
+                                            onclick="gradeColuna($('#reflinha').val());document.getElementById('reditect').value = true">Compre
+                                            agora!</a>
+                                        <a href="#" class="btn btn-light mt-2 mt-md-0" data-bs-toggle="modal"
+                                            data-bs-target="#exampleModal"
+                                            onclick="gradeColuna($('#reflinha').val())">Adicionar ao Carrinho</a>
+                                    </div>
+                                    <%}else{%>
+                                        <div class="mb-4 text-center text-md-start">
+                                            <input type="hidden" value="false" id="reditect">
+                                            <a href="#" class="btn btn-primary disabled">Compre
+                                                agora!</a>
+                                            <a href="#" class="btn btn-light mt-2 mt-md-0 disabled">Adicionar ao Carrinho</a>
+                                        </div>
+                                        <%}%>
 
-                                <div class="mb-4 text-center text-md-start">
-                                    <input type="hidden" value="false" id="reditect">
-                                    <a href="#" class="btn btn-primary" data-bs-toggle="modal"
-                                        data-bs-target="#exampleModal"
-                                        onclick="gradeColuna($('#reflinha').val());document.getElementById('reditect').value = true">Compre
-                                        agora!</a>
-                                    <a href="#" class="btn btn-light mt-2 mt-md-0" data-bs-toggle="modal"
-                                        data-bs-target="#exampleModal"
-                                        onclick="gradeColuna($('#reflinha').val())">Adicionar ao Carrinho</a>
-                                </div>
-
-                                <!-- Modal -->
-                                <div class="modal fade" id="exampleModal" tabindex="-1"
-                                    aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                    <div class="modal-dialog">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h5 class="modal-title" id="exampleModalLabel">Adicionar ao Carrinho
-                                                </h5>
-                                                <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                    aria-label="Close"
-                                                    onclick="document.getElementById('reditect').value = false"></button>
-                                            </div>
-                                            <div class="modal-body">
-                                                <div class="row">
-                                                    <div class="col-md-4 text-center text-md-start">
-                                                        <input type="hidden" id="codItem" name="codItem"
-                                                            value="<%=produto.id%>">
-                                                        <%imagems.forEach((imagem,index)=>{%>
-                                                            <%if(index==0){%>
-                                                                <input type="image" class="mt-3"
-                                                                    src="<%=imagem.imagem%>" alt="" height="120">
-                                                                <%}%>
-                                                                    <%})%>
-                                                    </div>
-                                                    <div class="col-md-8 text-center">
-                                                        <h5>
-                                                            <%=produto.nome%>
-                                                        </h5>
-                                                        <div class="row">
-                                                            <label for=""
-                                                                class="form-label text-center ">Quantidade:</label>
-                                                            <div class="col-md-12 text-center">
-                                                                <button class="btn btn-danger" id="btnMenos"
-                                                                    onclick="diminuir()">-</button>
-                                                                <button class="btn btn-ligth" name="quantidade"
-                                                                    value="1" id="btnValor">1</button>
-                                                                <button class="btn btn-success" id="btnMais"
-                                                                    onclick="adicionar()">+</button>
-                                                            </div>
-                                                            <%if(grades[0] !=undefined){%>
-                                                                <label
-                                                                    class="form-label text-center mt-2">Grades:</label>
-                                                                <div class="col-md-6">
-                                                                    <!-- 🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨 -->
-                                                                    <!-- Validar a linha de acordo com a coluna -->
-                                                                    <select name="reflinha" id="reflinha"
-                                                                        class="form-select"
-                                                                        onchange="gradeColuna(this.value)">
-                                                                        <%var linhas=[];%>
-                                                                            <%grades.forEach((grade,index)=>{%>
-                                                                                <%var contem=1%>
-                                                                                    <%for(x=0;x < index;x++){%>
-                                                                                        <%if(linhas[x]==grade.reflinha){%>
-                                                                                            <%var contem=0%>
-                                                                                                <%}%>
-                                                                                                    <%}%>
-
-                                                                                                        <%if(contem
-                                                                                                            !=0){%>
-                                                                                                            <option
-                                                                                                                value="<%=grade.reflinha%>">
-                                                                                                                <%=grade.linha%>
-                                                                                                            </option>
-                                                                                                            <%}%>
-                                                                                                                <%linhas.push(grade.reflinha)%>
-                                                                                                                    <%})%>
-                                                                    </select>
-                                                                </div>
-                                                                <div class="col-md-6">
-                                                                    <select name="refcoluna" class="form-select"
-                                                                        id="refcoluna">
-
-                                                                    </select>
-                                                                </div>
-                                                                <%}else{%>
-                                                                    <input type="hidden" id="reflinha" name="reflinha"
-                                                                        value="0">
-                                                                    <input type="hidden" id="refcoluna" name="refcoluna"
-                                                                        value="0">
-                                                                    <%}%>
+                                            <!-- Modal -->
+                                            <div class="modal fade" id="exampleModal" tabindex="-1"
+                                                aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title" id="exampleModalLabel">Adicionar ao
+                                                                Carrinho
+                                                            </h5>
+                                                            <button type="button" class="btn-close"
+                                                                data-bs-dismiss="modal" aria-label="Close"
+                                                                onclick="document.getElementById('reditect').value = false"></button>
                                                         </div>
+                                                        <div class="modal-body">
+                                                            <div class="row">
+                                                                <div class="col-md-4 text-center text-md-start">
+                                                                    <input type="hidden" id="codItem" name="codItem"
+                                                                        value="<%=produto.id%>">
+                                                                    <%imagems.forEach((imagem,index)=>{%>
+                                                                        <%if(index==0){%>
+                                                                            <input type="image" class="mt-3"
+                                                                                src="<%=imagem.imagem%>" alt=""
+                                                                                height="120">
+                                                                            <%}%>
+                                                                                <%})%>
+                                                                </div>
+                                                                <div class="col-md-8 text-center">
+                                                                    <h5>
+                                                                        <%=produto.nome%>
+                                                                    </h5>
+                                                                    <div class="row">
+                                                                        <label for=""
+                                                                            class="form-label text-center ">Quantidade:</label>
+                                                                        <div class="col-md-12 text-center">
+                                                                            <button class="btn btn-danger" id="btnMenos"
+                                                                                onclick="diminuir()">-</button>
+                                                                            <button class="btn btn-ligth"
+                                                                                name="quantidade" value="1"
+                                                                                id="btnValor">1</button>
+                                                                            <button class="btn btn-success" id="btnMais"
+                                                                                onclick="adicionar()">+</button>
+                                                                        </div>
+                                                                        <%if(grades[0] !=undefined){%>
+                                                                            <label
+                                                                                class="form-label text-center mt-2">Grades:</label>
+                                                                            <div class="col-md-6">
+                                                                                <!-- 🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨 -->
+                                                                                <!-- Validar a linha de acordo com a coluna -->
+                                                                                <select name="reflinha" id="reflinha"
+                                                                                    class="form-select"
+                                                                                    onchange="gradeColuna(this.value)">
+                                                                                    <%var linhas=[];%>
+                                                                                        <%grades.forEach((grade,index)=>
+                                                                                            {%>
+                                                                                            <%var contem=1%>
+                                                                                                <%for(x=0;x <
+                                                                                                    index;x++){%>
+                                                                                                    <%if(linhas[x]==grade.reflinha){%>
+                                                                                                        <%var contem=0%>
+                                                                                                            <%}%>
+                                                                                                                <%}%>
 
+                                                                                                                    <%if(contem
+                                                                                                                        !=0){%>
+                                                                                                                        <option
+                                                                                                                            value="<%=grade.reflinha%>">
+                                                                                                                            <%=grade.linha%>
+                                                                                                                        </option>
+                                                                                                                        <%}%>
+                                                                                                                            <%linhas.push(grade.reflinha)%>
+                                                                                                                                <%})%>
+                                                                                </select>
+                                                                            </div>
+                                                                            <div class="col-md-6">
+                                                                                <select name="refcoluna"
+                                                                                    class="form-select" id="refcoluna">
+
+                                                                                </select>
+                                                                            </div>
+                                                                            <%}else{%>
+                                                                                <input type="hidden" id="reflinha"
+                                                                                    name="reflinha" value="0">
+                                                                                <input type="hidden" id="refcoluna"
+                                                                                    name="refcoluna" value="0">
+                                                                                <%}%>
+                                                                    </div>
+
+                                                                </div>
+
+                                                            </div>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary"
+                                                                data-bs-dismiss="modal"
+                                                                onclick="document.getElementById('reditect').value = false;">Cancelar</button>
+                                                            <button type="button" data-bs-dismiss="modal"
+                                                                class="btn btn-primary"
+                                                                onclick="AdicionarCarrinho()">Salvar</button>
+                                                        </div>
                                                     </div>
-
                                                 </div>
                                             </div>
-                                            <div class="modal-footer">
-                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
-                                                    onclick="document.getElementById('reditect').value = false;">Cancelar</button>
-                                                <button type="button" data-bs-dismiss="modal" class="btn btn-primary"
-                                                    onclick="AdicionarCarrinho()">Salvar</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
                             </article> <!-- product-info-aside .// -->
                         </main> <!-- col.// -->
                     </div> <!-- row.// -->
