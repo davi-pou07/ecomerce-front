@@ -70,18 +70,24 @@ app.use("/", entregaControler)
 
 
 
-app.get("/", async(req, res) => {
-    knex("produtos").select("id", "nome").where('status', true).orderBy('categoriaId').then(produtos => {
-        knex("categorias").select("destaque", "status", "titulo", "id").where('status', true).limit(6).then(categorias => {
-            knex("precos").select("produtoId", "desconto", "venda",).then(precos => {
-                knex("imagens").select("produtoId", "imagem").then(imagens => {
-                    knex("banners").select("img").where({ status: true, destaque: true }).then(banners => {
-                        res.render("index", { produtos: produtos, categorias: categorias, precos: precos, imagens: imagens, banners: banners })
-                    })
-                })
-            })
-        })
-    })
+app.get("/", async (req, res) => {
+    try {
+        var produtosIds = []
+        var produtos = await knex("produtos").select("id", "nome").where('status', true).orderBy('categoriaId')
+        produtos.forEach(produto => {
+            produtosIds.push(produto.id)
+        });
+        var categorias = await knex("categorias").select("destaque", "status", "titulo", "id").where('status', true).limit(6)
+        var precos = await knex("precos").select("produtoId", "desconto", "venda")
+        var imagens = await knex("imagens").select("produtoId", "imagem").whereIn("produtoId", produtosIds)
+        var banners = await knex("banners").select("img").where({ status: true, destaque: true })
+
+        res.render("index", { produtos: produtos, categorias: categorias, precos: precos, imagens: imagens, banners: banners })
+
+    } catch (err) {
+        console.log(err)
+        res.json(err)
+    }
 })
 
 

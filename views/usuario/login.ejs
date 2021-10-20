@@ -1,4 +1,5 @@
 <%- include('../partials/head.ejs')%>
+    <script src="https://unpkg.com/feather-icons"></script>
 
     <body>
         <nav class="navbar navbar-dark justify-content-between navbar-expand-lg">
@@ -10,15 +11,45 @@
                 </a>
             </div>
         </nav>
+        <div class="container-fluid">
+            <div class="text-center my-md-5 my-4">
+                <span data-feather="user" class="mb-3"></span>
+                <span class="fs-1">Login do Cliente</span>
+            </div>
 
-        <div class="container-fluid text-center mt-3">
-            <span data-feather="user"></span>
-            <h1>Login Cliente</h1>
+            <div class="row justify-content-center">
+                <div class="col-lg-3 col-md-5 col-8">
+                    <label for="emailLogin" class="form-label">Email:</label>
+                    <input type="email" name="emailLogin" placeholder="Ex: seuemail@seuemail.com" id="emailLogin"
+                        class="form-control">
+                </div>
+            </div>
+
+            <div class="row justify-content-center mt-md-4 mt-2">
+                <div class="col-lg-3 col-md-5 col-8">
+                    <label for="senhaLogin" class="form-label">Senha:</label>
+                    <input type="password" name="senhaLogin" id="senhaLogin" class="form-control">
+                </div>
+            </div>
+
+            <div class="row justify-content-center mt-4">
+                <div class="col-lg-3 col-md-5 col-8">
+                    <button id="btnLogar" onclick="logar()" class="btn btn-dark form-control">Continuar</button>
+                </div>
+            </div>
+
+            <div class="text-center mt-3">
+                <a href="/esqueceuSenha">Esqueceu senha?</a>
+                <p class="mt-2">Não tem conta? <a href="">Cadastre-se</a></p>
+            </div>
+
         </div>
     </body>
     <!-- choose one -->
-    <script src="https://unpkg.com/feather-icons"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.28.0/feather.min.js.map"></script>
+
+    <script>
+        feather.replace()
+    </script>
     <script src="/js/feather.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
     <script src="/js/telefone.js"></script>
@@ -83,11 +114,17 @@
         }
 
         function logar() {
+            var btnLogar = document.getElementById("btnLogar")
+            btnLogar.disabled = true
+            btnLogar.innerHTML = `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>Loading...`
+
             var emailLogin = document.getElementById("emailLogin").value
             var senhaLogin = document.getElementById("senhaLogin").value
             if (emailLogin != '' && senhaLogin != '') {
                 axios.post("/usuario/login", { emailLogin: emailLogin, senhaLogin: senhaLogin }).then(resp => {
                     if (resp.data.erro != undefined) {
+                        btnLogar.disabled = false
+                        btnLogar.innerHTML = 'Continue'
                         alert("Ocorreu um erro ao logar!\n" + "Erro: " + resp.data.erro)
                     } else {
                         window.location.href = "/"
@@ -95,6 +132,8 @@
                 })
             } else {
                 alert("Dados do login estão vazios")
+                btnLogar.disabled = false
+                btnLogar.innerHTML = 'Continue'
                 if (emailLogin != '') {
                     let e = document.getElementById("emailLogin")
                     e.classList.remove("is-invalid")
