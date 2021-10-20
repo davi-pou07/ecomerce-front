@@ -45,6 +45,10 @@ router.post("/usuario/login", (req, res) => {
     }
 })
 
+router.get("/usuario/cadastrar",(req,res)=>{
+    res.render("usuario/cadastrar")
+})
+
 router.post("/usuario/criar", (req, res) => {
     var nome = req.body.nome
     var email = req.body.email
