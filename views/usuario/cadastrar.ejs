@@ -18,9 +18,18 @@
                 <p class="fs-3">Cadastro de usuario</p>
             </div>
 
+            <div class="row justify-content-center mb-3">
+                <div class="col-lg-6 col-md-10 col-8">
+                    <label for="emailLogin" class="form-label">Informe o seu Nome Completo:</label>
+                    <span data-feather="user"></span>
+                    <input type="text" name="emailLogin" id="emailLogin" class="form-control">
+                </div>
+            </div>
+
             <div class="row justify-content-center">
                 <div class="col-lg-6 col-md-10 col-8">
                     <label for="emailLogin" class="form-label">Informe o seu E-mail:</label>
+                    <span data-feather="mail"></span>
                     <input type="email" name="emailLogin" placeholder="Ex: seuemail@seuemail.com" id="emailLogin"
                         class="form-control">
                 </div>
@@ -29,11 +38,30 @@
             <div class="row justify-content-center mt-md-4 mt-2">
                 <div class="col-lg-3 col-md-5 col-8">
                     <label for="senhaLogin" class="form-label">Informe sua Senha</label>
+                    <span data-feather="key"></span>
                     <input type="password" name="senhaLogin" id="senhaLogin" class="form-control">
                 </div>
                 <div class="col-lg-3 col-md-5 col-8">
                     <label for="senhaLogin" class="form-label">Confirme sua Senha</label>
+                    <span data-feather="lock"></span>
                     <input type="password" name="senhaLogin" id="senhaLogin" class="form-control">
+                </div>
+            </div>
+
+            <div class="row justify-content-center mt-3">
+                <div class="col-lg-3 col-md-5 col-8">
+                    <label for="telefone" class="form-label">Informe o seu Numero:</label>
+                    <span data-feather="smartphone"></span>
+                    <input type="tel" name="telefone" id="telefone" class="form-control">
+                </div>
+                <div class="col-lg-3 col-md-5 mt-2 col-8">
+                    <div class="form-check mt-4">
+                        <input class="form-check-input" checked type="checkbox" value="" id="flexCheckDefault">
+                        <label class="form-check-label" for="flexCheckDefault">
+                          Esse numero é do Whatsapp?
+                        </label>
+                    <span data-feather="message-circle"></span>
+                      </div>
                 </div>
             </div>
 
