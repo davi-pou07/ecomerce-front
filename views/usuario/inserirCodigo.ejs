@@ -1,0 +1,80 @@
+<%- include('../partials/head.ejs')%>
+    <script src="https://unpkg.com/feather-icons"></script>
+
+    <body>
+        <nav class="navbar navbar-dark justify-content-between navbar-expand-lg">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="#">
+                    <img src="/docs/5.1/assets/brand/bootstrap-logo.svg" alt="" width="30" height="24"
+                        class="d-inline-block align-text-top">
+                    Bootstrap
+                </a>
+            </div>
+        </nav>
+        <div class="container-fluid">
+            <div class="text-center my-md-5 my-4">
+                <span class="fs-1">Enviamos um código para seu e-mail!</span>
+                <p>Codigo enviado para <%=cliente.email%></p>
+                <input type="hidden" id="email" value="<%=cliente.email%>">
+            </div>
+
+            <div class="row justify-content-center">
+                <div class="col-lg-3 col-md-5 col-8">
+                    <label for="codigo" class="form-label">Insira o Codigo:</label>
+                    <input type="text" name="codigo" id="codigo" class="form-control">
+                </div>
+            </div>
+
+            <div class="text-center mt-3">
+                <a href="">Enviar Codigo Novamente</a>
+            </div>
+
+            <div class="row justify-content-center mt-4">
+                <div class="col-lg-3 col-md-5 col-8">
+                    <button id="btnLogar" onclick="inserirCodigo()" class="btn btn-dark form-control">Continuar</button>
+                </div>
+            </div>
+
+            <div class="text-center mt-3">
+                <p>Lembrou sua senha? <a href="/login">Login</a></p>
+            </div>
+
+        </div>
+    </body>
+    <!-- choose one -->
+
+    <script>
+        feather.replace()
+    </script>
+    <script src="/js/feather.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="/js/axios.min.js"></script>
+    <script>
+        function inserirCodigo() {
+            var codigo = document.getElementById("codigo").value
+            var email = document.getElementById("email").value
+            if (codigo != '') {
+                axios.post("/inserirCodigo",{codigo:codigo,email:email}).then(resp =>{
+                    if (resp.data.erro == undefined) {
+                        if (resp.data.cliente != undefined) {
+                            document.location.href = `/alterarSenha/${resp.data.cliente}`
+                        } else {
+                          document.location.reload()  
+                        }
+                    } else {
+                        var erro = resp.data.erro
+                        if (erro == 1) {
+                            document.location.href = '/esqueceuSenha'
+                        } else{
+                            alert(erro)
+                        }
+                    }
+                })
+            } else {
+              alert("Codigo não pode ser vazio")  
+            }
+        }
+    </script>
+    </body>
+
+    </html>

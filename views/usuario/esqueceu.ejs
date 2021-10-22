@@ -1,0 +1,73 @@
+<%- include('../partials/head.ejs')%>
+    <script src="https://unpkg.com/feather-icons"></script>
+
+    <body>
+        <nav class="navbar navbar-dark justify-content-between navbar-expand-lg">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="#">
+                    <img src="/docs/5.1/assets/brand/bootstrap-logo.svg" alt="" width="30" height="24"
+                        class="d-inline-block align-text-top">
+                    Bootstrap
+                </a>
+            </div>
+        </nav>
+        <div class="container-fluid">
+            <div class="text-center my-md-5 my-4">
+                <span data-feather="user" class="mb-3"></span>
+                <span class="fs-1">Esqueceu a Senha?</span>
+                <p>Enviaremos um e-mail com uma nova senha para que retorne a ter seu acesso em nossa plataforma</p>
+            </div>
+
+            <div class="row justify-content-center">
+                <div class="col-lg-3 col-md-5 col-8">
+                    <label for="email" class="form-label">Informe seu E-mail</label>
+                    <input type="email" name="email" placeholder="Ex: seuemail@seuemail.com" id="email"
+                        class="form-control">
+                </div>
+            </div>
+
+            <div class="row justify-content-center mt-4">
+                <div class="col-lg-3 col-md-5 col-8">
+                    <button id="btnLogar" onclick="esqueceu()" class="btn btn-dark form-control">Continuar</button>
+                </div>
+            </div>
+
+            <div class="text-center mt-3">
+                <p>Lembrou sua senha? <a href="/login">Login</a></p>
+                <p class="mt-2">Não tem conta? <a href="/usuario/cadastrar">Cadastre-se</a></p>
+            </div>
+
+        </div>
+    </body>
+    <!-- choose one -->
+
+    <script>
+        feather.replace()
+    </script>
+    <script src="/js/feather.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="/js/axios.min.js"></script>
+    <script>
+        function esqueceu() {
+            var email = document.getElementById("email").value
+            if (email != undefined && email != '') {
+                axios.post("/esqueceu", { email: email }).then(resp => {
+                    if (resp.data.erro != undefined) {
+                        alert(resp.data.erro)
+                    } else {
+                        if (resp.data.resp != undefined) {
+                            alert(resp.data.resp)
+                            document.location.href = `/inserirCodigo/${resp.data.id}`
+                        } else {
+
+                        }
+                    }
+                })
+            } else {
+                alert("Email vazio ou inválido")
+            }
+        }
+    </script>
+    </body>
+
+    </html>

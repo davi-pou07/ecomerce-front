@@ -28,7 +28,7 @@ var remetente = nodemailer.createTransport({
     secure: true,
     auth: {
         user: "poudeyvis007@gmail.com",
-        pass: "95599441sergi"
+        pass: "99965511auri"
     }
 });
 

@@ -4,14 +4,26 @@ const router = express.Router()
 const knex = require("../Databases/admin/databases")
 const Cliente = require("../Databases/client/Cliente")
 const Carrinho = require("../Databases/client/Carrinho")
-
+var RecuperaSenha = require("../Databases/client/RecuperaSenha")
 const { Op, useInflection } = require("sequelize");
 const validator = require('validator')
 const validCpf = require("cpf")
 const moment = require("moment")
 const bcrypt = require("bcryptjs")
 const auth = require("../middlewares/adminAuth")
+const nodemailer = require("nodemailer");
+var uniqid = require('uniqid');
 
+var remetente = nodemailer.createTransport({
+    host: "smtp.office365.com",
+    service: "Outlook365",
+    port: 587,
+    secure: true,
+    auth: {
+        user: "poudeyvis007@gmail.com",
+        pass: "99965511auri"
+    }
+});
 
 router.get("/login", (req, res) => {
     res.render("usuario/login")
@@ -49,6 +61,7 @@ router.get("/usuario/cadastrar", (req, res) => {
     res.render("usuario/cadastrar")
 })
 
+
 router.post("/usuario/criar", (req, res) => {
     var nome = req.body.nome
     var email = req.body.email
@@ -57,7 +70,7 @@ router.post("/usuario/criar", (req, res) => {
     var confirm = req.body.confirm
     var isWhats = req.body.isWhats
     var foto = req.body.foto
-    
+
     if (foto != undefined && foto != '') {
         var image = foto.split("data:image")
         if (image == undefined) {
@@ -82,7 +95,7 @@ router.post("/usuario/criar", (req, res) => {
                                 senha: hash,
                                 status: true,
                                 foto: foto,
-                                isWhats:isWhats
+                                isWhats: isWhats
                             }).then(cliente => {
                                 Carrinho.create({
                                     status: true,
@@ -112,6 +125,105 @@ router.post("/usuario/criar", (req, res) => {
         }
     } else {
         res.json({ erro: "Dados vazios" })
+    }
+})
+
+router.get("/esqueceuSenha", (req, res) => {
+    res.render("usuario/esqueceu")
+})
+
+router.post("/esqueceu", async (req, res) => {
+    var email = req.body.email
+    if (email != undefined && email != '') {
+        if (validator.isEmail(email)) {
+            Cliente.findOne({ where: { email: email.toLowerCase() } }).then(cliente => {
+                if (cliente != undefined) {
+                    var recuperaSenha = RecuperaSenha.findOne({ where: { status: true, clienteId: cliente.id } })
+                    if (recuperaSenha != undefined) {
+                        RecuperaSenha.update({ staus: false }, { where: { id: recuperaSenha.id } })
+                    }
+                    var idUnica = uniqid()
+                    RecuperaSenha.create({
+                        clienteId: cliente.id,
+                        status: true,
+                        uniqid: idUnica,
+                        aprovado: false
+                    }).then(rec => {
+                        try {
+                            var emailASerEnviado = {
+                                from: 'poudeyvis007@gmail.com',
+                                to: cliente.email,
+                                subject: `Esqueceu sua senha? Estamos aqui para lhe ajudar!`,
+                                text: `Não compartilhe esse codigo com ninguém! O codigo é ${idUnica}`
+                            };
+
+                            remetente.sendMail(emailASerEnviado, function (error) {
+                                if (error) {
+                                    console.log(error);
+                                } else {
+                                    console.log("Email enviado com sucesso");
+                                }
+                            });
+                        } catch (err) {
+                            console.log(err)
+                        } finally {
+                            res.json({ resp: "Solicitação aberta com sucesso!", id: rec.id })
+                        }
+                    })
+                } else {
+                    res.json({ erro: 'Email não encontrado em nossa base, caso seja novo usuario realizar cadastro' })
+                }
+            }).catch(err => {
+                console.log(err)
+                res.redirect("/")
+            })
+        } else {
+            res.json({ erro: "Email inválido" })
+        }
+    } else {
+        res.json({ erro: "Email vazio ou inválido" })
+    }
+})
+
+router.get("/inserirCodigo/:id", (req, res) => {
+    var id = req.params.id
+    if (id != undefined) {
+        RecuperaSenha.findByPk(id).then(async recuperaSenha => {
+            if (recuperaSenha != undefined) {
+                var cliente = await Cliente.findByPk(recuperaSenha.clienteId)
+                res.render("usuario/inserirCodigo", { cliente: cliente })
+            } else {
+                res.redirect("/esqueceuSenha")
+            }
+        })
+    } else {
+        res.redirect("/esqueceuSenha")
+    }
+})
+
+router.post("/inserirCodigo", async (req, res) => {
+    var codigo = req.body.codigo
+    console.log(codigo)
+    var email = req.body.email
+
+    if (codigo != undefined && codigo != '') {
+        if (validator.isEmail(email)) {
+            var cliente = await Cliente.findOne({ where: { email: email.toLowerCase() } })
+            var recuperaSenha = await RecuperaSenha.findOne({ where: { clienteId: cliente.id, uniqid: codigo, status: true } })
+            if (recuperaSenha != undefined) {
+                RecuperaSenha.update({ aprovado: true }, { where: { id: recuperaSenha.id } }).then(() => {
+                    res.json({ cliente: cliente.id })
+                }).catch(err => {
+                    console.log(err)
+                })
+            } else {
+                res.json({ erro: "codigo inválido" })
+            }
+        } else {
+            res.json({ erro: 1 })
+        }
+    } else {
+        res.json({ erro: "Codigo inválido ou inexistente" })
     }
 })
 
