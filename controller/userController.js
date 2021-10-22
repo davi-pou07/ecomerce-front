@@ -140,13 +140,17 @@ router.post("/esqueceu", async (req, res) => {
                 if (cliente != undefined) {
                     var recuperaSenha = RecuperaSenha.findOne({ where: { status: true, clienteId: cliente.id } })
                     if (recuperaSenha != undefined) {
-                        RecuperaSenha.update({ staus: false }, { where: { id: recuperaSenha.id } })
+                        RecuperaSenha.update({ staus: false, aprovado: false }, { where: { id: recuperaSenha.id } })
                     }
-                    var idUnica = uniqid()
+                    var idUnica = Math.floor(Math.random() * 9999)
+                    while (idUnica.toString().length < 4) {
+                        idUnica = '0' + idUnica
+                    }
+                    
                     RecuperaSenha.create({
                         clienteId: cliente.id,
                         status: true,
-                        uniqid: idUnica,
+                        uniqid: idUnica.toString(),
                         aprovado: false
                     }).then(rec => {
                         try {
@@ -224,6 +228,28 @@ router.post("/inserirCodigo", async (req, res) => {
         }
     } else {
         res.json({ erro: "Codigo inválido ou inexistente" })
+    }
+})
+
+router.get("/alterarSenha/:clienteId", async (req, res) => {
+    var clienteId = req.params.clienteId
+    if (!isNaN(clienteId)) {
+        var cliente = await Cliente.findByPk(clienteId)
+        if (cliente != undefined) {
+            var recuperaSenha = await RecuperaSenha.findOne({ where: { clienteId: cliente.id, /*status: true,*/ aprovado: true } })
+            console.log(recuperaSenha)
+            if (recuperaSenha != undefined) {
+                RecuperaSenha.update({ status: false }, { where: { id: recuperaSenha.id } }).then(() => {
+                    res.render("usuario/alterarSenha", { cliente: cliente.id })
+                })
+            } else {
+                res.redirect("/esqueceuSenha")
+            }
+        } else {
+            res.redirect("/esqueceuSenha")
+        }
+    } else {
+        res.redirect("/esqueceuSenha")
     }
 })
 

@@ -1,0 +1,89 @@
+<%- include('../partials/head.ejs')%>
+    <script src="https://unpkg.com/feather-icons"></script>
+
+    <body>
+        <nav class="navbar navbar-dark justify-content-between navbar-expand-lg">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="#">
+                    <img src="/docs/5.1/assets/brand/bootstrap-logo.svg" alt="" width="30" height="24"
+                        class="d-inline-block align-text-top">
+                    Bootstrap
+                </a>
+            </div>
+        </nav>
+        <div class="container-fluid">
+            <div class="text-center my-md-5 my-4">
+                <span class="fs-1">Alteração de Senha</span>
+                <input type="hidden" id="clienteId" value="<%=cliente%>">
+            </div>
+
+            <div class="row justify-content-center">
+                <div class="col-lg-3 col-md-5 col-8">
+                    <label for="senha" class="form-label">Insira sua Nova Senha:</label>
+                    <input type="password" name="senha" id="senha" class="form-control">
+                </div>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col-lg-3 col-md-5 col-8">
+                    <label for="confirm" class="form-label">Confirme sua Nova Senha:</label>
+                    <input type="password" name="confirm" id="confirm" class="form-control">
+                </div>
+            </div>
+
+            <div class="row justify-content-center mt-4">
+                <div class="col-lg-3 col-md-5 col-8">
+                    <button id="btnLogar" onclick="alterarSenha()" class="btn btn-dark form-control">Continuar</button>
+                </div>
+            </div>
+        </div>
+    </body>
+    <!-- choose one -->
+
+    <script>
+        feather.replace()
+    </script>
+    <script src="/js/feather.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="/js/axios.min.js"></script>
+    <script>
+        function valid() {
+            var senha = document.getElementById("senha").value
+            var confirm = document.getElementById("confirm").value
+
+            if (senha != '' && senha.length >= 6) {
+                let s = document.getElementById("senha")
+                s.classList.remove("is-invalid")
+                s.classList.add("is-valid")
+                erro[0] = false
+                if (senha == confirm) {
+                    let cn = document.getElementById("confirm")
+                    cn.classList.remove("is-invalid")
+                    cn.classList.add("is-valid")
+                    erro[1] = false
+                } else {
+                    alert("Senha não são iguais")
+                    let cn = document.getElementById("confirm")
+                    cn.classList.remove("is-valid")
+                    cn.classList.add("is-invalid")
+                    erro[1] = true
+                }
+            } else {
+                console.log(senha)
+                alert("Senha não pode ser vazia e a quantidade minima é de 6 digitos")
+                let s = document.getElementById("senha")
+                s.classList.remove("is-valid")
+                s.classList.add("is-invalid")
+
+                let cn = document.getElementById("confirm")
+                cn.classList.remove("is-valid")
+                cn.classList.add("is-invalid")
+                erro[0] = true
+            }
+
+            var valid = erro.find(e => e == true)
+            return valid
+        }
+    </script>
+    </body>
+
+    </html>
