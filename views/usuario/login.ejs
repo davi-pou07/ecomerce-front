@@ -53,66 +53,8 @@
     <script src="/js/feather.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
     <script src="/js/telefone.js"></script>
-    <script>
-        function valid() {
-            var nome = document.getElementById("nome").value
-            var email = document.getElementById("email").value
-            var numero = document.getElementById("numero").value
-            var senha = document.getElementById("senha").value
-            var confirm = document.getElementById("confirm").value
-            if (nome != '') {
-                let n = document.getElementById("nome")
-                n.classList.remove("is-invalid")
-                n.classList.add("is-valid")
-            } else {
-                let n = document.getElementById("nome")
-                n.classList.remove("is-valid")
-                n.classList.add("is-invalid")
-            }
-            if (email != '') {
-                let e = document.getElementById("email")
-                e.classList.remove("is-invalid")
-                e.classList.add("is-valid")
-            } else {
-                let e = document.getElementById("email")
-                e.classList.remove("is-valid")
-                e.classList.add("is-invalid")
-            } if (numero != '' && numero.length > 14) {
-                let t = document.getElementById("numero")
-                t.classList.remove("is-invalid")
-                t.classList.add("is-valid")
-            } else {
-                let t = document.getElementById("numero")
-                t.classList.remove("is-valid")
-                t.classList.add("is-invalid")
-            }
-        }
-    </script>
     <script src="/js/axios.min.js"></script>
     <script>
-        function criar() {
-            var nome = document.getElementById("nome").value
-            var email = document.getElementById("email").value
-            var numero = document.getElementById("numero").value
-            var senha = document.getElementById("senha").value
-            var confirm = document.getElementById("confirm").value
-            if (nome != '' && email != '' && numero != '' && senha != '' && confirm != '') {
-                if (senha == confirm) {
-                    axios.post("/usuario/criar", { nome: nome, email: email, numero: numero, senha: senha, confirm: confirm }).then(resp => {
-                        if (resp.data.erro != undefined) {
-                            alert("Ocorreu um erro ao cadastrar um novo usuario!\n" + "Erro: " + resp.data.erro)
-                        } else {
-                            window.location.href = "/"
-                        }
-                    })
-                } else {
-                    alert("Credencias de senha inválida")
-                }
-            } else {
-                alert("Dados vazios")
-            }
-        }
-
         function logar() {
             var btnLogar = document.getElementById("btnLogar")
             btnLogar.disabled = true

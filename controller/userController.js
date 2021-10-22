@@ -45,7 +45,7 @@ router.post("/usuario/login", (req, res) => {
     }
 })
 
-router.get("/usuario/cadastrar",(req,res)=>{
+router.get("/usuario/cadastrar", (req, res) => {
     res.render("usuario/cadastrar")
 })
 
@@ -55,7 +55,18 @@ router.post("/usuario/criar", (req, res) => {
     var numero = req.body.numero
     var senha = req.body.senha
     var confirm = req.body.confirm
-    var foto = '/img/avatar.jpg'
+    var isWhats = req.body.isWhats
+    var foto = req.body.foto
+    
+    if (foto != undefined && foto != '') {
+        var image = foto.split("data:image")
+        if (image == undefined) {
+            var foto = '/img/avatar.jpg'
+        }
+    } else {
+        var foto = '/img/avatar.jpg'
+    }
+
     if (nome != '' && email != '' && senha != '' && confirm != '') {
         if (senha == confirm) {
             var salt = bcrypt.genSaltSync(10)
@@ -70,7 +81,8 @@ router.post("/usuario/criar", (req, res) => {
                                 numero: numero,
                                 senha: hash,
                                 status: true,
-                                foto: foto
+                                foto: foto,
+                                isWhats:isWhats
                             }).then(cliente => {
                                 Carrinho.create({
                                     status: true,
@@ -202,7 +214,7 @@ router.post("/usuario/editar", auth, async (req, res) => {
                                     email: email.toLowerCase(),
                                     foto: foto,
                                     senha: hash,
-                                    updatedAt:moment().format()
+                                    updatedAt: moment().format()
                                 }, { where: { id: usuario } }).then(cliente => {
                                     res.json({ resp: "Informações atualizadas" })
                                 })
@@ -270,7 +282,7 @@ router.get("/usuario/transicao/:transicaoId", async (req, res) => {
             var dadosEntrega = await knex("dadosentregas").select().where({ clienteId: cliente.id, carrinhoId: carrinho.id })
             var data = moment(dadosTransicao[0].createdAt).format('DD/MM/YYYY, h:mm:ss a')
 
-            var statusEntrega = await knex("statusentregas").select().where({statusId:dadosEntrega[0].status})
+            var statusEntrega = await knex("statusentregas").select().where({ statusId: dadosEntrega[0].status })
             dadosEntrega[0].status = statusEntrega[0].status
             if (dadosVenda[0].opcaoDePagamento == 1) {
                 var dadosPagamento = await knex("dadospagamentospixes").select().where({ clienteId: cliente.id, dadosId: dadosTransicao[0].dadosId })

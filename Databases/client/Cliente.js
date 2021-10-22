@@ -37,6 +37,10 @@ const Cliente = connectionCL.define('clientes',{
     foto:{
         type:Sequelize.TEXT,
         allowNull:true 
+    },
+    isWhats:{
+        type:Sequelize.STRING,
+        allowNull:true
     }
 })
 
