@@ -146,7 +146,7 @@ router.post("/esqueceu", async (req, res) => {
                     while (idUnica.toString().length < 4) {
                         idUnica = '0' + idUnica
                     }
-                    
+
                     RecuperaSenha.create({
                         clienteId: cliente.id,
                         status: true,
@@ -236,7 +236,7 @@ router.get("/alterarSenha/:clienteId", async (req, res) => {
     if (!isNaN(clienteId)) {
         var cliente = await Cliente.findByPk(clienteId)
         if (cliente != undefined) {
-            var recuperaSenha = await RecuperaSenha.findOne({ where: { clienteId: cliente.id, /*status: true,*/ aprovado: true } })
+            var recuperaSenha = await RecuperaSenha.findOne({ where: { clienteId: cliente.id, status: true, aprovado: true } })
             console.log(recuperaSenha)
             if (recuperaSenha != undefined) {
                 RecuperaSenha.update({ status: false }, { where: { id: recuperaSenha.id } }).then(() => {
@@ -250,6 +250,41 @@ router.get("/alterarSenha/:clienteId", async (req, res) => {
         }
     } else {
         res.redirect("/esqueceuSenha")
+    }
+})
+
+router.post("/alterarSenha", async (req, res) => {
+    var { senha, confirm, usuarioId } = req.body
+    if (senha == confirm && senha != '') {
+        var cliente = await Cliente.findByPk(usuarioId)
+        if (cliente != undefined) {
+            var recuperaSenha = await RecuperaSenha.findOne({ where: { clienteId: cliente.id, aprovado: true } })
+            if (recuperaSenha != undefined) {
+                var salt = bcrypt.genSaltSync(10)
+                var hash = bcrypt.hashSync(senha, salt)
+                Cliente.update({
+                    senha: hash,
+                    updatedAt: moment().format()
+                }, { where: { id: cliente.id } }).then(() => {
+
+                    var nomeCli = cliente.nome.split(" ")[0]
+                    req.session.cli = {
+                        id: cliente.id,
+                        nome: nomeCli
+                    }
+                    res.json({ resp: "Senha atualizada com sucesso" })
+                }).catch(err => {
+                    console.log(err)
+                    res.json({ erro: "Erro" })
+                })
+            } else {
+                res.json({ erroId: 2,erro:"Sem autorização" })
+            }
+        } else {
+            res.json({ erroId: 1,erro:"Cliente não definido" })
+        }
+    } else {
+        res.json({ erro: "Senhas inválida" })
     }
 })
 

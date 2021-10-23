@@ -83,6 +83,34 @@
             var valid = erro.find(e => e == true)
             return valid
         }
+
+        function alterarSenha() {
+            var vl = valid()
+            if (value != true) {
+                var senha = document.getElementById("senha").value
+                var confirm = document.getElementById("confirm").value
+                var clienteId = document.getElementById("clienteId").value
+                axios.post("/alterarSenha",{senah:senha,confirm:confirm,clienteId:clienteId}).then(resp =>{
+                    if (resp.data.erro == undefined) {
+                        alert(resp.data.resp)
+                        document.location.href = '/'
+                    } else {
+                        var erro = resp.data.erro
+                        if (erro.erroId == 1) {
+                            alert(erro.erro)
+                            document.location.href = '/login'
+                        } else if (erro.erroId == 2) {
+                            alert(erro.erro)
+                            document.location.href = '/login'
+                        }else{
+                            alert(erro)
+                        }
+                    }
+                })
+            } else {
+
+            }
+        }
     </script>
     </body>
 
