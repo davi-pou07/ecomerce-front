@@ -144,6 +144,7 @@
                                         <ul class="dropdown-menu dropdown-menu-start dropdown-menu-dark"
                                             aria-labelledby="navbarDropdownMenuLink">
                                             <li><a class="dropdown-item text-center" id="userNome">Usuario</a></li>
+                                            <input type="hidden" name="usuarioId" id="usuarioId">
                                             <li>
                                                 <hr class="dropdown-divider">
                                             </li>
@@ -191,6 +192,7 @@
                 dropTogle.dataset.bsToggle = 'dropdown'
                 //Colocar nome do cliente
                 var userNome = document.getElementById("userNome").innerHTML = dados.clienteNome.split(" ")[0]
+                var usuarioId =  document.getElementById("usuarioId").value = dados.clienteId
                 //Coloca foto do cliente
                 if (dados.clienteFoto != undefined) {
                     var imgCli = document.getElementById("imgCli")

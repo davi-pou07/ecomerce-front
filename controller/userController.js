@@ -236,7 +236,7 @@ router.get("/alterarSenha/:clienteId", async (req, res) => {
     if (!isNaN(clienteId)) {
         var cliente = await Cliente.findByPk(clienteId)
         if (cliente != undefined) {
-            var recuperaSenha = await RecuperaSenha.findOne({ where: { clienteId: cliente.id, status: true, aprovado: true } })
+            var recuperaSenha = await RecuperaSenha.findOne({ where: { clienteId: cliente.id, /*status: true,*/ aprovado: true } })
             console.log(recuperaSenha)
             if (recuperaSenha != undefined) {
                 RecuperaSenha.update({ status: false }, { where: { id: recuperaSenha.id } }).then(() => {
@@ -254,9 +254,9 @@ router.get("/alterarSenha/:clienteId", async (req, res) => {
 })
 
 router.post("/alterarSenha", async (req, res) => {
-    var { senha, confirm, usuarioId } = req.body
+    var { senha, confirm, clienteId } = req.body
     if (senha == confirm && senha != '') {
-        var cliente = await Cliente.findByPk(usuarioId)
+        var cliente = await Cliente.findByPk(clienteId)
         if (cliente != undefined) {
             var recuperaSenha = await RecuperaSenha.findOne({ where: { clienteId: cliente.id, aprovado: true } })
             if (recuperaSenha != undefined) {

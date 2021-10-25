@@ -3,7 +3,7 @@ const router = express.Router()
 const knex = require("../Databases/admin/databases")
 const auth = require("../middlewares/adminAuth")
 
-router.get("/produto/:id", async (req, res) => {
+router.get("/produto/:id", auth,async (req, res) => {
     produtoId = req.params.id
     try {
         var produto = await knex("produtos").select().where({ id: produtoId, status: true })
