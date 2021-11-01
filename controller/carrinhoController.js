@@ -10,8 +10,6 @@ var moment = require('moment');
 router.post("/carrinho/adicionar", auth, async (req, res) => {
     var usuario = req.session.cli
     if (usuario != undefined) {
-
-
         var codItem = req.body.codItem
         var quantidadeItem = req.body.quantidadeItem
         var refcoluna = req.body.refcoluna

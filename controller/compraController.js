@@ -2,17 +2,20 @@ const express = require('express')
 const router = express.Router()
 const knex = require("../Databases/admin/databases")
 const auth = require("../middlewares/adminAuth")
+
 var moment = require('moment');
 var uniqid = require('uniqid');
+const validator = require('validator')
+const validCpf = require("cpf")
+const nodemailer = require("nodemailer");
+const MercadoPago = require("mercadopago");
+
 const Cliente = require('../Databases/client/Cliente');
 const CodItens = require("../Databases/client/CodItens")
 const Carrinho = require("../Databases/client/Carrinho");
-const nodemailer = require("nodemailer");
-const MercadoPago = require("mercadopago");
-const validator = require('validator')
-const validCpf = require("cpf")
 
-var opcaoDePagamentos = [{ id: 1, opcao: "PIX" }, { id: 2, opcao: "MERCADO PAGO" }, { id: 3, opcao: "PAGAR NA ENTREGA" }]
+
+const opcaoDePagamentos = [{ id: 1, opcao: "PIX" }, { id: 2, opcao: "MERCADO PAGO" }, { id: 3, opcao: "PAGAR NA ENTREGA" }]
 
 const { compareSync } = require('bcryptjs');
 
@@ -34,14 +37,15 @@ var remetente = nodemailer.createTransport({
 
 // Mercado pago
 router.get("/carrinho/finalizarCompra/:opcao", async (req, res) => {
+
     var usuario = req.session.cli
-    //parametros.opcaoDePagamentos
     var escolhaOpcaoPagamento = req.params.opcao
     var opcaoPagamento = await opcaoDePagamentos.find(opcao => opcao.id == escolhaOpcaoPagamento)
     console.error(opcaoPagamento)
+    var cliente = await Cliente.findByPk(usuario.id)
     //var usuario = { id: 1 }
-    if (usuario != undefined) {
-        var cliente = await Cliente.findByPk(usuario.id)
+
+    if (usuario != undefined && cliente != undefined) {
 
         try {
             var carrinho = await Carrinho.findOne({ where: { clienteId: cliente.id, status: true } })
@@ -56,8 +60,6 @@ router.get("/carrinho/finalizarCompra/:opcao", async (req, res) => {
             }
 
             var dadosVendas = await knex('dadosvendas').select().where({ clienteId: cliente.id, carrinhoId: carrinho.id })
-            console.log("--------------dadosVendas[0]---------------")
-            console.log(dadosVendas[0])
             if (dadosVendas[0] == '' || dadosVendas[0] == undefined) {
                 var idUnica = uniqid()
             } else {
@@ -71,85 +73,60 @@ router.get("/carrinho/finalizarCompra/:opcao", async (req, res) => {
             res.json({ erro: "Ocorreu um erro, entre em contato com o suporte" })
         }
 
+        if (dadosVendas[0] == '' || dadosVendas[0] == undefined) {
+            var retornoDadosVendas = await knex('dadosvendas').insert({
+                dadosId: idUnica,
+                descricao: descricao,
+                quantidade: 1,
+                currency_id: 'BRL',
+                unit_price: precoTotal,
+                emailCliente: cliente.email,
+                clienteId: cliente.id,
+                carrinhoId: carrinho.id,
+                status: 'P',
+                tentativas: 1,
+                createdAt: data,
+                updatedAt: data,
+                opcaoDePagamento: opcaoPagamento.id
+            })
+        } else {
+            var retornoDadosVendas = await knex('dadosvendas').update({
+                tentativas: parseInt(dadosVendas[0].tentativas) + 1,
+                descricao: descricao,
+                emailCliente: cliente.email,
+                unit_price: precoTotal,
+                opcaoDePagamento: opcaoPagamento.id,
+                updatedAt: moment().format()
+            }).where({ id: dadosVendas[0].id })
+        }
 
         if (opcaoPagamento.id == 1) {
-
             try {
-                if (dadosVendas[0] == '' || dadosVendas[0] == undefined) {
-                    knex('dadosvendas').insert({
-                        dadosId: idUnica,
-                        descricao: descricao,
-                        quantidade: 1,
-                        currency_id: 'BRL',
-                        unit_price: precoTotal,
-                        emailCliente: cliente.email,
-                        clienteId: cliente.id,
-                        carrinhoId: carrinho.id,
-                        status: 'P',
-                        tentativas: 1,
-                        createdAt: data,
-                        updatedAt: data,
-                        opcaoDePagamento: opcaoPagamento.id
-                    }).catch(err => {
-                        console.log(err)
-                    })
-                } else {
-                    knex('dadosvendas').update({
-                        tentativas: parseInt(dadosVendas[0].tentativas) + 1,
-                        descricao: descricao,
-                        emailCliente: cliente.email,
-                        unit_price: precoTotal,
-                        opcaoDePagamento: opcaoPagamento.id,
-                        updatedAt: moment().format()
-                    }).where({ id: dadosVendas[0].id }).catch(err => {
-                        console.log(err)
-                    })
-                }
-                try {
-                    var dadosVendas = await knex("dadosvendas").select().where({ dadosId: idUnica })
-                    var date = moment().format();
-                    var qDadosTransicoes = await knex("dadostransicoes").select()
-                    knex("dadostransicoes").insert({
+                var dadosVendas = await knex("dadosvendas").select().where({ dadosId: idUnica })
+                var date = moment().format();
+
+                    var dadosPagamentos = await knex("dadospagamentos").select().where({ clienteId: cliente.id, carrinhoId: carrinho.id })
+
+                    var ordeNum = Math.floor(Math.random() * 9999)
+                    while (ordeNum.toString().length < 4) {
+                        ordeNum = '0' + ordeNum
+                    }
+
+                    var updateDadosPagamentos = await knex("dadospagamentos").update({
                         dadosId: dadosVendas[0].dadosId,
-                        status: "pending",
-                        clienteId: dadosVendas[0].clienteId,
-                        carrinhoId: dadosVendas[0].carrinhoId,
-                        statusColetado: "Analise",
-                        formaPagamento: "bank_transfer",
-                        orderId: '000' + parseInt(qDadosTransicoes.length + 1),
-                        createdAt: date,
-                        updatedAt: date
-                    }).then(async () => {
+                        ordeId: ordeNum,
+                        updatedAt: moment().format()
+                    }).where({ id: dadosPagamentosPix[0].id })
 
-                        var dadosPagamentosPix = await knex("dadospagamentospixes").select().where({ clienteId: cliente.id, carrinhoId: carrinho.id })
-                        console.log(dadosVendas[0].dadosId)
-                        console.log("----------")
-                        console.log('000' + parseInt(qDadosTransicoes.length + 1))
+                    console.log("passou update")
+                    console.log(updateDadosPagamentos)
 
-                        var updateDadosPixes = await knex("dadospagamentospixes").update({
-                            dadosId: dadosVendas[0].dadosId,
-                            ordeId: '000' + parseInt(qDadosTransicoes.length + 1),
-                            updatedAt: moment().format()
-                        }).where({ id: dadosPagamentosPix[0].id })
-
-                        console.log("passou update")
-                        console.log(updateDadosPixes)
-
-                        Carrinho.update({ status: false, updatedAt: moment().format() }, { where: { id: dadosVendas[0].carrinhoId } }).then(async () => {
-                            var dadosTransicoes = await knex("dadostransicoes").select().where({ dadosId: dadosVendas[0].dadosId })
-                            console.log("passou update carrinho")
-
-                            res.redirect("/usuario/transicao/" + dadosTransicoes[0].id)
-                        })
+                    Carrinho.update({ status: false, updatedAt: moment().format() }, { where: { id: dadosVendas[0].carrinhoId } }).then(async () => {
+                        res.redirect("/usuario/transicao/" + dadosVendas[0].dadosId)
                     })
-                } catch (error) {
-                    console.log(error)
-                }
-
             } catch (error) {
                 console.log(error)
             }
-
         } else if (opcaoPagamento.id == 2) {
 
             var dados = {
