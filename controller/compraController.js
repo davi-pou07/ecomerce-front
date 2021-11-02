@@ -530,7 +530,7 @@ router.post("/solicitar/entrega", auth, async (req, res) => {
                         var cliente = await Cliente.findByPk(usuario.id)
                         var carrinho = await Carrinho.findOne({ where: { clienteId: cliente.id, status: true } })
                         var dadosEntrega = await knex("dadosentregas").select().where({ clienteId: cliente.id, carrinhoId: carrinho.id })
-                        
+                    
                         var atualizaDadosEntrega = await knex("dadosentregas").update({
                             cpf:cpf,
                             dataNasc:dataNasc,
@@ -538,8 +538,8 @@ router.post("/solicitar/entrega", auth, async (req, res) => {
                             numero:numero
                         }).where({id:dadosEntrega[0].id})
 
-                        var dadosPagamentosE= await knex("dadospagamentos").select().where({ clienteId: cliente.id, carrinhoId: carrinho.id })
-                        if (dadosPagamentosEntrega[0] == undefined) {
+                        var dadosPagamentos= await knex("dadospagamentos").select().where({ clienteId: cliente.id, carrinhoId: carrinho.id })
+                        if (dadosPagamentos[0] == undefined) {
                             // statusId: 1 - ANALISE. 2 - APROVADO. 3 - REJEITADO. 4- ESTORNADO
                             knex("dadospagamentos").insert({
                                 statusId: statusPagamento.id,
@@ -552,7 +552,6 @@ router.post("/solicitar/entrega", auth, async (req, res) => {
                                 dataExpiracao: moment().add(2, 'days').format(),
                                 detalhePagamento:"Entrega",
                                 metodoPagamento:"Entrega",
-                                dadosEntragaId:dadosEntrega[0].id
                             }).catch(err => {
                                 console.log(err)
                                 res.json({ erro: "Erro ao solicitar entrega" })
@@ -568,7 +567,7 @@ router.post("/solicitar/entrega", auth, async (req, res) => {
                                 metodoPagamento:"Entrega",
                                 dadosEntragaId: dadosEntrega[0].id,
                                 updatedAt: moment().format()
-                            }).where({ id: dadosPagamentosEntrega[0].id }).catch(err => {
+                            }).where({ id: dadosPagamentos[0].id }).catch(err => {
                                 console.log(err)
                                 res.json({ erro: "Erro ao solicitar entrega" })
                             })
