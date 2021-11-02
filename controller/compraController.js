@@ -457,6 +457,7 @@ router.post("/comprovante/pix", auth, async (req, res) => {
                     res.json({ erro: 0 })
                 }).catch(err => {
                     console.log(err)
+                    console.log("--------------------------------")
                     res.json({ erro: "Erro ao adicionar comprovante de pagamento" })
                 })
             } else {
@@ -489,12 +490,14 @@ router.post("/comprovante/pix", auth, async (req, res) => {
                         });
                     } catch (err) {
                         console.log(err)
+                    console.log("--------------------------------")
                     } finally {
                         res.json({ erro: 0 })
                     }
 
                 }).catch(err => {
                     console.log(err)
+                    console.log("--------------------------------")
                     res.json({ erro: "Erro ao adicionar comprovante de pagamento" })
                 })
             }
