@@ -14,8 +14,8 @@ router.get("/entrega/locais", (req, res) => {
 })
 
 router.post("/entrega/adicionar", async (req, res) => {
-    // var usuario = req.session.cli
-    var usuario = { id: 1 }
+   var usuario = req.session.cli
+     // var usuario = { id: 1 }
     var statusEntrega = await knex("statusentregas").select().where({statusId:1})
     var cep = req.body.cep
     var rua = req.body.rua

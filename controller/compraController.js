@@ -38,8 +38,8 @@ var remetente = nodemailer.createTransport({
 
 // Mercado pago
 router.get("/carrinho/finalizarCompra/:opcao", async (req, res) => {
-    // var usuario = req.session.cli
-    var usuario = { id: 1 }
+    var usuario = req.session.cli
+    // svar usuario = { id: 1 }
     var escolhaOpcaoPagamento = req.params.opcao
     var opcaoPagamento = await opcaoDePagamentos.find(opcao => opcao.id == escolhaOpcaoPagamento)
     var cliente = await Cliente.findByPk(usuario.id)
