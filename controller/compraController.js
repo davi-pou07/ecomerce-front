@@ -117,7 +117,7 @@ router.get("/carrinho/finalizarCompra/:opcao", async (req, res) => {
                     dadosId: dadosVendas[0].dadosId,
                     ordeId: ordeNum,
                     updatedAt: moment().format(),
-                    totalPago:dadosVendas[0].unit_price
+                    totalPago: dadosVendas[0].unit_price
                 }).where({ id: dadosPagamentos[0].id })
 
                 Carrinho.update({ status: false, updatedAt: moment().format() }, { where: { id: dadosVendas[0].carrinhoId } }).then(async () => {
@@ -439,8 +439,9 @@ router.post("/comprovante/pix", auth, async (req, res) => {
         try {
             var carrinho = await Carrinho.findOne({ where: { clienteId: cliente.id, status: true } })
             var dadosPagamentos = await knex("dadospagamentos").select().where({ clienteId: cliente.id, carrinhoId: carrinho.id })
-
+            console.log("Pesquisou carrinho e dados")
             if (dadosPagamentos[0] == undefined) {
+                console.log("Vai dar INSERT")
                 // statusId: 1 - ANALISE. 2 - APROVADO. 3 - REJEITADO. 4- ESTORNADO
                 knex("dadospagamentos").insert({
                     statusId: statusPagamento.id,
@@ -450,26 +451,29 @@ router.post("/comprovante/pix", auth, async (req, res) => {
                     createdAt: moment().format(),
                     updatedAt: moment().format(),
                     detalhePagamento: "Pix",
-                    tipoDePagamento:'bank_transfer',
-                    metodoPagamento:"Pix",
-                    dataExpiracao:moment().add(2, 'days').format(),
+                    tipoDePagamento: 'bank_transfer',
+                    metodoPagamento: "Pix",
+                    dataExpiracao: moment().add(2, 'days').format(),
                 }).then(() => {
                     res.json({ erro: 0 })
                 }).catch(err => {
+                    console.log("Deu esse erro")
+
                     console.log(err)
                     console.log("--------------------------------")
                     res.json({ erro: "Erro ao adicionar comprovante de pagamento" })
                 })
             } else {
+                console.log("Deu esse erro2")
                 knex("dadospagamentos").update({
-                    statusId:statusPagamento.id,
+                    statusId: statusPagamento.id,
                     clienteId: cliente.id,
                     carrinhoId: carrinho.id,
                     comprovante: comprovante,
                     detalhePagamento: "Pix",
-                    tipoDePagamento:'bank_transfer',
-                    metodoPagamento:"Pix",
-                    dataExpiracao:moment().add(2, 'days').format(),
+                    tipoDePagamento: 'bank_transfer',
+                    metodoPagamento: "Pix",
+                    dataExpiracao: moment().add(2, 'days').format(),
                     updatedAt: moment().format()
                 }).where({ id: dadosPagamentos[0].id }).then(() => {
 
@@ -490,12 +494,13 @@ router.post("/comprovante/pix", auth, async (req, res) => {
                         });
                     } catch (err) {
                         console.log(err)
-                    console.log("--------------------------------")
+                        console.log("--------------------------------")
                     } finally {
                         res.json({ erro: 0 })
                     }
 
                 }).catch(err => {
+                    console.log("Deu esse erro2")
                     console.log(err)
                     console.log("--------------------------------")
                     res.json({ erro: "Erro ao adicionar comprovante de pagamento" })
