@@ -520,7 +520,8 @@ router.post("/comprovante/pix", auth, async (req, res) => {
 // Pagar na entrega
 router.post("/solicitar/entrega", auth, async (req, res) => {
     var usuario = req.session.cli
-    var { nome, numero, cpf } = req.body
+    var { nome, numero, cpf, dataNasc } = req.body
+    var statusPagamento = StatusPagamento.find(st => st.id == 1)
     if (usuario != undefined) {
         if (nome.split(" ").length > 0 && nome != '') {
             if (validator.isMobilePhone(numero, 'pt-BR', false) == true) {
@@ -530,33 +531,41 @@ router.post("/solicitar/entrega", auth, async (req, res) => {
                         var carrinho = await Carrinho.findOne({ where: { clienteId: cliente.id, status: true } })
                         var dadosEntrega = await knex("dadosentregas").select().where({ clienteId: cliente.id, carrinhoId: carrinho.id })
 
-                        var dadosPagamentosEntrega = await knex("dadospagamentosentregas").select().where({ clienteId: cliente.id, carrinhoId: carrinho.id })
+                        var atualizaDadosEntrega = await knex("dadosentregas").update({
+                            cpf:cpf,
+                            dataNasc:dataNasc,
+                            nome:nome,
+                            numero:numero
+                        }).where({id:dadosEntrega[0].id})
+
+                        var dadosPagamentosE= await knex("dadospagamentos").select().where({ clienteId: cliente.id, carrinhoId: carrinho.id })
                         if (dadosPagamentosEntrega[0] == undefined) {
                             // statusId: 1 - ANALISE. 2 - APROVADO. 3 - REJEITADO. 4- ESTORNADO
-                            knex("dadospagamentosentregas").insert({
-                                status: 'Analise',
-                                statusId: 1,
+                            knex("dadospagamentos").insert({
+                                statusId: statusPagamento.id,
                                 clienteId: cliente.id,
                                 carrinhoId: carrinho.id,
-                                cpf: cpf,
-                                nome: nome,
-                                numero: numero,
                                 dadosEntragaId: dadosEntrega[0].id,
                                 createdAt: moment().format(),
-                                updatedAt: moment().format()
+                                updatedAt: moment().format(),
+                                tipoDePagamento:"pagar_entrega",
+                                dataExpiracao: moment().add(2, 'days').format(),
+                                detalhePagamento:"Entrega",
+                                metodoPagamento:"Entrega",
+                                dadosEntragaId:dadosEntrega[0].id
                             }).catch(err => {
                                 console.log(err)
                                 res.json({ erro: "Erro ao solicitar entrega" })
                             })
                         } else {
-                            knex("dadospagamentosentregas").update({
-                                status: 'Analise',
-                                statusId: 1,
+                            knex("dadospagamentos").update({
+                                statusId: statusPagamento.id,
                                 clienteId: cliente.id,
                                 carrinhoId: carrinho.id,
-                                cpf: cpf,
-                                nome: nome,
-                                numero: numero,
+                                tipoDePagamento:"pagar_entrega",
+                                dataExpiracao: moment().add(2, 'days').format(),
+                                detalhePagamento:"Entrega",
+                                metodoPagamento:"Entrega",
                                 dadosEntragaId: dadosEntrega[0].id,
                                 updatedAt: moment().format()
                             }).where({ id: dadosPagamentosEntrega[0].id }).catch(err => {
