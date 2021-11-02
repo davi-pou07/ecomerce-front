@@ -460,7 +460,7 @@ router.post("/comprovante/pix", auth, async (req, res) => {
                     res.json({ erro: "Erro ao adicionar comprovante de pagamento" })
                 })
             } else {
-                knex("dadospagamentospixes").update({
+                knex("dadospagamentos").update({
                     statusId:statusPagamento.id,
                     clienteId: cliente.id,
                     carrinhoId: carrinho.id,
@@ -470,7 +470,7 @@ router.post("/comprovante/pix", auth, async (req, res) => {
                     metodoPagamento:"Pix",
                     dataExpiracao:moment().add(2, 'days').format(),
                     updatedAt: moment().format()
-                }).where({ id: dadosPagamentosPix[0].id }).then(() => {
+                }).where({ id: dadosPagamentos[0].id }).then(() => {
 
                     try {
                         var emailASerEnviado = {
