@@ -530,7 +530,7 @@ router.post("/solicitar/entrega", auth, async (req, res) => {
                         var cliente = await Cliente.findByPk(usuario.id)
                         var carrinho = await Carrinho.findOne({ where: { clienteId: cliente.id, status: true } })
                         var dadosEntrega = await knex("dadosentregas").select().where({ clienteId: cliente.id, carrinhoId: carrinho.id })
-
+                        
                         var atualizaDadosEntrega = await knex("dadosentregas").update({
                             cpf:cpf,
                             dataNasc:dataNasc,

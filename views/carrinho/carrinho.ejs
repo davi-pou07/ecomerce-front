@@ -24,48 +24,76 @@
                                                                     <img src="<%=imagem.imagem%>" class="ps-0"
                                                                         width="100" height="100">
                                                                 </div>
-                                                            <%}else{%>
-                                                                <img class="img-thumbnail" src="/img/null.png">
-                                                            <%}%>
-                                                                    <div class="col-md-5 p-md-0 p-1 text-start ms-3 ms-md-0">
-                                                                        <figcaption class="ms-2">
-                                                                            <a href="#" class="title text-dark">
+                                                                <%}else{%>
+                                                                    <img class="img-thumbnail" src="/img/null.png">
+                                                                    <%}%>
+                                                                        <div
+                                                                            class="col-md-5 p-md-0 p-1 text-start ms-3 ms-md-0">
+                                                                            <figcaption class="ms-2">
+                                                                                <a href="#" class="title text-dark">
                                                                                     <%=produto.nome%>
-                                                                            </a>
-                                                                                <%var grade=grades.find(g => g.id == produto.gradeId)%>
-                                                                                    <%if(grade != undefined){%>
-                                                                                        <%if(codIten.reflinha != 0 ){%>
-                                                                                            <%var refLinha = refLinhas.find(rl =>
-                                                                                                rl.id == codIten.reflinha)%>
-                                                                                        <%}else{%>
-                                                                                            <%var refLinha = {linha:'Padrão'} %>
-                                                                                        <%}%>
+                                                                                </a>
+                                                                                <%var grade=grades.find(g=> g.id ==
+                                                                                    produto.gradeId)%>
+                                                                                    <%if(grade !=undefined){%>
+                                                                                        <%if(codIten.reflinha !=0 ){%>
+                                                                                            <%var
+                                                                                                refLinha=refLinhas.find(rl=>
+                                                                                                rl.id ==
+                                                                                                codIten.reflinha)%>
+                                                                                                <%}else{%>
+                                                                                                    <%var
+                                                                                                        refLinha={linha:'Padrão'}
+                                                                                                        %>
+                                                                                                        <%}%>
 
-                                                                                            <%if(codIten.refcoluna != 0 ){%>
-                                                                                                <%var refColuna = refColunas.find(rc => rc.id == codIten.refcoluna)%>
-                                                                                            <%}else{%>
-                                                                                                <%var refColuna = {coluna:'Padrão'} %>
-                                                                                            <%}%>
+                                                                                                            <%if(codIten.refcoluna
+                                                                                                                !=0 ){%>
+                                                                                                                <%var
+                                                                                                                    refColuna=refColunas.find(rc=>
+                                                                                                                    rc.id
+                                                                                                                    ==
+                                                                                                                    codIten.refcoluna)%>
+                                                                                                                    <%}else{%>
+                                                                                                                        <%var
+                                                                                                                            refColuna={coluna:'Padrão'}
+                                                                                                                            %>
+                                                                                                                            <%}%>
 
-                                                                                                <p class="text-muted small"> <%=grade.linha%>:<%=refLinha.linha%>
-                                                                                                    <br>
-                                                                                                        <%=grade.coluna%>:<%=refColuna.coluna%>
-                                                                                                    <br>
-                                                                                                </p>
+                                                                                                                                <p
+                                                                                                                                    class="text-muted small">
+                                                                                                                                    <%=grade.linha%>
+                                                                                                                                        :
+                                                                                                                                        <%=refLinha.linha%>
+                                                                                                                                            <br>
+                                                                                                                                            <%=grade.coluna%>
+                                                                                                                                                :
+                                                                                                                                                <%=refColuna.coluna%>
+                                                                                                                                                    <br>
+                                                                                                                                </p>
 
-                                                                                    <%}else{%>
-                                                                                        <%var marca=marcas.find(m => m.id == produto.marcaId)%>
-                                                                                            <%if(marca !=undefined){%>
-                                                                                                <p class="text-muted small"> Marca:<%=marca.marca%>
-                                                                                                    <br>
-                                                                                                Material: Argila
-                                                                                                    <br>
-                                                                                                </p>
-                                                                                            <%}%>
-                                                                                    <%}%>
+                                                                                                                                <%}else{%>
+                                                                                                                                    <%var
+                                                                                                                                        marca=marcas.find(m=>
+                                                                                                                                        m.id
+                                                                                                                                        ==
+                                                                                                                                        produto.marcaId)%>
+                                                                                                                                        <%if(marca
+                                                                                                                                            !=undefined){%>
+                                                                                                                                            <p
+                                                                                                                                                class="text-muted small">
+                                                                                                                                                Marca:
+                                                                                                                                                <%=marca.marca%>
+                                                                                                                                                    <br>
+                                                                                                                                                    Material:
+                                                                                                                                                    Argila
+                                                                                                                                                    <br>
+                                                                                                                                            </p>
+                                                                                                                                            <%}%>
+                                                                                                                                                <%}%>
 
-                                                                        </figcaption>
-                                                                    </div>
+                                                                            </figcaption>
+                                                                        </div>
                                                     </div>
 
                                                 </figure>
@@ -355,13 +383,14 @@
                                         <hr>
                                         <p class="text-muted text-center">Informe abaixo os dados solicitados</p>
                                         <div class="row">
-                                            <div class="col-md-9">
+                                            <div class="col-md-12">
                                                 <label for="nome" class="form-label">Nome</label>
                                                 <input type="text" id="nome" class="form-control" autocomplete="off">
                                             </div>
-                                            <div class="col-3 mt-md-0 mt-2">
+                                            <div class="ol-md-6 col-12 mt-2">
                                                 <label for="nome" class="form-label">Data de Nasck</label>
-                                                <input type="date" id="dataNasc" class="form-control" autocomplete="off">
+                                                <input type="date" id="dataNasc" class="form-control"
+                                                    autocomplete="off">
                                             </div>
                                             <div class="col-md-6 col-12 mt-2">
                                                 <label for="cpf" class="form-label">CPF</label>
@@ -700,49 +729,61 @@
                     var cpf = document.getElementById("cpf")
                     var nome = document.getElementById("nome")
                     var numero = document.getElementById("phone")
+                    var dataNasc = document.getElementById("dataNasc")
                     var confirmaEndereco = document.getElementById('confirmaEndereco').dataset.valor
 
                     if (nome.value.split(" ").length > 0 && nome.value != '') {
                         nome.classList.add("is-valid")
                         nome.classList.remove("is-invalid")
 
-                        if (cpf.value != '' && cpf.value.length == 14) {
-                            cpf.classList.remove("is-invalid")
-                            cpf.classList.add("is-valid")
+                        if (dataNasc.value != '' && dataNasc.value.length == 10 ) {
+                            dataNasc.classList.remove("is-invalid")
+                            dataNasc.classList.add("is-valid")
 
-                            if (numero.value != '' && numero.value.length > 14) {
-                                numero.classList.remove("is-invalid")
-                                numero.classList.add("is-valid")
+                            if (cpf.value != '' && cpf.value.length == 14) {
+                                cpf.classList.remove("is-invalid")
+                                cpf.classList.add("is-valid")
 
-                                if (confirmaEndereco == 'true') {
+                                if (numero.value != '' && numero.value.length > 14) {
+                                    numero.classList.remove("is-invalid")
+                                    numero.classList.add("is-valid")
 
-                                    var entrega = await entregaAdicionar()
-                                    if (entrega) {
-                                        axios.post('/solicitar/entrega', { nome: nome.value, numero: numero.value, cpf: cpf.value }).then(resp => {
-                                            var resposta = resp.data
-                                            if (resposta.erro == undefined && resposta.resp != undefined) {
-                                                alert(resposta.resp)
-                                                location.href = `/carrinho/finalizarCompra/3`
-                                            } else {
-                                                alert(resposta.erro)
-                                            }
-                                        })
+                                    if (confirmaEndereco == 'true') {
+
+                                        var entrega = await entregaAdicionar()
+                                        if (entrega) {
+                                            axios.post('/solicitar/entrega', { nome: nome.value, numero: numero.value, cpf: cpf.value }).then(resp => {
+                                                var resposta = resp.data
+                                                if (resposta.erro == undefined && resposta.resp != undefined) {
+                                                    alert(resposta.resp)
+                                                    location.href = `/carrinho/finalizarCompra/3`
+                                                } else {
+                                                    alert(resposta.erro)
+                                                }
+                                            })
+                                        }
+                                    } else {
+                                        alert("Confirme o endereço de entrega informado!")
+                                        button.disabled = false
+
                                     }
                                 } else {
-                                    alert("Confirme o endereço de entrega informado!")
+                                    alert("Numero de celular menor que 14 digitos")
+                                    numero.classList.remove("is-valid")
+                                    numero.classList.add("is-invalid")
                                     button.disabled = false
-
                                 }
                             } else {
-                                alert("Numero de celular menor que 14 digitos")
-                                numero.classList.remove("is-valid")
-                                numero.classList.add("is-invalid")
+                                alert("CPF vazio ou invalido")
+                                cpf.classList.add("is-invalid")
+                                cpf.classList.remove("is-valid")
                                 button.disabled = false
                             }
+
                         } else {
-                            alert("CPF vazio ou invalido")
-                            cpf.classList.add("is-invalid")
-                            cpf.classList.remove("is-valid")
+                            alert("Data de Nascimento vazio ou invalido")
+                            dataNasc.classList.add("is-invalid")
+                            dataNasc.classList.remove("is-valid")
                             button.disabled = false
                         }
 
