@@ -108,23 +108,24 @@ router.get("/carrinho/finalizarCompra/:opcao", async (req, res) => {
         }
 
         if (opcaoPagamento.id == 1) {
-            // try {
-            //     var dadosVendas = await knex("dadosvendas").select().where({ dadosId: idUnica })
-            //     var date = moment().format();
-            //     var dadosPagamentos = await knex("dadospagamentos").select().where({ clienteId: cliente.id, carrinhoId: carrinho.id })
+            try {
+                var dadosVendas = await knex("dadosvendas").select().where({ dadosId: idUnica })
+                var date = moment().format();
+                var dadosPagamentos = await knex("dadospagamentos").select().where({ clienteId: cliente.id, carrinhoId: carrinho.id })
 
-            //     var updateDadosPagamentos = await knex("dadospagamentos").update({
-            //         dadosId: dadosVendas[0].dadosId,
-            //         ordeId: ordeNum,
-            //         updatedAt: moment().format()
-            //     }).where({ id: dadosPagamentos[0].id })
+                var updateDadosPagamentos = await knex("dadospagamentos").update({
+                    dadosId: dadosVendas[0].dadosId,
+                    ordeId: ordeNum,
+                    updatedAt: moment().format(),
+                    totalPago:dadosVendas[0].unit_price
+                }).where({ id: dadosPagamentos[0].id })
 
-            //     Carrinho.update({ status: false, updatedAt: moment().format() }, { where: { id: dadosVendas[0].carrinhoId } }).then(async () => {
-            //         res.redirect("/usuario/transicao/" + dadosVendas[0].dadosId)
-            //     })
-            // } catch (error) {
-            //     console.log(error)
-            // }
+                Carrinho.update({ status: false, updatedAt: moment().format() }, { where: { id: dadosVendas[0].carrinhoId } }).then(async () => {
+                    res.redirect("/usuario/transicao/" + dadosVendas[0].dadosId)
+                })
+            } catch (error) {
+                console.log(error)
+            }
         } else if (opcaoPagamento.id == 2) {
             var dadosVendas = await knex("dadosvendas").select().where({ dadosId: idUnica })
 
@@ -448,7 +449,10 @@ router.post("/comprovante/pix", auth, async (req, res) => {
                     comprovante: comprovante,
                     createdAt: moment().format(),
                     updatedAt: moment().format(),
-                    detalhePagamento: "Pix"
+                    detalhePagamento: "Pix",
+                    tipoDePagamento:'bank_transfer',
+                    metodoPagamento:"Pix",
+                    dataExpiracao:moment().add(2, 'days').format(),
                 }).then(() => {
                     res.json({ erro: 0 })
                 }).catch(err => {
@@ -457,11 +461,14 @@ router.post("/comprovante/pix", auth, async (req, res) => {
                 })
             } else {
                 knex("dadospagamentospixes").update({
-                    status: 'Analise',
-                    statusId: 1,
+                    statusId:statusPagamento.id,
                     clienteId: cliente.id,
                     carrinhoId: carrinho.id,
                     comprovante: comprovante,
+                    detalhePagamento: "Pix",
+                    tipoDePagamento:'bank_transfer',
+                    metodoPagamento:"Pix",
+                    dataExpiracao:moment().add(2, 'days').format(),
                     updatedAt: moment().format()
                 }).where({ id: dadosPagamentosPix[0].id }).then(() => {
 
