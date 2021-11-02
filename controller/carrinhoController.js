@@ -7,8 +7,9 @@ const CodItens = require("../Databases/client/CodItens")
 const auth = require("../middlewares/adminAuth")
 var moment = require('moment');
 
-router.post("/carrinho/adicionar", auth, async (req, res) => {
-    var usuario = req.session.cli
+router.post("/carrinho/adicionar", async (req, res) => {
+    // var usuario = req.session.cli
+    var usuario = { id: 1 }
     if (usuario != undefined) {
         var codItem = req.body.codItem
         var quantidadeItem = req.body.quantidadeItem
@@ -89,8 +90,8 @@ router.post("/carrinho/adicionar", auth, async (req, res) => {
 })
 
 router.get("/carrinho/caixa", async (req, res) => {
-    var usuario = req.session.cli
-    // var usuario = { id: 1 }
+    // var usuario = req.session.cli
+    var usuario = { id: 1 }
     if (usuario != undefined) {
         var cliente = await Cliente.findByPk(usuario.id)
         var carrinho = await Carrinho.findOne({ where: { clienteId: cliente.id, status: true } })
@@ -127,8 +128,8 @@ router.get("/carrinho/caixa", async (req, res) => {
 })
 
 router.post("/carrinho/alterarValores", auth, async (req, res) => {
-    var usuario = req.session.cli
-    // var usuario = { id: 1 }
+    // var usuario = req.session.cli
+    var usuario = { id: 1 }
     var novaQuantidade = req.body.novaQuantidade
     var codItem = req.body.codItem
 
@@ -174,7 +175,8 @@ router.post("/carrinho/alterarValores", auth, async (req, res) => {
 })
 
 router.post("/carrinho/remover/:codIten", auth, async (req, res) => {
-    var usuario = req.session.cli
+    // var usuario = req.session.cli
+    var usuario = { id: 1 }
     var codItem = req.params.codIten
     if (usuario != undefined) {
         try {
