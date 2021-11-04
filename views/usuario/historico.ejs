@@ -33,12 +33,12 @@
                         <table class="table  table-striped">
                             <thead class="text-muted">
                                 <tr class="small text-uppercase">
-                                    <th scope="col" width="100" class="table-info">Codigo</th>
+                                    <th scope="col" width="100" class="text-center">Codigo</th>
                                     <th scope="col" width="160">Descrição</th>
-                                    <th scope="col" width="100">Quantidade</th>
-                                    <th scope="col" width="120">Valor</th>
-                                    <th scope="col" width="120">Data</th>
-                                    <th scope="col" width="120">Status</th>
+                                    <th scope="col" class="text-center">Quantidade</th>
+                                    <th scope="col">Valor</th>
+                                    <th scope="col">Data</th>
+                                    <th scope="col">Status</th>
                                     <th scope="col" class="text-right" width="120"> </th>
                                 </tr>
                             </thead>
@@ -47,10 +47,10 @@
                                     <input type="hidden" id="index" value="<%=index%>">
                                     <tr>
 
-                                        <th scope="row" class="table-info">
+                                        <th scope="row" class="text-center">
                                             <%=dadovenda.id%>
                                         </th>
-                                        <td scope="row">
+                                        <td scope="row" class="text-wrap">
                                             <%=dadovenda.descricao%>
                                         </td>
                                         <td scope="row" class="text-center">
@@ -60,11 +60,11 @@
                                                         <%}%>
                                                             <%})%>
                                         </td>
-                                        <td scope="row">
+                                        <td scope="row" class="text-nowrap">
                                             <%=dadovenda.unit_price.toLocaleString('pt-br',{style: 'currency' ,
                                                 currency: 'BRL' })%>
                                         </td>
-                                        <td scope="row">
+                                        <td scope="row" class="text-nowrap">
                                             <%=dadovenda.createdAt%>
                                         </td>
                                         <td scope="row" id="row<%=index%>">

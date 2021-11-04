@@ -27,38 +27,38 @@
                             <hr>
                             <thead class="text-muted">
                                 <tr class="small text-uppercase">
-                                    <th scope="col" width="100">Ordem</th>
-                                    <th scope="col" width="160">Descrição</th>
-                                    <th scope="col" width="120">Valor</th>
-                                    <th scope="col" width="120">Data</th>
-                                    <th scope="col" width="120">Status</th>
+                                    <th scope="col" class="text-center">Ordem</th>
+                                    <th scope="col">Descrição</th>
+                                    <th scope="col" class="text-center text-nowrap">Valor</th>
+                                    <th scope="col" class="text-center text-nowrap">Data</th>
+                                    <th scope="col" >Status</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr>
-                                    <th scope="row">
-                                        <%=dadosPagamento.orderId%>
+                                    <th scope="row" class="text-center">
+                                        <%=dadosPagamento.ordeId%>
                                     </th>
-                                    <td scope="row">
+                                    <td scope="row" class="text-wrap">
                                         <%=dadosVenda.descricao%>
                                     </td>
-                                    <td scope="row">
+                                    <td scope="row" class="text-center text-nowrap">
                                         <%=dadosVenda.unit_price.toLocaleString('pt-br',{style: 'currency' ,
                                             currency: 'BRL' })%>
                                     </td>
-                                    <td scope="row">
+                                    <td scope="row" class="text-center text-nowrap">
                                         <%=data%>
                                     </td>
                                     <td scope="row">
-                                        <%if(dadosVenda.status=='Aprovado' ) {%>
+                                        <%if(dadosVenda.statusId==1) {%>
                                             <span class="bg-success text-white px-3 btn">
                                                 <%=dadosVenda.statusColetado%>
                                             </span>
-                                            <%}else if(dadosVenda.status=='Pendente' ){%>
+                                            <%}else if(dadosVenda.statusId==2){%>
                                                 <span class="bg-warning text-white px-3 btn">
                                                     <%=dadosVenda.statusColetado%>
                                                 </span>
-                                                <%}else if(dadosVenda.status=='Cancelado' ){%>
+                                                <%}else if(dadosVenda.statusId==3){%>
 
                                                     <span class="bg-danger text-white px-3 btn">
                                                         <%=dadosVenda.statusColetado%>
@@ -76,7 +76,7 @@
 
                     <br>
                     <div class="row">
-                        <%if(dadosVenda.status=='Aprovado' ){%>
+                        <%if(dadosPagamento.statusId==2 ){%>
 
                             <div class="col-md-12 text-center">
                                 <img src="/img/aprovado.png" class="mx-auto d-block" width="60px" height="60px">
@@ -86,7 +86,7 @@
                                 </p>
                             </div>
 
-                            <%}else if(dadosVenda.status=='Pendente' ){%>
+                            <%}else if(dadosPagamento.statusId==1 || dadosPagamento.statusId==5 ){%>
 
                                 <div class="col-md-12 text-center">
                                     <img src="/img/analise.png" class="mx-auto d-block">
@@ -115,7 +115,7 @@
                                             <%}%>
                                 </div>
 
-                                <%}else if(dadosVenda.status=='Cancelado' ){%>
+                                <%}else if(dadosPagamento.statusId==4 ){%>
                                     <div class="col-md-12 text-center">
                                         <img src="/img/estorno.png" class="mx-auto d-block">
                                         <button class="btn btn-danger text-white fs-4 mt-3"> Pagamento
@@ -138,7 +138,7 @@
                                         <%}%>
                     </div>
                     <br>
-                    <%if(dadosVenda.status=='Aprovado' ){%>
+                    <%if(dadosVenda.statusId==2 ){%>
                         <div class="row mt-4">
                             <div class="col-md-5 ms-3 text-end">
                                 <img src="/img/mapas.png" height="30px" width="30px">

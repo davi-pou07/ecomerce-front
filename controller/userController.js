@@ -441,7 +441,7 @@ router.get("/usuario/historico", async (req, res) => {
 router.get("/usuario/transicao/:dadosId", async (req, res) => {
     // var usuario = req.session.cli
     var dadosId = req.params.dadosId
-    var usuario = {id:1}
+    var usuario = { id: 1 }
     if (usuario != undefined) {
         try {
             var empresa = await knex("empresas").select()
@@ -455,7 +455,11 @@ router.get("/usuario/transicao/:dadosId", async (req, res) => {
             dadosEntrega[0].status = statusEntrega[0].status
             var dadosPagamento = await knex("dadospagamentos").select().where({ clienteId: cliente.id, dadosId: dadosVenda[0].dadosId })
             var dataExpiracao = moment(dadosPagamento[0].dataExpiracao).format('DD/MM/YYYY')
-            
+
+            //             const StatusVenda = [{ id: 1, status: "Pendente" }, { id: 2, status: "Autorizado" }, { id: 3, status: "Cancelado" }]
+            // const StatusPagamento = [{ id: 1, status: "Analise" }, { id: 2, status: "Aprovado" }, { id: 3, status: "Rejeitado" }, { id: 4, status: "Cancelado" }, { id: 5, status: "Pendente" }]
+            // dadosVenda[0].statusId = 3
+            // dadosPagamento[0].statusId = 4
 
             res.render("usuario/transicao", { nome: cliente.nome, id: cliente.id, foto: cliente.foto, carrinho: carrinho, dadosVenda: dadosVenda[0], data: data, dataExpiracao: dataExpiracao, dadosPagamento: dadosPagamento[0], dadosEntrega: dadosEntrega[0], empresa: empresa[0] })
         } catch (err) {
