@@ -37,7 +37,7 @@
                             <tbody>
                                 <tr>
                                     <th scope="row">
-                                        <%=dadosTransicao.orderId%>
+                                        <%=dadosPagamento.orderId%>
                                     </th>
                                     <td scope="row">
                                         <%=dadosVenda.descricao%>
@@ -50,24 +50,22 @@
                                         <%=data%>
                                     </td>
                                     <td scope="row">
-                                        <%if(dadosTransicao.status=='approved' ) {%>
+                                        <%if(dadosVenda.status=='Aprovado' ) {%>
                                             <span class="bg-success text-white px-3 btn">
-                                                <%=dadosTransicao.statusColetado%>
+                                                <%=dadosVenda.statusColetado%>
                                             </span>
-                                            <%}else if(dadosTransicao.status=='pending' ){%>
+                                            <%}else if(dadosVenda.status=='Pendente' ){%>
                                                 <span class="bg-warning text-white px-3 btn">
-                                                    <%=dadosTransicao.statusColetado%>
+                                                    <%=dadosVenda.statusColetado%>
                                                 </span>
-                                                <%}else if(dadosTransicao.status=='rejected'
-                                                    ||dadosTransicao.status=='refunded'
-                                                    ||dadosTransicao.status=='cancelled' ){%>
+                                                <%}else if(dadosVenda.status=='Cancelado' ){%>
 
                                                     <span class="bg-danger text-white px-3 btn">
-                                                        <%=dadosTransicao.statusColetado%>
+                                                        <%=dadosVenda.statusColetado%>
                                                     </span>
                                                     <%}else{%>
                                                         <span class="bg-secundary text-white px-3 btn">
-                                                            <%=dadosTransicao.statusColetado%>
+                                                            <%=dadosVenda.statusColetado%>
                                                         </span>
                                                         <%}%>
                                     </td>
@@ -78,309 +76,69 @@
 
                     <br>
                     <div class="row">
-                        <% if(dadosVenda.opcaoDePagamento==1){ %>
-                            <%if(dadosTransicao.status=='approved'){%>
+                        <%if(dadosVenda.status=='Aprovado' ){%>
+
+                            <div class="col-md-12 text-center">
+                                <img src="/img/aprovado.png" class="mx-auto d-block" width="60px" height="60px">
+                                <button class="btn btn-success text-white fs-4 mt-2"> Pagamento
+                                    Aprovado!!</button>
+                                <p>Veja abaixo como esta o andamento da entrega do seu pedido
+                                </p>
+                            </div>
+
+                            <%}else if(dadosVenda.status=='Pendente' ){%>
 
                                 <div class="col-md-12 text-center">
-                                    <img src="/img/aprovado.png" class="mx-auto d-block" width="60px" height="60px">
+                                    <img src="/img/analise.png" class="mx-auto d-block">
                                     <button class="btn btn-success text-white fs-4 mt-2"> Pagamento
-                                        Aprovado!!</button>
-                                    <p>Veja abaixo como esta o andamento da entrega do seu pedido
-                                    </p>
+                                        em analise!!</button>
+                                    <%if(dadosPagamento.comprovante !=undefined){%>
+                                        <p class="mb-0 mt-1">Estamos analisando o comprovante enviado para nossa <a
+                                                href="">equipe</a>, juntamente
+                                            com a transação bancaria!
+                                        </p>
+                                        <p class="my-0">Peço por gentileza que aguarde um retorno de
+                                            nossos colaboradores. </p>
+                                        <p class="mb-1">Em um prazo de <strong>48hr</strong> iremos lhe
+                                            atualizar referente a sua compra para efetivar de vez a sua entrega!</p>
+
+                                        <h5>Nosso foco é ver você satisfeito com seu produto em mãos</h5>
+                                        <%}else{%>
+                                            <p>Infelizmente nosso sistema não conseguiu ainda identificar nenhum
+                                                comprovante anexado no site.</p>
+                                            <p>Caso ja tenha enviado em um de nossos <a href="">canais de
+                                                    atendimento</a> basta aguardar que logo iremos retornar o
+                                                contato</p>
+                                            <p>Se desejar pode anexar agora mesmo o comprovante de pagamento
+                                                abaixo!!!</p>
+                                            <input type="file" class="form-control">
+                                            <%}%>
                                 </div>
 
-                                <%}else if(dadosTransicao.status=='pending' ){%>
-
+                                <%}else if(dadosVenda.status=='Cancelado' ){%>
                                     <div class="col-md-12 text-center">
-                                        <img src="/img/analise.png" class="mx-auto d-block">
-                                        <button class="btn btn-success text-white fs-4 mt-2"> Pagamento
-                                            em analise!!</button>
-                                        <%if(dadosPagamento.comprovante !=undefined){%>
-                                            <p class="mb-0 mt-1">Estamos analisando o comprovante enviado para nossa <a
-                                                    href="">equipe</a>, juntamente
-                                                com a transação bancaria!
-                                            </p>
-                                            <p class="my-0">Peço por gentileza que aguarde um retorno de
-                                                nossos colaboradores. </p>
-                                            <p class="mb-1">Em um prazo de <strong>48hr</strong> iremos lhe
-                                                atualizar referente a sua compra para efetivar de vez a sua entrega!</p>
-
-                                            <h5>Nosso foco é ver você satisfeito com seu produto em mãos</h5>
-                                            <%}else{%>
-                                                <p>Infelizmente nosso sistema não conseguiu ainda identificar nenhum
-                                                    comprovante anexado no site.</p>
-                                                <p>Caso ja tenha enviado em um de nossos <a href="">canais de
-                                                        atendimento</a> basta aguardar que logo iremos retornar o
-                                                    contato</p>
-                                                <p>Se desejar pode anexar agora mesmo o comprovante de pagamento
-                                                    abaixo!!!</p>
-                                                <input type="file" class="form-control">
-                                                <%}%>
+                                        <img src="/img/estorno.png" class="mx-auto d-block">
+                                        <button class="btn btn-danger text-white fs-4 mt-3"> Pagamento
+                                            estornado!!</button>
+                                        <p>O status de pagamento dessa compra esta como estornado!</p>
+                                        <p>Recomendo fortemente que entre em contato em um de nossos <a href="#">canais
+                                                de atendimento ao cliente</a>caso desconheça essa
+                                            informação de estorno.</p>
                                     </div>
-
-                                    <%}else if(dadosTransicao.status=='refunded' ){%>
+                                    <%}else{%>
                                         <div class="col-md-12 text-center">
-                                            <img src="/img/estorno.png" class="mx-auto d-block">
-                                            <button class="btn btn-danger text-white fs-4 mt-3"> Pagamento
-                                                estornado!!</button>
-                                            <p>O status de pagamento dessa compra esta como estornado!</p>
-                                            <p>Recomendo fortemente que entre em contato em um de nossos <a
-                                                    href="#">canais de atendimento ao cliente</a>caso desconheça essa
-                                                informação de estorno.</p>
+                                            <img src="/img/triste.png" width="60px" height="60px"
+                                                class="mx-auto d-block">
+                                            <button class="btn btn-danger text-white fs-4 mt-2"> Pagamento
+                                                não identificado!!</button>
+                                            <h4 class="mt-2">Pagamento não identificado ou cancelado</h4>
+                                            <p>Para mais duvidas acesse nossos <a href="">canais de atendimento ao
+                                                    Cliente</a></p>
                                         </div>
-                                        <%}else{%>
-                                            <div class="col-md-12 text-center">
-                                                <img src="/img/triste.png" width="60px" height="60px"
-                                                    class="mx-auto d-block">
-                                                <button class="btn btn-danger text-white fs-4 mt-2"> Pagamento
-                                                    não identificado!!</button>
-                                                <h4 class="mt-2">Pagamento não identificado ou cancelado</h4>
-                                                <p>Para mais duvidas acesse nossos <a href="">canais de atendimento ao
-                                                        Cliente</a></p>
-                                            </div>
-                                            <%}%>
-
-                                                <% }else if(dadosVenda.opcaoDePagamento==2){ %>
-                                                    <!-- Inicio pagamento mercado pago -->
-                                                    <%if(dadosTransicao.status=='approved'){%>
-                                                        <!-- Inicio pagamento aprovado -->
-                                                        <div class="col-md-12 text-center">
-                                                            <img src="/img/aprovado.png" class="mx-auto d-block"
-                                                                width="60px" height="60px">
-                                                            <button class="btn btn-success text-white fs-4 mt-2">
-                                                                Pagamento
-                                                                Aprovado!!</button>
-                                                            <p>Veja abaixo como esta o andamento da entrega do seu
-                                                                pedido
-                                                            </p>
-                                                        </div>
-
-                                                        <%}else if(dadosTransicao.status=='pending' ){%>
-
-                                                            <%if(dadosPagamento.codigoDeBarras !=0){%>
-                                                                <div class="col-md-5">
-                                                                    <label for="codbar">Codigo de Barras</label>
-                                                                    <div class="input-group mb-3">
-                                                                        <input type="text" class="form-control bg-white"
-                                                                            placeholder="Recipient's username"
-                                                                            aria-label="Recipient's username"
-                                                                            aria-describedby="button-addon2" id="codbar"
-                                                                            disabled
-                                                                            value="<%=dadosPagamento.codigoDeBarras%>">
-                                                                        <button class="btn btn-outline-secondary"
-                                                                            type="button" id="btnCopiar"
-                                                                            onclick="copiar()">copiar</button>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="col-md-2">
-                                                                    <label for="">Data de vencimento</label>
-                                                                    <input type="text"
-                                                                        class="form-control bg-white text-center"
-                                                                        disabled value="<%=dataExpiracao%>">
-                                                                </div>
-                                                                <div class="col-md-2">
-                                                                    <label for="">Valor do documento</label>
-                                                                    <input type="text"
-                                                                        class="form-control bg-white text-center"
-                                                                        disabled
-                                                                        value="<%=dadosVenda.unit_price.toLocaleString('pt-br',{style: 'currency' , currency: 'BRL'})%>">
-                                                                </div>
-                                                                <div class="col-md-3">
-                                                                    <a href="<%=dadosPagamento.boletoUrl%>"
-                                                                        class="btn btn-success text-white mt-4 ms-5"
-                                                                        target="_blank">Reiprimir
-                                                                        Boleto</a>
-                                                                </div>
-
-                                                                <%}else{%>
-                                                                    <div class="col-md-7 text-center">
-                                                                        <img src="/img/triste.png"
-                                                                            class="mx-auto d-block" width="60px"
-                                                                            height="60px">
-                                                                        <h4 class="mt-2">Pagamento não identificado ou
-                                                                            validade do boleto
-                                                                            vencida</h4>
-                                                                        <p>Para mais duvidas acesse nossos canais de
-                                                                            atendimento ao Cliente</p>
-                                                                    </div>
-                                                                    <div class="col-md-5 text-center mt-3">
-                                                                        <a href="/"
-                                                                            class="btn btn-success text-white mx-auto d-block">Realizar
-                                                                            novo
-                                                                            pagamento</a>
-                                                                        <h4 class="mt-3">Clique no botão acima para
-                                                                            gerar um novo pagamento</h4>
-                                                                    </div>
-                                                                    <%}%>
-                                                                        <!-- fim pagamento aprovado -->
-                                                                        <%}else{%>
-                                                                            <div class="col-md-12 text-center">
-                                                                                <img src="/img/triste.png"
-                                                                                    class="mx-auto d-block" width="60px"
-                                                                                    height="60px">
-                                                                                <h4 class="mt-2">Pagamento Rejeitado ou
-                                                                                    Estornado!</h4>
-                                                                                <p class="my-0">Se desconhece a
-                                                                                    afirmação acima,
-                                                                                    recomendo que entre ja em contato
-                                                                                </p>
-                                                                                <p class="my-0">em um de nossos <a
-                                                                                        href="">Canais de
-                                                                                        atendimento ao cliente</a></p>
-                                                                            </div>
-
-                                                                            <% } %>
-                                                                                <!--Fim pagamento mercado pago -->
-
-                                                                                <% }else
-                                                                                    if(dadosVenda.opcaoDePagamento==3){%>
-                                                                                    <%if(dadosTransicao.status=='approved'){%>
-
-                                                                                        <div
-                                                                                            class="col-md-12 text-center">
-                                                                                            <img src="/img/aprovado.png"
-                                                                                                class="mx-auto d-block"
-                                                                                                width="60px"
-                                                                                                height="60px">
-                                                                                            <button
-                                                                                                class="btn btn-success text-white fs-4 mt-2">
-                                                                                                Pagamento
-                                                                                                Aprovado!!</button>
-                                                                                            <p>Veja abaixo como esta o
-                                                                                                andamento da entrega do
-                                                                                                seu pedido
-                                                                                            </p>
-                                                                                        </div>
-
-                                                                                        <%}else if(dadosTransicao.status=='pending'){%>
-
-                                                                                            <div
-                                                                                                class="col-md-12 text-center">
-                                                                                                <img src="/img/analise.png"
-                                                                                                    class="mx-auto d-block">
-                                                                                                <button
-                                                                                                    class="btn btn-success text-white fs-4 mt-2">
-                                                                                                    Pagamento
-                                                                                                    em
-                                                                                                    analise!!</button>
-                                                                                                <%if(dadosPagamento.statusId == 1){%>
-                                                                                                    <p
-                                                                                                        class="mb-0 mt-1">
-                                                                                                        Estamos
-                                                                                                        analisando sua solicitação
-                                                                                                        enviado para
-                                                                                                        nossa <a
-                                                                                                            href="">equipe</a>,
-                                                                                                        prezamos a segurança e entraremos em contato!
-                                                                                                    </p>
-                                                                                                    <p class="my-0">Peço
-                                                                                                        por gentileza
-                                                                                                        que aguarde um
-                                                                                                        retorno de
-                                                                                                        nossos
-                                                                                                        colaboradores.
-                                                                                                    </p>
-                                                                                                    <p class="mb-1">Em
-                                                                                                        um prazo de
-                                                                                                        <strong>48hr</strong>
-                                                                                                        iremos lhe
-                                                                                                        atualizar
-                                                                                                        referente a seu pedido para
-                                                                                                        efetivar de vez
-                                                                                                        a sua entrega!
-                                                                                                    </p>
-
-                                                                                                    <h5>Nosso foco é ver
-                                                                                                        você satisfeito
-                                                                                                        com seus produtos
-                                                                                                        em mãos</h5>
-                                                                                                    <%}else if(dadosPagamento.comprovante == undefined){%>
-                                                                                                        <p>Infelizmente
-                                                                                                            nosso
-                                                                                                            sistema não
-                                                                                                            conseguiu
-                                                                                                            ainda
-                                                                                                            identificar
-                                                                                                            nenhum
-                                                                                                            comprovante
-                                                                                                            anexado no
-                                                                                                            site.</p>
-                                                                                                        <p>Caso ja tenha
-                                                                                                            enviado em
-                                                                                                            um de nossos
-                                                                                                            <a href="">canais
-                                                                                                                de
-                                                                                                                atendimento</a>
-                                                                                                            basta
-                                                                                                            aguardar que
-                                                                                                            logo iremos
-                                                                                                            retornar o
-                                                                                                            contato</p>
-                                                                                                        <%}%>
-                                                                                            </div>
-
-                                                                                            <%}else if(dadosTransicao.status=='refunded' ){%>
-                                                                                                <div
-                                                                                                    class="col-md-12 text-center">
-                                                                                                    <img src="/img/estorno.png"
-                                                                                                        class="mx-auto d-block">
-                                                                                                    <button
-                                                                                                        class="btn btn-danger text-white fs-4 mt-3">
-                                                                                                        Pagamento
-                                                                                                        estornado!!</button>
-                                                                                                    <p>O status de
-                                                                                                        pagamento dessa
-                                                                                                        compra esta como
-                                                                                                        estornado!</p>
-                                                                                                    <p>Recomendo
-                                                                                                        fortemente que
-                                                                                                        entre em contato
-                                                                                                        em um de nossos
-                                                                                                        <a href="#">canais
-                                                                                                            de
-                                                                                                            atendimento
-                                                                                                            ao
-                                                                                                            cliente</a>caso
-                                                                                                        desconheça essa
-                                                                                                        informação de
-                                                                                                        estorno.</p>
-                                                                                                </div>
-                                                                                                <%}else{%>
-                                                                                                    <div
-                                                                                                        class="col-md-12 text-center">
-                                                                                                        <img src="/img/triste.png"
-                                                                                                            width="60px"
-                                                                                                            height="60px"
-                                                                                                            class="mx-auto d-block">
-                                                                                                        <button
-                                                                                                            class="btn btn-danger text-white fs-4 mt-2">
-                                                                                                            Pagamento
-                                                                                                            não
-                                                                                                            identificado!!</button>
-                                                                                                        <h4
-                                                                                                            class="mt-2">
-                                                                                                            Pagamento
-                                                                                                            não
-                                                                                                            identificado
-                                                                                                            ou cancelado
-                                                                                                        </h4>
-                                                                                                        <p>Para mais
-                                                                                                            duvidas
-                                                                                                            acesse
-                                                                                                            nossos <a
-                                                                                                                href="">canais
-                                                                                                                de
-                                                                                                                atendimento
-                                                                                                                ao
-                                                                                                                Cliente</a>
-                                                                                                        </p>
-                                                                                                    </div>
-                                                                                                    <%}%>
-                                                                                                        <%}%>
+                                        <%}%>
                     </div>
                     <br>
-                    <%if((dadosTransicao.status=='pending' && dadosPagamento.codigoDeBarras !=0 && dadosPagamento.codigoDeBarras != undefined ) ||
-                        dadosTransicao.status=='approved' ){%>
+                    <%if(dadosVenda.status=='Aprovado' ){%>
                         <div class="row mt-4">
                             <div class="col-md-5 ms-3 text-end">
                                 <img src="/img/mapas.png" height="30px" width="30px">
@@ -436,7 +194,7 @@
                     <div class="row my-4">
                         <div class="col-md-4">
                             <%var text=`Tenho uma duvida!\n Codigo da venda: ${dadosVenda.dadosId} | Ordem:
-                                ${dadosTransicao.orderId} | Codigo de Rastreio: ${dadosEntrega.codigoRastreioInterno}`%>
+                                ${dadosPagamento.orderId} | Codigo de Rastreio: ${dadosEntrega.codigoRastreioInterno}`%>
                                 <a href="https://api.whatsapp.com/send?phone=+55086994726085&text=<%=text%>"
                                     target="_blank">
                                     <svg enable-background="new 0 0 512 512" width="50" height="50" version="1.1"
@@ -452,7 +210,7 @@
                                 <dt>Envie mensagem via whatsapp</dt>
                         </div>
                         <div class="col-md-4">
-                            <%var text=`Codigo da venda: ${dadosVenda.dadosId} | Ordem: ${dadosTransicao.orderId} |
+                            <%var text=`Codigo da venda: ${dadosVenda.dadosId} | Ordem: ${dadosPagamento.orderId} |
                                 Codigo de Rastreio: ${dadosEntrega.codigoRastreioInterno} %0D%0ADuvida: [DIGITE SUA
                                 DUVIDA REFERENTE A ESSA VENDA]`%>
                                 <a href="mailto:poudeyvis007@gmail.com?Subject=Estou%20com%20dúvidas&body=<%=text%>&"
@@ -485,4 +243,5 @@
                     var codbar = document.getElementById('codbar').disabled = true
                 }
             </script>
+
             </html>

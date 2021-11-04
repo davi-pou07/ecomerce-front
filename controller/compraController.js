@@ -152,9 +152,9 @@ router.get("/carrinho/finalizarCompra/:opcao", async (req, res) => {
                 },
                 external_reference: idUnica,
                 "back_urls": {
-                    failure: 'https://ecomerce-front.herokuapp.com/failure/',
-                    pending: 'https://ecomerce-front.herokuapp.com/pending/',
-                    success: 'https://ecomerce-front.herokuapp.com/success/'
+                    failure: 'https://ecomerce-front.herokuapp.com/transicao/'+idUnica,
+                    pending: 'https://ecomerce-front.herokuapp.com/transicao/'+idUnica,
+                    success: 'https://ecomerce-front.herokuapp.com/transicao/'+idUnica
                 },
                 "auto_return": "approved"
             }
@@ -171,93 +171,6 @@ router.get("/carrinho/finalizarCompra/:opcao", async (req, res) => {
         }
     } else {
         res.redirect("/login")
-    }
-})
-
-router.get("/success/", async (req, res) => {
-    var param = req.query
-    try {
-        var dadosVendas = await knex("dadosvendas").select().where({ dadosId: param.external_reference })
-        var date = moment().format();
-        knex("dadostransicoes").insert({
-            dadosId: param.external_reference,
-            status: param.status,
-            clienteId: dadosVendas[0].clienteId,
-            carrinhoId: dadosVendas[0].carrinhoId,
-            statusColetado: "Aprovado",
-            formaPagamento: param.payment_type,
-            orderId: param.merchant_order_id,
-            createdAt: date,
-            updatedAt: date
-        }).then(async () => {
-            //parametros.dataprevistaentrega
-            var dataPrevista = moment().add(10, "days").format("DD/MM/YYYY")
-            var statusEntrega = await knex("statusentregas").select().where({ statusId: 2 })
-
-            await knex("dadosentregas").update({ status: statusEntrega[0].statusId, dataPrevista: dataPrevista, updatedAt: moment().format() }).where({ clienteId: dadosVendas[0].clienteId, carrinhoId: dadosVendas[0].carrinhoId })
-            await knex("dadosvendas").update({ status: 'A', updatedAt: moment().format() }).where({ dadosId: dadosVendas[0].dadosId })
-            await Carrinho.update({ status: false, updatedAt: moment().format() }, { where: { id: dadosVendas[0].carrinhoId } })
-            var dadosTransicoes = await knex("dadostransicoes").select().where({ dadosId: dadosVendas[0].dadosId })
-
-            res.redirect("/usuario/transicao/" + dadosTransicoes[0].id)
-        })
-    } catch (err) {
-        console.log(err)
-        res.send("Ocorreu um erro ao processar dados")
-    }
-})
-
-router.get("/pending/", async (req, res) => {
-    var param = req.query
-    try {
-        var dadosVendas = await knex("dadosvendas").select().where({ dadosId: param.external_reference })
-        var date = moment().format();
-        knex("dadostransicoes").insert({
-            dadosId: param.external_reference,
-            status: param.status,
-            clienteId: dadosVendas[0].clienteId,
-            carrinhoId: dadosVendas[0].carrinhoId,
-            statusColetado: "Pendente",
-            formaPagamento: param.payment_type,
-            orderId: param.merchant_order_id,
-            createdAt: date,
-            updatedAt: date
-        }).then(() => {
-            knex("dadosvendas").update({ status: 'P', updatedAt: moment().format() }).where({ dadosId: dadosVendas[0].dadosId })
-            Carrinho.update({ status: false, updatedAt: moment().format() }, { where: { id: dadosVendas[0].carrinhoId } }).then(async () => {
-                var dadosTransicoes = await knex("dadostransicoes").select().where({ dadosId: dadosVendas[0].dadosId })
-                res.redirect("/usuario/transicao/" + dadosTransicoes[0].id)
-            })
-        })
-    } catch (err) {
-        console.log(err)
-        res.send("Ocorreu um erro ao processar dados")
-    }
-})
-
-router.get("/failure/", async (req, res) => {
-    var param = req.query
-    try {
-        var dadosVendas = await knex("dadosvendas").select().where({ dadosId: param.external_reference })
-        var date = moment().format();
-        knex("dadostransicoes").insert({
-            dadosId: param.external_reference,
-            status: param.status,
-            clienteId: dadosVendas[0].clienteId,
-            carrinhoId: dadosVendas[0].carrinhoId,
-            statusColetado: "Rejeitado",
-            formaPagamento: param.payment_type,
-            orderId: param.merchant_order_id,
-            createdAt: date,
-            updatedAt: date
-        }).then(async () => {
-            knex("dadosvendas").update({ status: 'F', updatedAt: moment().format() }).where({ dadosId: dadosVendas[0].dadosId })
-            var dadosTransicoes = await knex("dadostransicoes").select().where({ dadosId: dadosVendas[0].dadosId })
-            res.redirect("/usuario/transicao/" + dadosTransicoes[0].id)
-        })
-    } catch (err) {
-        console.log(err)
-        res.send("Ocorreu um erro ao processar dados")
     }
 })
 

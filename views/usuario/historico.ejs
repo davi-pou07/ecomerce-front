@@ -65,32 +65,15 @@
                                                 currency: 'BRL' })%>
                                         </td>
                                         <td scope="row">
-                                            <%var x=0%>
-
-                                                <%dadosTransicoes.forEach(dadostransicao=>{%>
-                                                    <%datas.forEach(data=>{%>
-                                                        <%if(dadostransicao.dadosId==dadovenda.dadosId &&
-                                                            dadostransicao.id==data.id ){%>
-                                                            <%=data.createdAt%>
-                                                                <%}%>
-                                                                    <%})%>
-                                                                        <%})%>
+                                            <%=dadovenda.createdAt%>
                                         </td>
                                         <td scope="row" id="row<%=index%>">
-                                            <%dadosTransicoes.forEach(dadostransicao=>{%>
-                                                <%if(dadostransicao.dadosId==dadovenda.dadosId){%>
-                                                    <%=dadostransicao.statusColetado%>
-                                                        <%}%>
-                                                            <%})%>
+                                            <%=dadovenda.statusColetado%>
                                         </td>
 
                                         <td>
-                                            <%dadosTransicoes.forEach(dadostransicao=>{%>
-                                                <%if(dadostransicao.dadosId==dadovenda.dadosId){%>
-                                                    <a href="/usuario/transicao/<%=dadostransicao.id%>"
-                                                        class="btn btn-info">Detalhes</a>
-                                                    <%}%>
-                                                        <%})%>
+                                            <a href="/usuario/transicao/<%=dadovenda.dadosId%>"
+                                                class="btn btn-info">Detalhes</a>
                                         </td>
 
                                     </tr>
@@ -127,4 +110,5 @@
                     translate(y)
                 }
             </script>
+
             </html>
