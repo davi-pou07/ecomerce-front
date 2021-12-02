@@ -18,6 +18,7 @@ const Carrinho = require("../Databases/client/Carrinho");
 const opcaoDePagamentos = [{ id: 1, opcao: "PIX" }, { id: 2, opcao: "MERCADO PAGO" }, { id: 3, opcao: "PAGAR NA ENTREGA" }]
 const StatusVenda = [{ id: 1, status: "Pendente" }, { id: 2, status: "Autorizado" }, { id: 3, status: "Cancelado" }]
 const StatusPagamento = [{ id: 1, status: "Analise" }, { id: 2, status: "Aprovado" }, { id: 3, status: "Rejeitado" }, { id: 4, status: "Cancelado" }, { id: 5, status: "Pendente" }]
+const StatusEntrega = [{statusId: 1,status:"Aguardando Pagamento"},{statusId: 2,status:"Em andamento"},{statusId: 3,status:"Entregue"},{statusId: 4,status:"Cancelada"}]
 const { compareSync } = require('bcryptjs');
 
 MercadoPago.configure({
@@ -198,17 +199,38 @@ router.post("/statusPagamento", async (req, res) => {
                     console.log(dadosPagamentos)
 
                 } else {
+                    // const StatusVenda = [{ id: 1, status: "Pendente" }, { id: 2, status: "Autorizado" }, { id: 3, status: "Cancelado" }]
 
                     if (results.status == "pending" || results.status == "in_process" || results.status == "in_mediation") {
                         var statusPagamento = StatusPagamento.find(sp => sp.id == 5)
+                        var statusVenda = StatusVenda.find(sv => sv.id == 1)
+                        var statusCarrinho = false
+                        var statusEntrega = StatusEntrega.find(se => se.statusId == 1)
+                        var dataPrevista = "00/00/00"
+
+
                     } else if (results.status == "approved" || results.status == "authorized") {
                         var statusPagamento = StatusPagamento.find(sp => sp.id == 2)
+                        var statusVenda = StatusVenda.find(sv => sv.id == 2)
+                        var statusCarrinho = false
+                        var statusEntrega = StatusEntrega.find(se => se.statusId == 2)
+                        var dataPrevista = moment().add(10, "days").format("DD/MM/YYYY")
+
                     } else if (results.status == "rejected" || results.status == "charged_back") {
                         var statusPagamento = StatusPagamento.find(sp => sp.id == 3)
+                        var statusVenda = StatusVenda.find(sv => sv.id == 1)
+                        var statusCarrinho = true
+                        var statusEntrega = StatusEntrega.find(se => se.statusId == 1)
+                        var dataPrevista = "00/00/00"
+
                     } else if (results.status == "cancelled" || results.status == "refunded") {
                         var statusPagamento = StatusPagamento.find(sp => sp.id == 4)
-                    }
+                        var statusVenda = StatusVenda.find(sv => sv.id == 3)
+                        var statusCarrinho = false
+                        var statusEntrega = StatusEntrega.find(se => se.statusId == 4)
+                        var dataPrevista = "00/00/00"
 
+                    }
 
                     var dadosVendas = await knex("dadosvendas").select().where({ dadosId: external_reference })
                     knex('dadospagamentos').insert({
@@ -229,16 +251,15 @@ router.post("/statusPagamento", async (req, res) => {
                         updatedAt: results.date_created
                     }).then(async () => {
                         var cliente = await Cliente.findByPk(dadosVendas[0].clienteId)
-                        var carrinho = await Carrinho.findByPk(dadosVendas[0].carrinhoId)
+
+                        var vendaUpdate = await knex("dadosvendas").update({statusId:statusVenda.id,statusColetado:statusVenda.status})
 
                         Carrinho.update({
-                            status: false
+                            status: statusCarrinho
                         }, { where: { id: dadosVendas[0].carrinhoId } }).then(async () => {
                             console.log("Carrinho inativado")
 
-                            var statusEntrega = await knex("statusentregas").select().where({ statusId: 2 })
-                            var dataPrevista = moment().add(10, "days").format("DD/MM/YYYY")
-                            await knex("dadosentregas").update({ status: statusEntrega[0].statusId, dataPrevista: dataPrevista, updatedAt: moment().format() }).where({ clienteId: dadosVendas[0].clienteId, carrinhoId: dadosVendas[0].carrinhoId })
+                            await knex("dadosentregas").update({ status: statusEntrega.statusId, dataPrevista: dataPrevista, updatedAt: moment().format() }).where({ clienteId: dadosVendas[0].clienteId, carrinhoId: dadosVendas[0].carrinhoId })
                         })
 
                         try {
