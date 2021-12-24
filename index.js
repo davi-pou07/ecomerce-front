@@ -8,6 +8,10 @@ const path = require('path')
 const MercadoPago = require("mercadopago")
 const knex = require('./Databases/admin/databases')
 
+const multer = require('multer')
+const fs = require('fs')
+
+
 const Cliente = require("./Databases/client/Cliente")
 const Carrinho = require("./Databases/client/Carrinho")
 const CodItens = require("./Databases/client/CodItens")
@@ -29,8 +33,16 @@ MercadoPago.configure({
     access_token: 'TEST-1254504299447071-061611-ac2150294a43f6a4d65d10f6f66512f8-257758072'
 })
 
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, 'public/uploads/')
+    },
+    filename: function (req, file, cb) {
+        cb(null, Date.now() + path.extname(file.originalname))
+    }
+})
 
-
+const upload = multer({ storage })
 
 const { Pool } = require('pg');
 const pool = new Pool({
@@ -91,6 +103,11 @@ app.get("/", async (req, res) => {
     }
 })
 
+
+app.post("/teste",upload.single("arquivo"),(req,res)=>{
+    var file = req.file
+    console.log(file)
+})
 
 app.listen(process.env.PORT || 3000, () => {
     console.log("Conexão ok")
