@@ -35,7 +35,7 @@ MercadoPago.configure({
 
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
-        cb(null, 'public/uploads/')
+        cb(null, './public/uploads/')
     },
     filename: function (req, file, cb) {
         cb(null, Date.now() + path.extname(file.originalname))
@@ -104,9 +104,11 @@ app.get("/", async (req, res) => {
 })
 
 
-app.post("/teste",upload.single("arquivo"),(req,res)=>{
-    var file = req.file
+app.post("/teste",upload.any("arquivo"),(req,res)=>{
+    var file = req.files
+    console.log(req)
     console.log(file)
+    res.json({resp:"file"})
 })
 
 app.listen(process.env.PORT || 3000, () => {
