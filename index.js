@@ -110,32 +110,21 @@ app.get("/", async (req, res) => {
 
 app.post("/teste",upload.any(),(req,res)=>{
     var file = req.files[0]
+    console.log(file)
+    console.log("---------")
+    console.log(req.body)
 
-    async function listarArquivosDoDiretorio(diretorio, arquivos) {
+    res.json({teste:"teste"})
+})
 
-        if(!arquivos)
-            var arquivos = [];
-        let listaDeArquivos = await fs.readdir(diretorio);
-        for(let k in listaDeArquivos) {
-            let stat = await fs.stat(diretorio + '/' + listaDeArquivos[k]);
-            if(stat.isDirectory())
-                await listarArquivosDoDiretorio(diretorio + '/' + listaDeArquivos[k], arquivos);
-            else
-                arquivos.push(diretorio + '/' + listaDeArquivos[k]);
-        }
-    
-        return arquivos;
-    
+app.get("/teste/:arq",(req,res)=>{
+    var loja = req.params.loja
+    var dir = `./public/upload/${loja}`
+    if (fs.existsSync(`${dir}/SIVICAR_DB.ctrl`)) {
+        res.send("Arquivo existente")
+    } else {
+        res.send("Arquivo inexistente")
     }
-    
-    async function test() {
-        let arquivos = await listarArquivosDoDiretorio('./public/upload/'); // coloque o caminho do seu diretorio
-        return arquivos;
-    }
-    var arquivos = test()
-
-
-    res.json({teste:"teste",arquivos:arquivos})
 })
 
 app.listen(process.env.PORT || 3000, () => {
