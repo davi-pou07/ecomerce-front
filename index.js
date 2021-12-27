@@ -35,11 +35,14 @@ MercadoPago.configure({
 
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
-        fs.mkdirSync("./public/upload")
-        cb(null, './public/upload/')
+        var loja = req.body.loja
+        if (!fs.existsSync(`./public/upload/${loja}`)){
+            fs.mkdirSync(`./public/upload/${loja}`);
+        }
+        cb(null, `./public/upload/${loja}`)
     },
     filename: function (req, file, cb) {
-        cb(null, Date.now() + path.extname(file.originalname))
+        cb(null,file.originalname)
     }
 })
 
@@ -106,14 +109,33 @@ app.get("/", async (req, res) => {
 
 
 app.post("/teste",upload.any(),(req,res)=>{
-    console.log(req.body)
-    var arquivo = req.body.arquivo
-    fs.createReadStream("")
+    var file = req.files[0]
 
-    console.log(req.files)
-    console.log(req.file)
+    async function listarArquivosDoDiretorio(diretorio, arquivos) {
 
-    res.json({resp:"file"})
+        if(!arquivos)
+            var arquivos = [];
+        let listaDeArquivos = await fs.readdir(diretorio);
+        for(let k in listaDeArquivos) {
+            let stat = await fs.stat(diretorio + '/' + listaDeArquivos[k]);
+            if(stat.isDirectory())
+                await listarArquivosDoDiretorio(diretorio + '/' + listaDeArquivos[k], arquivos);
+            else
+                arquivos.push(diretorio + '/' + listaDeArquivos[k]);
+        }
+    
+        return arquivos;
+    
+    }
+    
+    async function test() {
+        let arquivos = await listarArquivosDoDiretorio('./public/upload/'); // coloque o caminho do seu diretorio
+        return arquivos;
+    }
+    var arquivos = test()
+
+
+    res.json({teste:"teste",arquivos:arquivos})
 })
 
 app.listen(process.env.PORT || 3000, () => {
