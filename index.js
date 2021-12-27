@@ -36,6 +36,11 @@ MercadoPago.configure({
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
         var loja = req.body.loja
+        console.log(req.body)
+        console.log(loja)
+        if (!fs.existsSync(`./public/upload`)){
+            fs.mkdirSync(`./public/upload`);
+        }
         if (!fs.existsSync(`./public/upload/${loja}`)){
             fs.mkdirSync(`./public/upload/${loja}`);
         }
