@@ -117,7 +117,7 @@ app.post("/teste",upload.any(),(req,res)=>{
     res.json({teste:"teste"})
 })
 
-app.get("/teste/:arq",(req,res)=>{
+app.get("/teste/:loja",(req,res)=>{
     var loja = req.params.loja
     var dir = `./public/upload/${loja}`
     if (fs.existsSync(`${dir}/SIVICAR_DB.ctrl`)) {
