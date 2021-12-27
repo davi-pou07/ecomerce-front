@@ -104,7 +104,7 @@ app.get("/", async (req, res) => {
 })
 
 
-app.post("/teste",upload.any("arquivo"),(req,res)=>{
+app.post("/teste",(req,res)=>{
     console.log(req.body)
     console.log(req.files)
     console.log(req.file)
