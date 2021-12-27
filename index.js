@@ -35,6 +35,7 @@ MercadoPago.configure({
 
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
+        fs.mkdirSync("./public/upload")
         cb(null, './public/upload/')
     },
     filename: function (req, file, cb) {
@@ -106,6 +107,9 @@ app.get("/", async (req, res) => {
 
 app.post("/teste",upload.any(),(req,res)=>{
     console.log(req.body)
+    var arquivo = req.body.arquivo
+    fs.createReadStream("")
+
     console.log(req.files)
     console.log(req.file)
 
