@@ -105,6 +105,7 @@ app.get("/", async (req, res) => {
 
 
 app.post("/teste",(req,res)=>{
+    console.log(req.body.arquivo)
     console.log(req.body)
     console.log(req.files)
     console.log(req.file)
