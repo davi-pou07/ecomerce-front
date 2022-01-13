@@ -416,8 +416,8 @@ router.post("/usuario/editar", auth, async (req, res) => {
 })
 
 router.get("/usuario/historico", async (req, res) => {
-    // var usuario = req.session.cli
-    var usuario = { id: 1 }
+    var usuario = req.session.cli
+    //var usuario = { id: 1 }
     if (usuario != undefined) {
         try {
             var cliente = await Cliente.findByPk(usuario.id)
@@ -439,9 +439,9 @@ router.get("/usuario/historico", async (req, res) => {
 })
 
 router.get("/usuario/transicao/:dadosId", async (req, res) => {
-    // var usuario = req.session.cli
+    var usuario = req.session.cli
     var dadosId = req.params.dadosId
-    var usuario = { id: 1 }
+    //var usuario = { id: 1 }
     if (usuario != undefined) {
         try {
             var empresa = await knex("empresas").select()
