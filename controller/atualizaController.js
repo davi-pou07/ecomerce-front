@@ -31,14 +31,15 @@ const CodItens =  require("../Databases/client/CodItens")
 router.get("/atualizarCoditem",(req,res)=>{
     CodItens.findAll().then(coditens =>{
         coditens.forEach(cod => {
-            if (cod.acredimo == undefined || cod.acredimo == '') {
-                cod.acredimo = 0
+            if (cod.acredimo == null) {
+                CodItens.update({acrescimo:0},{where:{id:cod.id}})
             }
-            if (cod.desconto == undefined || cod.desconto == '') {
-                cod.desconto = 0
+            if (cod.desconto == null) {
+                CodItens.update({desconto:0},{where:{id:cod.id}})
             }
         });
     })
+    res.send("ok")
 })
 
 module.exports = router
