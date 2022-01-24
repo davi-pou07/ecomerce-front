@@ -1,3 +1,5 @@
+require('dotenv').config()
+
 const express = require("express")
 const app = express()
 const cors = require("cors")
@@ -54,19 +56,6 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage })
 
-const { Pool } = require('pg');
-const pool = new Pool({
-    connectionString: process.env.DATABASE_URL,
-    ssl: process.env.DATABASE_URL ? true : false
-});
-
-const pool2 = new Pool({
-    connectionString: process.env.HEROKU_POSTGRESQL_PUCE_URL,
-    ssl: process.env.HEROKU_POSTGRESQL_PUCE_URL ? true : false
-});
-
-pool.connect();
-pool2.connect();
 
 app.use(session({
     secret: "sdfsdfsdfgdfgfgh",
@@ -110,26 +99,6 @@ app.get("/", async (req, res) => {
     } catch (err) {
         console.log(err)
         res.json(err)
-    }
-})
-
-
-app.post("/teste",upload.any(),(req,res)=>{
-    var file = req.files[0]
-    console.log(file)
-    console.log("---------")
-    console.log(req.body)
-
-    res.json({teste:"teste"})
-})
-
-app.get("/teste/:loja",(req,res)=>{
-    var loja = req.params.loja
-    var dir = `./public/upload/${loja}`
-    if (fs.existsSync(`${dir}/SIVICAR_DB.ctrl`)) {
-        res.send("Arquivo existente")
-    } else {
-        res.send("Arquivo inexistente")
     }
 })
 

@@ -1,19 +1,22 @@
+const DB_NAME = process.env.DB_NAME
+const DB_USER = process.env.DB_USER
+const DB_PASSWORD = process.env.DB_PASSWORD
+const DB_HOST = process.env.DB_HOST
 
 const knex = require('knex')({
     client: 'pg',
     version: '13',
     connection: {
-      host : 'ec2-34-200-94-86.compute-1.amazonaws.com',
-      user : 'xzohavpuwebfje',
-      password : 'cce7fe39b756ba090b9a03883dca985ce43bf137b608cb4cfbc1fcd6ee921e15',
-      database : 'd9f1ts6ismirrp',
+      host : DB_HOST,
+      user : DB_USER,
+      password : DB_PASSWORD,
+      database : DB_NAME,
       ssl:{ rejectUnauthorized: false }
     }
   });
 //QUANDO TIVER ERRO AO CONECTAR NO SSL DO HEROKU OFF:
 //https://stackoverflow.com/questions/61097695/self-signed-certificate-error-during-query-the-heroku-hosted-postgres-database
 
-//postgres://xzohavpuwebfje:cce7fe39b756ba090b9a03883dca985ce43bf137b608cb4cfbc1fcd6ee921e15@ec2-34-200-94-86.compute-1.amazonaws.com:5432/d9f1ts6ismirrp
   module.exports = knex
 
 // heroku config:add TZ=America/Recife
