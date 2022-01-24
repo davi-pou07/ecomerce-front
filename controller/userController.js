@@ -20,8 +20,8 @@ var remetente = nodemailer.createTransport({
     port: 587,
     secure: true,
     auth: {
-        user: "poudeyvis007@gmail.com",
-        pass: "99965511auri"
+        user: process.env.USER_MAIL,
+        pass: process.env.PASS_MAIL
     }
 });
 
