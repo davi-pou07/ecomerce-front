@@ -257,7 +257,8 @@ router.post("/statusPagamento", async (req, res) => {
                         var vendaUpdate = await knex("dadosvendas").update({statusId:statusVenda.id,statusColetado:statusVenda.status})
 
                         Carrinho.update({
-                            status: statusCarrinho
+                            status: statusCarrinho,
+                            updatedAt: moment().format()
                         }, { where: { id: dadosVendas[0].carrinhoId } }).then(async () => {
                             console.log("Carrinho inativado")
 
@@ -405,7 +406,8 @@ router.post("/solicitar/entrega", auth, async (req, res) => {
                             cpf:cpf,
                             dataNasc:dataNasc,
                             nome:nome,
-                            numero:numero
+                            numero:numero,
+                            updatedAt: moment().format()
                         }).where({id:dadosEntrega[0].id})
 
                         var dadosPagamentos= await knex("dadospagamentos").select().where({ clienteId: cliente.id, carrinhoId: carrinho.id })

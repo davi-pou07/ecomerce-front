@@ -140,7 +140,7 @@ router.post("/esqueceu", async (req, res) => {
                 if (cliente != undefined) {
                     var recuperaSenha = RecuperaSenha.findOne({ where: { status: true, clienteId: cliente.id } })
                     if (recuperaSenha != undefined) {
-                        RecuperaSenha.update({ staus: false, aprovado: false }, { where: { id: recuperaSenha.id } })
+                        RecuperaSenha.update({ staus: false, aprovado: false,updatedAt: moment().format() }, { where: { id: recuperaSenha.id } })
                     }
                     var idUnica = Math.floor(Math.random() * 9999)
                     while (idUnica.toString().length < 4) {
@@ -215,7 +215,7 @@ router.post("/inserirCodigo", async (req, res) => {
             var cliente = await Cliente.findOne({ where: { email: email.toLowerCase() } })
             var recuperaSenha = await RecuperaSenha.findOne({ where: { clienteId: cliente.id, uniqid: codigo, status: true } })
             if (recuperaSenha != undefined) {
-                RecuperaSenha.update({ aprovado: true }, { where: { id: recuperaSenha.id } }).then(() => {
+                RecuperaSenha.update({ aprovado: true,updatedAt: moment().format() }, { where: { id: recuperaSenha.id } }).then(() => {
                     res.json({ cliente: cliente.id })
                 }).catch(err => {
                     console.log(err)
@@ -239,7 +239,7 @@ router.get("/alterarSenha/:clienteId", async (req, res) => {
             var recuperaSenha = await RecuperaSenha.findOne({ where: { clienteId: cliente.id, /*status: true,*/ aprovado: true } })
             console.log(recuperaSenha)
             if (recuperaSenha != undefined) {
-                RecuperaSenha.update({ status: false }, { where: { id: recuperaSenha.id } }).then(() => {
+                RecuperaSenha.update({ status: false,updatedAt: moment().format() }, { where: { id: recuperaSenha.id } }).then(() => {
                     res.render("usuario/alterarSenha", { cliente: cliente.id })
                 })
             } else {
