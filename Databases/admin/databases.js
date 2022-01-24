@@ -22,3 +22,6 @@ const knex = require('knex')({
 // heroku config:add TZ=America/Recife
 // heroku run bash
 // date
+
+//heroku addons:attach postgresql-dimensional-92283 -a ecomerce-front
+//heroku pg:promote HEROKU_POSTGRESQL_PURPLE
