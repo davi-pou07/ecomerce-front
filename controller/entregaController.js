@@ -61,6 +61,7 @@ router.post("/entrega/adicionar", async (req, res) => {
                     codigoRastreioInterno: codigoRastreioInterno,
                     status: statusEntrega[0].statusId,
                     valor: entrega.preco,
+                    valRecebido:0,
                     createdAt: moment().format(),
                     updatedAt: moment().format()
                 }).then(() => {
@@ -81,7 +82,8 @@ router.post("/entrega/adicionar", async (req, res) => {
                     valor: entrega.preco,
                     codigoRastreioInterno: codigoRastreioInterno,
                     status:  statusEntrega[0].statusId,
-                    updatedAt:moment().format()
+                    updatedAt:moment().format(),
+                    valRecebido:0
                 }).where({ id: dadosEntrega[0].id }).then(() => {
                     res.json({erro:0})
                 }).catch(err => {
