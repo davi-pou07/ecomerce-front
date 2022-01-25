@@ -26,6 +26,14 @@ const Coditens = connectionCL.define('coditens',{
     precoTotalItem:{
         type:Sequelize.FLOAT,
         allowNull:false
+    },
+    acrescimo:{
+        type:Sequelize.FLOAT,
+        allowNull:false
+    },
+    desconto:{
+        type:Sequelize.FLOAT,
+        allowNull:false
     }
 })
 

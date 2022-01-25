@@ -66,7 +66,9 @@ router.post("/carrinho/adicionar", async (req, res) => {
                 reflinha: reflinha,
                 carrinhoId: carrinho.id,
                 precoUnit: parseFloat(precoUnit),
-                precoTotalItem: precoTotalItem
+                precoTotalItem: precoTotalItem,
+                acrescimo:0,
+                desconto:0
             }).then(resp => {
                 console.log({ resp: "Foi realizado a adição" })
             })
