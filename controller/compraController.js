@@ -207,7 +207,7 @@ router.post("/statusPagamento", async (req, res) => {
                         var statusCarrinho = false
                         var statusEntrega = StatusEntrega.find(se => se.statusId == 1)
                         var dataPrevista = "00/00/00"
-
+                        var valRecebido = 0
 
                     } else if (results.status == "approved" || results.status == "authorized") {
                         var statusPagamento = StatusPagamento.find(sp => sp.id == 2)
@@ -215,6 +215,7 @@ router.post("/statusPagamento", async (req, res) => {
                         var statusCarrinho = false
                         var statusEntrega = StatusEntrega.find(se => se.statusId == 2)
                         var dataPrevista = moment().add(10, "days").format("DD/MM/YYYY")
+                        var valRecebido = results.transaction_details.total_paid_amount
 
                     } else if (results.status == "rejected" || results.status == "charged_back") {
                         var statusPagamento = StatusPagamento.find(sp => sp.id == 3)
@@ -222,6 +223,7 @@ router.post("/statusPagamento", async (req, res) => {
                         var statusCarrinho = true
                         var statusEntrega = StatusEntrega.find(se => se.statusId == 1)
                         var dataPrevista = "00/00/00"
+                        var valRecebido = 0
 
                     } else if (results.status == "cancelled" || results.status == "refunded") {
                         var statusPagamento = StatusPagamento.find(sp => sp.id == 4)
@@ -229,6 +231,7 @@ router.post("/statusPagamento", async (req, res) => {
                         var statusCarrinho = false
                         var statusEntrega = StatusEntrega.find(se => se.statusId == 4)
                         var dataPrevista = "00/00/00"
+                        var valRecebido = 0
 
                     }
 
@@ -245,6 +248,7 @@ router.post("/statusPagamento", async (req, res) => {
                         clienteId: dadosVendas[0].clienteId,
                         carrinhoId: dadosVendas[0].carrinhoId,
                         statusId: statusPagamento.id,
+                        valRecebido:valRecebido,
                         descricao: results.description,
                         metodoPagamento: results.payment_method_id,
                         createdAt: results.date_created,
@@ -318,6 +322,7 @@ router.post("/comprovante/pix", auth, async (req, res) => {
                     comprovante: comprovante,
                     createdAt: moment().format(),
                     updatedAt: moment().format(),
+                    valRecebido:parseFloat(0),
                     detalhePagamento: "Pix",
                     tipoDePagamento: 'bank_transfer',
                     metodoPagamento: "Pix",
@@ -339,6 +344,7 @@ router.post("/comprovante/pix", auth, async (req, res) => {
                     carrinhoId: carrinho.id,
                     comprovante: comprovante,
                     detalhePagamento: "Pix",
+                    valRecebido:parseFloat(0),
                     tipoDePagamento: 'bank_transfer',
                     metodoPagamento: "Pix",
                     dataExpiracao: moment().add(2, 'days').format(),
@@ -417,6 +423,7 @@ router.post("/solicitar/entrega", auth, async (req, res) => {
                                 createdAt: moment().format(),
                                 updatedAt: moment().format(),
                                 tipoDePagamento:"pagar_entrega",
+                                valRecebido:parseFloat(0),
                                 dataExpiracao: moment().add(2, 'days').format(),
                                 detalhePagamento:"Entrega",
                                 metodoPagamento:"Entrega",
@@ -433,6 +440,7 @@ router.post("/solicitar/entrega", auth, async (req, res) => {
                                 dataExpiracao: moment().add(2, 'days').format(),
                                 detalhePagamento:"Entrega",
                                 metodoPagamento:"Entrega",
+                                valRecebido:parseFloat(0),
                                 dadosEntragaId: dadosEntrega[0].id,
                                 updatedAt: moment().format()
                             }).where({ id: dadosPagamentos[0].id }).catch(err => {
