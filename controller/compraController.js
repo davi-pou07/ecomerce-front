@@ -23,7 +23,7 @@ const { compareSync } = require('bcryptjs');
 
 MercadoPago.configure({
     sandbox: true,
-    access_token: "TEST-1254504299447071-061611-ac2150294a43f6a4d65d10f6f66512f8-257758072"
+    access_token: process.env.TOCKENMERCADOPAGO
 })
 
 var remetente = nodemailer.createTransport({
@@ -32,8 +32,10 @@ var remetente = nodemailer.createTransport({
     port: 587,
     secure: true,
     auth: {
-        user: "poudeyvis007@gmail.com",
-        pass: "99965511auri"
+        // user: "poudeyvis007@gmail.com",
+        // pass: "99965511auri"
+        user: process.env.USER_MAIL,
+        pass: process.env.PASS_MAIL
     }
 });
 
@@ -259,7 +261,8 @@ router.post("/statusPagamento", async (req, res) => {
                         var vendaUpdate = await knex("dadosvendas").update({statusId:statusVenda.id,statusColetado:statusVenda.status})
 
                         Carrinho.update({
-                            status: statusCarrinho
+                            status: statusCarrinho,
+                            updatedAt: moment().format()
                         }, { where: { id: dadosVendas[0].carrinhoId } }).then(async () => {
                             console.log("Carrinho inativado")
 
@@ -409,7 +412,8 @@ router.post("/solicitar/entrega", auth, async (req, res) => {
                             cpf:cpf,
                             dataNasc:dataNasc,
                             nome:nome,
-                            numero:numero
+                            numero:numero,
+                            updatedAt: moment().format()
                         }).where({id:dadosEntrega[0].id})
 
                         var dadosPagamentos= await knex("dadospagamentos").select().where({ clienteId: cliente.id, carrinhoId: carrinho.id })

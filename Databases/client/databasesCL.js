@@ -1,8 +1,12 @@
 const Sequelize = require("sequelize");
 
-// const connectionCL = new Sequelize('postgres://naeoolvlzfexcm:0097bce388efc76f8d1603d8cd930982f031093997366dc856a3a6aff4b625cc@ec2-35-169-188-58.compute-1.amazonaws.com:5432/d6orq1epqv96kp')
-const connectionCL = new Sequelize('d6orq1epqv96kp', 'naeoolvlzfexcm', '0097bce388efc76f8d1603d8cd930982f031093997366dc856a3a6aff4b625cc', {
-    host: 'ec2-35-169-188-58.compute-1.amazonaws.com',
+const DB_NAMECL = process.env.DB_NAMECL
+const DB_USERCL = process.env.DB_USERCL
+const DB_PASSWORDCL = process.env.DB_PASSWORDCL
+const DB_HOSTCL = process.env.DB_HOSTCL
+
+const connectionCL = new Sequelize(DB_NAMECL, DB_USERCL, DB_PASSWORDCL, {
+    host: DB_HOSTCL,
     dialect: 'postgres',
     port: 5432,
     timezone: "-03:00",
@@ -14,8 +18,6 @@ const connectionCL = new Sequelize('d6orq1epqv96kp', 'naeoolvlzfexcm', '0097bce3
     }
 })
 module.exports = connectionCL;
-//postgres://naeoolvlzfexcm:0097bce388efc76f8d1603d8cd930982f031093997366dc856a3a6aff4b625cc@ec2-35-169-188-58.compute-1.amazonaws.com:5432/d6orq1epqv96kp
-//postgres://naeoolvlzfexcm:0097bce388efc76f8d1603d8cd930982f031093997366dc856a3a6aff4b625cc@ec2-35-169-188-58.compute-1.amazonaws.com:5432/d6orq1epqv96kp
 //https://help.heroku.com/DR0TTWWD/seeing-fatal-no-pg_hba-conf-entry-errors-in-postgres
 //https://devcenter.heroku.com/articles/heroku-postgresql#connecting-in-node-js
 //https://devcenter.heroku.com/articles/heroku-postgresql#heroku-postgres-ssl

@@ -1,14 +1,13 @@
 <%- include("./partials/head.ejs")%>
 
     <%- include("./partials/nav.ejs")%>
-    
-    <!-- Navegador do site para levar a algumas paginas-->
-        <div id="navegador" style="background: #061c30;">
-            <div class="container" style="background: #061c30;">
-                <ul class="nav justify-content-between" style="background-color: #041a2fe6; padding-right: 30px;padding-left: 30px;border: none;padding-bottom: 4px; padding-top: 10px;">
-                <!-- Lista as categorias principais do site -->
-                    <li class="nav-item dropdown">
-                        <div class="input-group" data-bs-toggle="dropdown">
+
+        <nav class="navbar navbar-expand-lg" style="background: #061c30;">
+            <div class="container">
+              <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav ms-sm-5 mb-2 mb-lg-0">
+                    <li class="nav-item px-sm-5 mt-sm-0 mt-4 dropdown">
+                        <div class="input-group me-2" data-bs-toggle="dropdown">
                             <img src="/img/list.png" class="img-fluid mt-md-1" width="30px" height="30px">
                             <a class="nav-link dropdown-toggle text-white" href="#" role="button"
                                 aria-expanded="false">Categorias</a>
@@ -23,48 +22,39 @@
                                         <%})%>
                         </ul>
                     </li>
-                <!-- fim da listagem das categorias principais do site -->
 
-                <!-- Opção para levar a aba de ofertas semanais -->
-                    <li class="nav-item">
-                        <div class="input-group">
+                   <li class="nav-item px-sm-5 mt-sm-0 mt-4">
+                        <div class="input-group me-2">
                             <img src="/img/oferta.png" class="img-fluid mt-md-1" width="30px" height="30px">
                             <a class="nav-link text-white testenav" href="#">Ofertas</a>
                         </div>
                     </li>
-                <!-- Fim da opção para levar a aba de ofertas semanais -->
 
-                <!-- Demonstra historico de compra do cliente -->
-                    <li class="nav-item">
-                        <div class="input-group">
+                    <li class="nav-item px-sm-5 mt-sm-0 mt-4">
+                        <div class="input-group me-2">
                             <img src="/img/historico.png" class="img-fluid mt-md-1" width="30px" height="30px">
                             <a class="nav-link text-white" href="/usuario/historico/">Historico de Compra</a>
                         </div>
                     </li>
-                <!--Fim historico de compra do cliente -->
 
-                <!-- Leva ao carrinho do cliente -->
-                    <li class="nav-item">
-                        <div class="input-group">
+                    <li class="nav-item px-sm-5 mt-sm-0 mt-4">
+                        <div class="input-group me-2">
                             <img src="/img/carrinho.png" class="img-fluid mt-md-1" width="30px" height="30px">
                             <a class="nav-link text-white" href="/carrinho/caixa">Carrinho</a>
                         </div>
-                <!-- fim carrinho do cliente -->
-
-                <!--Lista os canais de atendimento ao cliente -->
                     </li>
-                    <li class="nav-item">
-                        <div class="input-group">
+
+                    <li class="nav-item px-sm-5 mt-sm-0 mt-4">
+                        <div class="input-group me-2">
                             <img src="/img/central.png" class="img-fluid mt-md-1" width="30px" height="30px">
                             <a class="nav-link text-white" href="#">Central de Atendimento</a>
                         </div>
                     </li>
+
                 </ul>
-                <!--Fim da Lista os canais de atendimento ao cliente -->
-
+              </div>
             </div>
-        </div>
-
+          </nav>
         <!-- banners -->
         <div class="container">
             <div id="carouselExampleSlidesOnly" class="carousel slide d-block" data-bs-ride="carousel">

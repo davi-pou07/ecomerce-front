@@ -68,36 +68,15 @@
         <nav class="navbar navbar-dark justify-content-between navbar-expand-lg">
             <div class="container">
                 <!-- Imagem e nome da empresa -->
-                <div class="row">
-                    <div class="col-9 p-0 ps-2">
-                        <a href="/" class="navbar-brand">
-                            <img src="/img/logo.png" class="img-fluid" id="logo" width="90px" alt="">
-                        </a>
-                    </div>
-                    <div class="col-3 p-0">
-                        <span> <!--
-                            <ul class="navbar-nav mt-1">
-                                <li class="nav-item dropdown">
-                                    <a class="nav-link dropdown-toggle text-uppercase fw-bold text-white show" href="#"
-                                        role="button" id="empreza" data-bs-toggle="dropdown" aria-expanded="true">
-                                        Ican
-                                    </a>
-                                    <ul class="dropdown-menu" aria-labelledby="empreza">
-                                        <li><a href="/admin/empresa" class="dropdown-item">Quem Somos!?</a></li>
-                                    </ul>
-
-                                </li>
-                            </ul> -->
-                        </span>
-                    </div>
-                </div>
+                <a href="/" class="navbar-brand">
+                    <img src="/img/logo.png" class="img-fluid" id="logo" width="90px" alt="">
+                </a>
                 <!-- Fim da imagem e nome da empresa -->
 
                 <!-- Input + botão de pesquisa -->
                 <div class="row">
                     <div class="col-md-12 p-0">
-                        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-
+                        <div class="collapse navbar-collapse">
                             <form class="d-flex">
                                 <input class="form-control" type="search" placeholder="Pesquise aqui seu produto" aria-label="Search" style="  width: 36em; outline: none;
                                 border-radius: 10px 0 0 10px;
@@ -169,6 +148,10 @@
                         </figure>
                     </label>
                 </div>
+
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                  </button>
                 <!-- Fim do Usuario -->
 
             </div>

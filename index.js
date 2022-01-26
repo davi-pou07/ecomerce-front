@@ -1,3 +1,5 @@
+require('dotenv').config()
+
 const express = require("express")
 const app = express()
 const cors = require("cors")
@@ -25,12 +27,13 @@ const clienteController = require("./controller/userController")
 const categoriaControler = require("./controller/categoriaController")
 const compraControler = require("./controller/compraController")
 const entregaControler = require("./controller/entregaController")
+const atualizaController = require("./controller/atualizaController")
 
 const connectionCL = require('./Databases/client/databasesCL')
 
 MercadoPago.configure({
     sandbox: true,
-    access_token: 'TEST-1254504299447071-061611-ac2150294a43f6a4d65d10f6f66512f8-257758072'
+    access_token: process.env.TOCKENMERCADOPAGO
 })
 
 const storage = multer.diskStorage({
@@ -53,19 +56,6 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage })
 
-const { Pool } = require('pg');
-const pool = new Pool({
-    connectionString: process.env.DATABASE_URL,
-    ssl: process.env.DATABASE_URL ? true : false
-});
-
-const pool2 = new Pool({
-    connectionString: process.env.HEROKU_POSTGRESQL_PUCE_URL,
-    ssl: process.env.HEROKU_POSTGRESQL_PUCE_URL ? true : false
-});
-
-pool.connect();
-pool2.connect();
 
 app.use(session({
     secret: "sdfsdfsdfgdfgfgh",
@@ -89,7 +79,7 @@ app.use("/", clienteController)
 app.use("/", categoriaControler)
 app.use("/", compraControler)
 app.use("/", entregaControler)
-
+app.use("/", atualizaController)
 
 
 app.get("/", async (req, res) => {
@@ -109,26 +99,6 @@ app.get("/", async (req, res) => {
     } catch (err) {
         console.log(err)
         res.json(err)
-    }
-})
-
-
-app.post("/teste",upload.any(),(req,res)=>{
-    var file = req.files[0]
-    console.log(file)
-    console.log("---------")
-    console.log(req.body)
-
-    res.json({teste:"teste"})
-})
-
-app.get("/teste/:loja",(req,res)=>{
-    var loja = req.params.loja
-    var dir = `./public/upload/${loja}`
-    if (fs.existsSync(`${dir}/SIVICAR_DB.ctrl`)) {
-        res.send("Arquivo existente")
-    } else {
-        res.send("Arquivo inexistente")
     }
 })
 
