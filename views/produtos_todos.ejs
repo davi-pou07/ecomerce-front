@@ -1,0 +1,156 @@
+<%- include("./partials/head.ejs")%>
+
+    <%- include("./partials/nav.ejs")%>
+
+        <nav class="navbar navbar-expand-lg" style="background: #061c30;">
+            <div class="container">
+              <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav ms-sm-5 mb-2 mb-lg-0">
+                    <li class="nav-item px-sm-5 mt-sm-0 mt-4 dropdown">
+                        <div class="input-group me-2" data-bs-toggle="dropdown">
+                            <img src="/img/list.png" class="img-fluid mt-md-1" width="30px" height="30px">
+                            <a class="nav-link dropdown-toggle text-white" href="#" role="button"
+                                aria-expanded="false">Categorias</a>
+                        </div>
+                        <ul class="dropdown-menu">
+                            <%categorias.forEach(categoria=>{%>
+                                <%if(categoria.destaque==true){%>
+                                    <li><a class="dropdown-item text-dark" href="/categoria/<%=categoria.id%>">
+                                            <%=categoria.titulo%>
+                                        </a></li>
+                                    <%}%>
+                                        <%})%>
+                        </ul>
+                    </li>
+
+                   <li class="nav-item px-sm-5 mt-sm-0 mt-4">
+                        <div class="input-group me-2">
+                            <img src="/img/oferta.png" class="img-fluid mt-md-1" width="30px" height="30px">
+                            <a class="nav-link text-white testenav" href="#">Ofertas</a>
+                        </div>
+                    </li>
+
+                    <li class="nav-item px-sm-5 mt-sm-0 mt-4">
+                        <div class="input-group me-2">
+                            <img src="/img/historico.png" class="img-fluid mt-md-1" width="30px" height="30px">
+                            <a class="nav-link text-white" href="/usuario/historico/">Historico de Compra</a>
+                        </div>
+                    </li>
+
+                    <li class="nav-item px-sm-5 mt-sm-0 mt-4">
+                        <div class="input-group me-2">
+                            <img src="/img/carrinho.png" class="img-fluid mt-md-1" width="30px" height="30px">
+                            <a class="nav-link text-white" href="/carrinho/caixa">Carrinho</a>
+                        </div>
+                    </li>
+
+                    <li class="nav-item px-sm-5 mt-sm-0 mt-4">
+                        <div class="input-group me-2">
+                            <img src="/img/central.png" class="img-fluid mt-md-1" width="30px" height="30px">
+                            <a class="nav-link text-white" href="#">Central de Atendimento</a>
+                        </div>
+                    </li>
+
+                </ul>
+              </div>
+            </div>
+          </nav>
+        <!-- banners -->
+        <div class="container">
+            <div id="carouselExampleSlidesOnly" class="carousel slide d-block" data-bs-ride="carousel">
+                <div class="carousel-inner mt-3">
+                    <%banners.forEach((banner,index)=>{%>
+                        <%if(index == 0){%>
+                    <div class="carousel-item active">
+                        <img src="<%=banner.img%>" class="d-block w-100" data-bs-interval="2000">
+                        <!-- width="1340" height="400" -->
+                    </div>
+                        <%}%>
+                    <div class="carousel-item">
+                        <img src="<%=banner.img%>" class="d-block w-100" data-bs-interval="2000">
+                    </div>
+                   <%})%>
+                </div>
+            </div>
+            <!-- banners -->
+        
+            <!-- <div class="animatedBackground imagePlaceholder">
+                <div class="backgroundMasker sun"></div>
+                <div class="backgroundMasker smallMountain"></div>
+                <div class="backgroundMasker bigMountain"></div>
+                <div class="backgroundMasker imageLeft"></div>
+                <div class="backgroundMasker imageRight"></div>
+            </div>
+            <div class="animatedBackground contentPlaceholder">
+                <div class="backgroundMasker contentTop"></div>
+                <div class="backgroundMasker contentFirstEnd"></div>
+                <div class="backgroundMasker contentSecondLine"></div>
+                <div class="backgroundMasker contentSecondEnd"></div>
+                <div class="backgroundMasker contentThirdLine"></div>
+                <div class="backgroundMasker contentThirdEnd"></div>
+            </div> -->
+            <!-- BOX PARA INFORMAR OS ATRIBUTOS DA EMPRESA -->
+            
+            <!-- LISTAGEM DOS PRODUTOS -->
+            <div id="produtos">
+                <h2 class="title text-center" style="
+                background: #061d3014;
+            ">Nossos produtos</h2>
+                <h4 class="subtitle text-center mb-4" style="
+                background: #3ba8f133;">Veja abaixo nossos produtos!</h4>
+                <div class="row">
+                    <%produtos.forEach((produto,index)=>{%>
+                            <div class="col-lg-3 col-md-6 mb-4 mb-lg-0">
+                                <a href="/produto/<%=produto.id%>" class="destaque">
+                                    <div class="img-container mb-3">
+                                        <!-- Demonstra a imagem do produto -->
+                                        <%var imagem=imagens.find(imagem=> imagem.produtoId == produto.id)%>
+                                            <%if(imagem !=undefined){%>
+                                                <img src="<%=imagem.imagem%>" class="" alt="">
+                                                <%}else{%>
+                                                    <img class="rounded mx-auto d-block" src="/img/null.png" width="220"
+                                                        height="220">
+                                                    <%}%>
+
+                                    </div>
+                                        <!-- Demonstra o nome do produto -->
+                                    <h5 class="text-uppercase">
+                                        <%=produto.nome%>
+                                    </h5>
+                                    <%precos.forEach(preco=> {%>
+                                        <%if(preco.produtoId==produto.id){%>
+                                        <!-- Demonstra o preço do produto e se tem desconto -->
+                                            <span class="form-control text-white fw-bold bg-primary bg-gradient">
+                                                <%if(preco.desconto> 0){%>
+                                                    <s id="s" class="fs-6 text-danger">
+                                                        <%=preco.venda.toLocaleString('pt-br',{style: 'currency' ,
+                                                            currency: 'BRL' })%>
+                                                    </s>
+                                                    <strong id="strong" class="fs-4">
+                                                        <%=preco.desconto.toLocaleString('pt-br',{style: 'currency' ,
+                                                            currency: 'BRL' })%>
+                                                    </strong>
+                                                    <%}else{%>
+                                                        <strong id="strong" class="fs-4">
+                                                            <%=preco.venda.toLocaleString('pt-br',{style: 'currency' ,
+                                                                currency: 'BRL' })%>
+                                                        </strong>
+                                                        <%}%>
+
+                                            </span>
+                                            <%}%>
+                                                <%})%>
+                                </a>
+                            </div>
+                                <%})%>
+                </div>
+            <!-- Fim da  LISTAGEM DOS PRODUTOS -->
+
+            </div>
+
+        </div>
+
+
+        <%- include("./partials/footer.ejs")%>
+
+        </html>

@@ -102,6 +102,27 @@ app.get("/", async (req, res) => {
     }
 })
 
+app.get("/produtos/todos", async (req, res) => {
+    
+    try {
+        var produtosIds = []
+        var produtos = await knex("produtos").select("id", "nome").where('status', true).orderBy('categoriaId')
+        produtos.forEach(produto => {
+            produtosIds.push(produto.id)
+        });
+        var categorias = await knex("categorias").select("destaque", "status", "titulo", "id").where('status', true)
+        var precos = await knex("precos").select("produtoId", "desconto", "venda")
+        var imagens = await knex("imagens").select("produtoId", "imagem").whereIn("produtoId", produtosIds)
+        var banners = await knex("banners").select("img").where({ status: true, destaque: true })
+
+        res.render("produtos_todos", { produtos: produtos, categorias: categorias, precos: precos, imagens: imagens, banners: banners })
+
+    } catch (err) {
+        console.log(err)
+        res.json(err)
+    }
+})
+
 app.listen(process.env.PORT || 3000, () => {
     console.log("Conexão ok")
 })
