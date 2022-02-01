@@ -385,7 +385,7 @@
                                         <!-- Demonstra a imagem do produto -->
                                         <%var imagem=imagens.find(imagem=> imagem.produtoId == produto.id)%>
                                             <%if(imagem !=undefined){%>
-                                                <img src="<%=imagem.imagem%>" class="" alt="">
+                                                <img src="<%=imagem.imagem%>" class="img-fluid">
                                                 <%}else{%>
                                                     <img class="rounded mx-auto d-block" src="/img/null.png" width="220"
                                                         height="220">

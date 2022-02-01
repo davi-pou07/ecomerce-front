@@ -13,7 +13,6 @@ const knex = require('./Databases/admin/databases')
 const multer = require('multer')
 const fs = require('fs')
 
-
 const Cliente = require("./Databases/client/Cliente")
 const Carrinho = require("./Databases/client/Carrinho")
 const CodItens = require("./Databases/client/CodItens")
