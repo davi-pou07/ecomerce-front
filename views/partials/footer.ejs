@@ -44,7 +44,7 @@
           <!-- Grid column -->
           <div class="col-md-3 col-lg-4 col-xl-3 mx-auto mb-4">
             <!-- Content -->
-            <h6 class="text-uppercase fw-bold" id="empresaFooter">Ican</h6>
+            <h6 class="text-uppercase fw-bold" id="empresaFooter">Revon</h6>
             <hr class="mb-4 mt-0 d-inline-block mx-auto" style="width: 60px; background-color: #7c4dff; height: 2px" />
             <p id="descricaoFooter">
               Estamos acima dos seus limites, eu posso! Sua empresa pode.
@@ -109,7 +109,7 @@
     <!-- Copyright -->
     <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2)">
       © 2021 Copyright:
-      <a class="text-white" href="/">Ican.com</a>
+      <a class="text-white" href="/">Revon.com</a>
     </div>
     <!-- Copyright -->
   </footer>
@@ -120,7 +120,7 @@
   window.onload = ()=>{
     axios.get("/empresa").then(resp => {
       var empresa = resp.data[0]
-      document.getElementById('empresaFooter').innerHtlm = empresa.nome
+      document.getElementById('empresaFooter').innerHTML = empresa.nome
       document.getElementById("descricaoFooter").innerHTML =  empresa.descricao
       var endereco = `${empresa.cep}, ${empresa.rua}, Nº${empresa.numero} ${empresa.bairro}, ${empresa.cidade} - ${empresa.estado}`
       document.getElementById("enderecoFooter").innerHTML = endereco
