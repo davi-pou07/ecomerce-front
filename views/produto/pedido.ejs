@@ -63,7 +63,10 @@
                                             <li>Marca: <%=marca.marca%>
                                             </li>
                                             <%}%>
-                                                <li>Material: Porcelana </li>
+                                            <%if(material.id !=0){%>
+                                                <li>Material: <%=material.material%>
+                                                </li>
+                                                <%}%>
                                                 <%if(produto.status==true){%>
                                                     <li>Status: Disponivel</li>
                                                     <%}else{%>

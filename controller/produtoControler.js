@@ -23,10 +23,14 @@ router.get("/produto/:id", async (req, res) => {
 
 
         var marca = await knex("marcas").select().where({ id: produto[0].marcaId })
+        var material = await knex("materiais").select().where({ id: produto[0].materialId })
         if (marca[0] == undefined) {
             marca[0] = { id: 0 }
         }
-        res.render("produto/pedido", { produto: produto[0], categoria: categoria[0], imagems: imagems, preco: preco[0], produtos: produtos, precos: precos, imagens: imagens, grades: grades, marca: marca[0], grade: grade[0] })
+        if (material[0] == undefined) {
+            material[0] = { id: 0 }
+        }
+        res.render("produto/pedido", { produto: produto[0], categoria: categoria[0], imagems: imagems, preco: preco[0], produtos: produtos, precos: precos, imagens: imagens, grades: grades, marca: marca[0],material: material[0], grade: grade[0] })
     } catch (error) {
         console.log(error)
         res.json(error)

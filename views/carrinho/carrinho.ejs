@@ -752,7 +752,7 @@
 
                                         var entrega = await entregaAdicionar()
                                         if (entrega) {
-                                            axios.post('/solicitar/entrega', { nome: nome.value, numero: numero.value, cpf: cpf.value }).then(resp => {
+                                            axios.post('/solicitar/entrega', { nome: nome.value, numero: numero.value, cpf: cpf.value,dataNasc:dataNasc.value }).then(resp => {
                                                 var resposta = resp.data
                                                 if (resposta.erro == undefined && resposta.resp != undefined) {
                                                     alert(resposta.resp)

@@ -162,24 +162,34 @@
                                                     <%=dadosEntrega.cidade%> - <%=dadosEntrega.uf%>
                                 </dt>
                                 <div class="row mt-4">
-                                    <div class="col-md-6 text-end">
-                                        <a class="btn btn-outline-primary">
-                                            <%=dadosEntrega.status%>
-                                        </a>
-                                    </div>
-                                    <%if(dadosEntrega.dataPrevista !=undefined){%>
-                                        <div class="col-md-6 text-start">
-                                            <dt>Data prevista: <a class="btn btn-outline-primary">
-                                                    <%=dadosEntrega.dataPrevista%>
-                                                </a> </dt>
+                                    <%if(dadosEntrega.status == 'Aguardando Pagamento'  || dadosEntrega.status == 'Entregue' ||  dadosEntrega.status == 'Cancelada'){%>
+                                        <div class="col-md-12 text-center">
+                                            <a class="btn btn-outline-success">
+                                                <%=dadosEntrega.status%>
+                                            </a>
                                         </div>
+                                    <%}else{%>
+                                        <div class="col-md-6 text-end">
+                                            <a class="btn btn-outline-primary">
+                                                <%=dadosEntrega.status%>
+                                            </a>
+                                        </div>
+                                        <%if(dadosEntrega.dataPrevista !=undefined){%>
+                                            <div class="col-md-6 text-start">
+                                                <dt>Data prevista: 
+                                                    <a class="btn btn-outline-primary">
+                                                    <%=dadosEntrega.dataPrevista%>
+                                                    </a> 
+                                                </dt>
+                                            </div>
                                         <%}else{%>
                                             <div class="col-md-6 text-start">
                                                 <dt>Data prevista: <a class="btn btn-outline-danger">
                                                         Sem data prevista
                                                     </a> </dt>
                                             </div>
-                                            <%}%>
+                                        <%}%>
+                                    <%}%>
                                 </div>
 
                             </div>
@@ -194,7 +204,7 @@
                     <div class="row my-4">
                         <div class="col-md-4">
                             <%var text=`Tenho uma duvida!\n Codigo da venda: ${dadosVenda.dadosId} | Ordem:
-                                ${dadosPagamento.orderId} | Codigo de Rastreio: ${dadosEntrega.codigoRastreioInterno}`%>
+                                ${dadosPagamento.ordeId} | Codigo de Rastreio: ${dadosEntrega.codigoRastreioInterno}`%>
                                 <a href="https://api.whatsapp.com/send?phone=+55086994726085&text=<%=text%>"
                                     target="_blank">
                                     <svg enable-background="new 0 0 512 512" width="50" height="50" version="1.1"
@@ -210,7 +220,7 @@
                                 <dt>Envie mensagem via whatsapp</dt>
                         </div>
                         <div class="col-md-4">
-                            <%var text=`Codigo da venda: ${dadosVenda.dadosId} | Ordem: ${dadosPagamento.orderId} |
+                            <%var text=`Codigo da venda: ${dadosVenda.dadosId} | Ordem: ${dadosPagamento.ordeId} |
                                 Codigo de Rastreio: ${dadosEntrega.codigoRastreioInterno} %0D%0ADuvida: [DIGITE SUA
                                 DUVIDA REFERENTE A ESSA VENDA]`%>
                                 <a href="mailto:poudeyvis007@gmail.com?Subject=Estou%20com%20dúvidas&body=<%=text%>&"

@@ -155,9 +155,9 @@ router.get("/carrinho/finalizarCompra/:opcao", async (req, res) => {
                 },
                 external_reference: idUnica,
                 "back_urls": {
-                    failure: 'https://ecomerce-front.herokuapp.com/transicao/'+idUnica,
-                    pending: 'https://ecomerce-front.herokuapp.com/transicao/'+idUnica,
-                    success: 'https://ecomerce-front.herokuapp.com/transicao/'+idUnica
+                    failure: 'https://ecomerce-front.herokuapp.com/usuario/transicao/'+idUnica,
+                    pending: 'https://ecomerce-front.herokuapp.com/usuario/transicao/'+idUnica,
+                    success: 'https://ecomerce-front.herokuapp.com/usuario/transicao/'+idUnica
                 },
                 "auto_return": "approved"
             }
@@ -258,7 +258,7 @@ router.post("/statusPagamento", async (req, res) => {
                     }).then(async () => {
                         var cliente = await Cliente.findByPk(dadosVendas[0].clienteId)
 
-                        var vendaUpdate = await knex("dadosvendas").update({statusId:statusVenda.id,statusColetado:statusVenda.status})
+                        var vendaUpdate = await knex("dadosvendas").update({statusId:statusVenda.id,statusColetado:statusVenda.status}).where({id:dadosVendas[0].id})
 
                         Carrinho.update({
                             status: statusCarrinho,
@@ -412,7 +412,7 @@ router.post("/solicitar/entrega", auth, async (req, res) => {
                             cpf:cpf,
                             dataNasc:dataNasc,
                             nome:nome,
-                            numero:numero,
+                            tel:numero,
                             updatedAt: moment().format()
                         }).where({id:dadosEntrega[0].id})
 
