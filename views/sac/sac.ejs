@@ -1,0 +1,100 @@
+<%- include("./../partials/head.ejs")%>
+
+
+    <%- include("./../partials/nav.ejs")%>
+
+        <div class="container">
+            <br>
+            <h1 class="text-uppercase">
+                SAC - Serviço de Atendimento ao Consumidor
+            </h1>
+            <p>Vizualize abaixo nossos canais de atendimento ao cliente</p>
+            <hr>
+            <div id="canais">
+                <div class="row mt-4 pt-5">
+                    <div class="col-md-4">
+                        <%var text=`Tenho uma duvida!\n`%>
+                            <a href="https://api.whatsapp.com/send?phone=+55086994726085&text=<%=text%>"
+                                target="_blank">
+                                <svg enable-background="new 0 0 512 512" width="50" height="50" version="1.1"
+                                    viewBox="0 0 512 512" xml:space="preserve" xmlns="http://www.w3.org/2000/svg">
+                                    <path
+                                        d="M256.064,0h-0.128l0,0C114.784,0,0,114.816,0,256c0,56,18.048,107.904,48.736,150.048l-31.904,95.104  l98.4-31.456C155.712,496.512,204,512,256.064,512C397.216,512,512,397.152,512,256S397.216,0,256.064,0z"
+                                        fill="#4CAF50" />
+                                    <path
+                                        d="m405.02 361.5c-6.176 17.44-30.688 31.904-50.24 36.128-13.376 2.848-30.848 5.12-89.664-19.264-75.232-31.168-123.68-107.62-127.46-112.58-3.616-4.96-30.4-40.48-30.4-77.216s18.656-54.624 26.176-62.304c6.176-6.304 16.384-9.184 26.176-9.184 3.168 0 6.016 0.16 8.576 0.288 7.52 0.32 11.296 0.768 16.256 12.64 6.176 14.88 21.216 51.616 23.008 55.392 1.824 3.776 3.648 8.896 1.088 13.856-2.4 5.12-4.512 7.392-8.288 11.744s-7.36 7.68-11.136 12.352c-3.456 4.064-7.36 8.416-3.008 15.936 4.352 7.36 19.392 31.904 41.536 51.616 28.576 25.44 51.744 33.568 60.032 37.024 6.176 2.56 13.536 1.952 18.048-2.848 5.728-6.176 12.8-16.416 20-26.496 5.12-7.232 11.584-8.128 18.368-5.568 6.912 2.4 43.488 20.48 51.008 24.224 7.52 3.776 12.48 5.568 14.304 8.736 1.792 3.168 1.792 18.048-4.384 35.52z"
+                                        fill="#FAFAFA" />
+                                </svg>
+                            </a>
+                            <dt>Envie mensagem via whatsapp</dt>
+                    </div>
+                    <div class="col-md-4">
+                        <%var text=`[DIGITE SUA
+                            DUVIDA REFERENTE OU SOLICITACAO]`%>
+                            <a href="mailto:poudeyvis007@gmail.com?Subject=Estou%20com%20dúvidas&body=<%=text%>&"
+                                target="_blank">
+                                <img src="/img/o-email.png" width="50" height="50" alt="">
+                            </a>
+                            <dt>Envie mensagem via E-mail</dt>
+                    </div>
+                    <div class="col-md-4">
+                        <button type="button" class="rounded-circle bg-primary me-3">
+                            <img src="/img/clicker.png" width="50" height="50" alt="">
+                        </button>
+                        </a>
+                        <dt>Click ao lado neste icone para abrir chat online</dt>
+                    </div>
+                </div>
+
+                <div class="card mt-3">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-12">
+                                <label for="tituloSolicitacao" class="form-label">Titulo de sua solicitação</label>
+                                <input type="text" id="tituloSolicitacao" class="form-control">
+                            </div>
+                            <div class="col-12">
+                                <label for="solicitacao" class="form-label">Solicitação</label>
+                                <textarea id="solicitacao" class="form-control" cols="30" rows="10"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <button class="btn btn-success form-control" onclick="enviarSolicitacao()">Enviar Solicitação</button>
+                    </div>
+                </div>
+            </div>
+            <div class="text-center mt-4">
+                <a href="/" class="form-control bg-primary text-white">Pagina Inicial</a>
+            </div>
+        </div>
+
+
+
+
+        <%- include("./../partials/footer.ejs")%>
+        <script>
+            function enviarSolicitacao() {
+                var titulo = document.getElementById("tituloSolicitacao").valiue
+                var solicitacao = document.getElementById("solicitacao").value
+                if (titulo != '' && solicitacao != '') {
+                    axios.post("/sac/solicitacao",{titulo:titulo,solicitacao:solicitacao}).then(resp =>{
+                        if (resp.data.erro == undefined) {
+                            alert(resp.data.resp)
+                            document.location.href = '/'
+                        } else {
+                            alert(resp.data.erro)
+                            if (resp.data.erroId == 1) {
+                                document.location.href = '/login'
+                            }
+                        }
+                    }).catch(err =>{
+                        alert("Ocorreu um erro ao enviar a solicitação, caso o erro persista entre em contato atravez de outra forma de atendimento")
+                    })
+                } else {
+                    alert("Campos vazios, gentileza preencha antes de realizar uma solicitação")
+                }
+            }
+        </script>
+
+        </html>

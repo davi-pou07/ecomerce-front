@@ -27,6 +27,7 @@ const categoriaControler = require("./controller/categoriaController")
 const compraControler = require("./controller/compraController")
 const entregaControler = require("./controller/entregaController")
 const atualizaController = require("./controller/atualizaController")
+const sacController = require("./controller/sacController")
 
 const connectionCL = require('./Databases/client/databasesCL')
 
@@ -79,6 +80,8 @@ app.use("/", categoriaControler)
 app.use("/", compraControler)
 app.use("/", entregaControler)
 app.use("/", atualizaController)
+app.use("/", sacController)
+
 
 
 app.get("/", async (req, res) => {
