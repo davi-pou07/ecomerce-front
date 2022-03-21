@@ -1,8 +1,7 @@
 const express = require('express')
 const router = express.Router()
-const knex = require("../Databases/admin/databases")
 const auth = require("../middlewares/adminAuth")
-
+const Solicitacao = require("../Databases/client/Solicitacao")
 
 router.get("/sac", async (req, res) => {
     res.render("sac/sac")
@@ -13,10 +12,10 @@ router.post("/sac/solicitacao",async(req,res)=>{
     var user = req.session.cli
     if (user != undefined) {
         if (titulo != '' & solicitacao != '') {
-            knex("solicitacoes").insert({
+            Solicitacao.create({
                 titulo:titulo,
                 solicitacao:solicitacao,
-                userId:user.id
+                clienteId:user.id
             }).then(()=>{
                 res.json({resp:"Solicitação aberta com sucesso, gentileza aguardar retorno!"})
             }).catch(err =>{

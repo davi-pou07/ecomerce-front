@@ -51,7 +51,7 @@
                         <div class="row">
                             <div class="col-12">
                                 <label for="tituloSolicitacao" class="form-label">Titulo de sua solicitação</label>
-                                <input type="text" id="tituloSolicitacao" class="form-control">
+                                <input type="text" id="titulo" class="form-control">
                             </div>
                             <div class="col-12">
                                 <label for="solicitacao" class="form-label">Solicitação</label>
@@ -75,9 +75,10 @@
         <%- include("./../partials/footer.ejs")%>
         <script>
             function enviarSolicitacao() {
-                var titulo = document.getElementById("tituloSolicitacao").valiue
+                var titulo = document.getElementById("titulo").value
                 var solicitacao = document.getElementById("solicitacao").value
                 if (titulo != '' && solicitacao != '') {
+                    console.log(titulo)
                     axios.post("/sac/solicitacao",{titulo:titulo,solicitacao:solicitacao}).then(resp =>{
                         if (resp.data.erro == undefined) {
                             alert(resp.data.resp)

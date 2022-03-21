@@ -18,6 +18,7 @@ const Carrinho = require("./Databases/client/Carrinho")
 const CodItens = require("./Databases/client/CodItens")
 const Endereco = require("./Databases/client/Endereco")
 const RecuperaSenha = require("./Databases/client/RecuperaSenha")
+const Solicitacao = require("./Databases/client/Solicitacao")
 
 const carrinhoController = require("./controller/carrinhoController")
 const empresaController = require("./controller/empresaController")
