@@ -10,9 +10,15 @@
                                 <div id="carouselPedido" class="carousel slide" data-bs-ride="carousel">
                                     <div class="carousel-indicators">
                                         <%imagems.forEach((imagem,index)=>{%>
+                                            <%if(index == 0){%>
                                             <button type="button" data-bs-target="#carouselPedido"
                                                 data-bs-slide-to="<%=index%>" class="active" aria-current="true"
-                                                aria-label="Slide <%=index + 1%>"></button>
+                                                aria-label="Slide <%=index%>"></button>
+                                            <%}else{%>
+                                                <button type="button" data-bs-target="#carouselPedido"
+                                                data-bs-slide-to="<%=index%>"
+                                                aria-label="Slide <%=index%>"></button>
+                                            <%}%>
                                             <%})%>
                                     </div>
                                     <div class="carousel-inner">
