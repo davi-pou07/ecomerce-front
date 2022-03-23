@@ -7,15 +7,15 @@
                     <div class="row">
                         <aside class="col-md-6">
                             <div class="card">
-                                <div id="carouselPedido" class="carousel slide carousel-dark" data-bs-ride="carousel" data-bs-touch="false">
+                                <div id="carouselPedido" class="carousel slide" data-bs-ride="carousel" data-bs-touch="false">
                                     <div class="carousel-indicators">
                                         <%imagems.forEach((imagem,index)=>{%>
                                             <%if(index == 0){%>
                                             <button type="button" data-bs-target="#carouselPedido"
-                                                data-bs-slide-to="<%=index%>" class="active" aria-current="true"
+                                                data-bs-slide-to="<%=index%>" class="active bg-dark" aria-current="true"
                                                 aria-label="Slide <%=index%>"></button>
                                             <%}else{%>
-                                                <button type="button" data-bs-target="#carouselPedido"
+                                                <button type="button" class="bg-dark" data-bs-target="#carouselPedido"
                                                 data-bs-slide-to="<%=index%>"
                                                 aria-label="Slide <%=index%>"></button>
                                             <%}%>

@@ -1,59 +1,7 @@
 <%- include("./partials/head.ejs")%>
 
     <%- include("./partials/nav.ejs")%>
-    <nav class="navbar navbar-expand-lg" style="background: #061c30;">
-        <div class="container">
-          <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav ms-sm-5 mb-2 mb-lg-0">
-                <li class="nav-item px-sm-5 mt-sm-0 mt-4 dropdown">
-                    <div class="input-group me-2" data-bs-toggle="dropdown">
-                        <img src="/img/list.png" class="img-fluid mt-md-1" width="30px" height="30px">
-                        <a class="nav-link dropdown-toggle text-white" href="#" role="button"
-                            aria-expanded="false">Categorias</a>
-                    </div>
-                    <ul class="dropdown-menu">
-                        <%categorias.forEach(categoria=>{%>
-                            <%if(categoria.destaque==true){%>
-                                <li><a class="dropdown-item text-dark" href="/categoria/<%=categoria.id%>">
-                                        <%=categoria.titulo%>
-                                    </a></li>
-                                <%}%>
-                                    <%})%>
-                    </ul>
-                </li>
     
-               <li class="nav-item px-sm-5 mt-sm-0 mt-4">
-                    <div class="input-group me-2">
-                        <img src="/img/oferta.png" class="img-fluid mt-md-1" width="30px" height="30px">
-                        <a class="nav-link text-white testenav" href="#">Ofertas</a>
-                    </div>
-                </li>
-    
-                <li class="nav-item px-sm-5 mt-sm-0 mt-4">
-                    <div class="input-group me-2">
-                        <img src="/img/historico.png" class="img-fluid mt-md-1" width="30px" height="30px">
-                        <a class="nav-link text-white" href="/usuario/historico/">Historico de Compra</a>
-                    </div>
-                </li>
-    
-                <li class="nav-item px-sm-5 mt-sm-0 mt-4">
-                    <div class="input-group me-2">
-                        <img src="/img/carrinho.png" class="img-fluid mt-md-1" width="30px" height="30px">
-                        <a class="nav-link text-white" href="/carrinho/caixa">Carrinho</a>
-                    </div>
-                </li>
-    
-                <li class="nav-item px-sm-5 mt-sm-0 mt-4">
-                    <div class="input-group me-2">
-                        <img src="/img/central.png" class="img-fluid mt-md-1" width="30px" height="30px">
-                        <a class="nav-link text-white" href="/sac">Central de Atendimento</a>
-                    </div>
-                </li>
-    
-            </ul>
-          </div>
-        </div>
-      </nav>
         <!-- banners -->
         <div class="container">
             <div id="carouselExampleSlidesOnly" class="carousel slide d-block" data-bs-ride="carousel">
