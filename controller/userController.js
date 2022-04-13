@@ -15,12 +15,11 @@ const nodemailer = require("nodemailer");
 var uniqid = require('uniqid');
 
 var remetente = nodemailer.createTransport({
-    host: "smtp.office365.com",
-    service: "Outlook365",
-    port: 587,
+    host: "smtp.gmail.com",
+    port: 465,
     secure: true,
     auth: {
-        user: process.env.USER_MAIL,
+        user: process.env.USER_MAIL ,
         pass: process.env.PASS_MAIL
     }
 });

@@ -27,14 +27,11 @@ MercadoPago.configure({
 })
 
 var remetente = nodemailer.createTransport({
-    host: "smtp.office365.com",
-    service: "Outlook365",
-    port: 587,
+    host: "smtp.gmail.com",
+    port: 465,
     secure: true,
     auth: {
-        // user: "poudeyvis007@gmail.com",
-        // pass: "99965511auri"
-        user: process.env.USER_MAIL,
+        user: process.env.USER_MAIL ,
         pass: process.env.PASS_MAIL
     }
 });
