@@ -187,22 +187,7 @@
                 // span.innerHTML = empresa.nome
             }
         })
-
-        //OFF
-        function busca() {
-            var buscar = document.getElementById("pesquisa")
-            if (buscar.value == '' || buscar.value == undefined) {
-                alert("Digite o que deseja pesquisar!")
-            } else {
-                axios.post("http://localhost:8080/find", {
-                    busca: buscar.value
-                }).then(busca => {
-                    window.location.href = "/admin/produto/busca/" + busca.data;
-                }).catch(err => {
-                    console.log(err)
-                })
-            }
-        }
+       
     </script>
 
 <%- include("./menu.ejs")%>
