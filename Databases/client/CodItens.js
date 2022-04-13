@@ -39,8 +39,8 @@ const Coditens = connectionCL.define('coditens',{
 
 Coditens.belongsTo(Carrinho);
 
-// Coditens.sync({force:true}).then(()=>{
-//     console.log("Tabela CodItens criada")        
-// })
+Coditens.sync({force:false}).then(()=>{
+    console.log("Tabela CodItens criada")        
+})
 
 module.exports = Coditens

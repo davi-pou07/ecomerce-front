@@ -20,8 +20,8 @@ const RecuperaSenha = connectionCL.define('recuperasenhas',{
 RecuperaSenha.belongsTo(Cliente)
 
 
-// RecuperaSenha.sync({force:true}).then(()=>{
-//     console.log("Tabela RecuperaSenha criada")        
-// })
+RecuperaSenha.sync({force:false}).then(()=>{
+    console.log("Tabela RecuperaSenha criada")        
+})
 
 module.exports = RecuperaSenha

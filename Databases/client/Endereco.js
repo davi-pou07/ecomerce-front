@@ -31,8 +31,8 @@ const Endereco = connectionCL.define('enderecos', {
 Endereco.belongsTo(Carrinho)
 
 
-// Endereco.sync({force:true}).then(()=>{
-//     console.log("Tabela Endereco criada")        
-// })
+Endereco.sync({force:false}).then(()=>{
+    console.log("Tabela Endereco criada")        
+})
 
 module.exports = Endereco

@@ -16,10 +16,8 @@ const Solicitacao = connectionCL.define('solicitacoes',{
     }
 })
 
-
-
-// Solicitacao.sync({force:true}).then(()=>{
-//     console.log("Tabela Solicitacao criada")        
-// })
+Solicitacao.sync({force:false}).then(()=>{
+    console.log("Tabela Solicitacao criada")        
+})
 
 module.exports = Solicitacao
