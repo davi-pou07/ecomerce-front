@@ -46,38 +46,23 @@
       </style>
 
     <header id="header">
-        <nav class="navbar navbar-dark justify-content-between navbar-expand-lg">
-            <div class="container">
+        <nav class="navbar navbar-dark navbar-expand-lg">
+            <div class="container-fluid container-sm">
                 <!-- Imagem e nome da empresa -->
                 <a href="/" class="navbar-brand">
-                    <img src="" class="img-fluid" id="logo" width="90px" alt="">
+                    <img src="" class="img-fluid" id="logo" width="70px" alt="">
                 </a>
                 <!-- Fim da imagem e nome da empresa -->
 
                 <!-- Input + botão de pesquisa -->
-                <div class="row">
-                    <div class="col-md-12 p-0">
-                        <div class="collapse navbar-collapse">
-                            <form class="d-flex">
-                                <input class="form-control" type="search" placeholder="Pesquise aqui seu produto" aria-label="Search" style="  width: 36em; outline: none;
-                                border-radius: 10px 0 0 10px;
-                                margin-right: 0;
-                                border: none;
-                              ">
-                                <button class="btn btn-outline-success" type="submit" style="color: #6c757d;
-                                border-color: #ffffff;
-                                background-color: white;
-                                border-radius: 0 10px 10px 0;
-                                margin-left: 0;">Pesquisar</button>
-                            </form>
-
-                        </div>
+                <div class="collapse navbar-collapse">
+                    <div class="input-group">
+                        <input class="form-control" type="search" placeholder="Pesquise aqui seu produto" aria-label="Search">
+                        <span class="input-group-text">Pesquisar</span>
                     </div>
                 </div>
                 <!-- fim do Input + botão de pesquisa -->
-
-                <!-- Carrinho -->
-                <ul class=" mt-4 me-md-5 mx-1 mt-lg-2 me-md-0 mb-lg-0 text-white position-relative">
+                <div class="me-3 ms-md-2 text-white position-relative">
                     <a class="text-white" href="/carrinho/caixa">
                         <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor"
                             class="bi bi-cart" viewBox="0 0 16 16">
@@ -87,48 +72,55 @@
                         <span id="spanCarrin"
                             class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-secondary">0</span>
                     </a>
+                </div>
+                <!-- Carrinho -->
+                <ul class="navbar-nav align-midlle mb-2 mb-lg-0">
+                        
+                    <li class="nav-item">
+                        <div class="personal-imageNav" role="navigation" id="divPerfil">
+                            <label class="label">
+                                <figure class="personal-figureNav">
+                                        <ul class="navbar-nav me-md-auto mb-2 mb-lg-0">
+                                            <li class="nav-item">
+                                                <a class="nav-link text-white" href="/login" id="dropTogle" role="button"
+                                                    id="navbarDropdownMenuLink" data-bs-toggle="" aria-expanded="false">
+                                                    <img src="/img/avatar.jpg" class="personal-avatarNav" id="imgCli"
+                                                        alt="avatar">
+                                                </a>
+                                                <ul class="dropdown-menu dropdown-menu-start dropdown-menu-dark"
+                                                    aria-labelledby="navbarDropdownMenuLink">
+                                                    <li><a class="dropdown-item text-center" id="userNome">Usuario</a></li>
+                                                    <input type="hidden" name="usuarioId" id="usuarioId">
+                                                    <li>
+                                                        <hr class="dropdown-divider">
+                                                    </li>
+                                                    <li>
+                                                        <a class="dropdown-item" href="/usuario/edit/">Editar</a>
+                                                    </li>
+                                                    <li>
+                                                        <hr class="dropdown-divider">
+                                                    </li>
+                                                    <li>
+                                                        <a class="dropdown-item" href="/usuario/historico/">Historico de
+                                                            Comp.</a>
+                                                    </li>
+                                                    <li>
+                                                        <hr class="dropdown-divider">
+                                                    </li>
+                                                    <li><a class="dropdown-item" id="aUsuarios" href="/logout">Sair</a></li>
+        
+                                                </ul>
+                                            </li>
+                                        </ul>
+                                </figure>
+                            </label>
+                        </div>
+                    </li>
                 </ul>
                 <!-- Fim do Carrinho -->
 
                 <!-- Usuario -->
-                <div class="me-4 personal-imageNav" role="navigation" id="divPerfil">
-                    <label class="label">
-                        <figure class="personal-figureNav">
-                                <ul class="navbar-nav me-md-auto mb-2 mb-lg-0">
-                                    <li class="nav-item">
-                                        <a class="nav-link text-white" href="/login" id="dropTogle" role="button"
-                                            id="navbarDropdownMenuLink" data-bs-toggle="" aria-expanded="false">
-                                            <img src="/img/avatar.jpg" class="personal-avatarNav" id="imgCli"
-                                                alt="avatar">
-                                        </a>
-                                        <ul class="dropdown-menu dropdown-menu-start dropdown-menu-dark"
-                                            aria-labelledby="navbarDropdownMenuLink">
-                                            <li><a class="dropdown-item text-center" id="userNome">Usuario</a></li>
-                                            <input type="hidden" name="usuarioId" id="usuarioId">
-                                            <li>
-                                                <hr class="dropdown-divider">
-                                            </li>
-                                            <li>
-                                                <a class="dropdown-item" href="/usuario/edit/">Editar</a>
-                                            </li>
-                                            <li>
-                                                <hr class="dropdown-divider">
-                                            </li>
-                                            <li>
-                                                <a class="dropdown-item" href="/usuario/historico/">Historico de
-                                                    Comp.</a>
-                                            </li>
-                                            <li>
-                                                <hr class="dropdown-divider">
-                                            </li>
-                                            <li><a class="dropdown-item" id="aUsuarios" href="/logout">Sair</a></li>
-
-                                        </ul>
-                                    </li>
-                                </ul>
-                        </figure>
-                    </label>
-                </div>
+                
 
                
 
